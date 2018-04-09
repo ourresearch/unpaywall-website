@@ -2,9 +2,8 @@
     <md-toolbar class="main-header">
         <div class="md-toolbar-row">
                 <h1>
-                    OpenAlex
+                    Unpaywall Data
                 </h1>
-                <search-box/>
         </div>
     </md-toolbar>
 

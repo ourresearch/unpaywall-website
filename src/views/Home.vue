@@ -13,6 +13,13 @@ export default {
   name: 'home',
   components: {
     HelloWorld
+  },
+  metaInfo: {
+      title: "Unpaywall Data",
+      titleTemplate: null,
+      bodyAttrs: {
+          "class": "home"
+      }
   }
 }
 </script>
