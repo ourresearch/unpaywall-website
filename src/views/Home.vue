@@ -185,7 +185,7 @@ export default {
 
       text-align: center;
       img {
-        max-height: 70px;
+        max-height: 65px;
         max-width: 120px;
         margin: 20px 35px;
         opacity: .8;
