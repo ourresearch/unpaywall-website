@@ -26,9 +26,9 @@
 
     <div class="social-proof">
       <div class="text">
-        <h2 class="md-display-1">Trusted by thousands of institutions worldwide.</h2>
+        <h2 class="md-display-1">Trusted by top institutions</h2>
         <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vel ornare orci. Nam congue sollicitudin nibh. Nulla ac sollicitudin mi. Pellentesque libero metus, interdum sed dolor in, tincidunt interdum urna. Cras vehicula eget lacus ac bibendum. Nulla tristique sodales lorem, consectetur luctus mi laoreet pharetra.
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vel ornare orci. Nam congue sollicitudin nibh. Nulla ac sollicitudin mi. Pellentesque libero metus, interdum sed dolor in, tincidunt interdum urna.
         </p>
       </div>
       <div class="img">
@@ -172,21 +172,22 @@ export default {
     justify-content: center;
     .text {
       max-width: 400px;
-      padding: 10px;
+      padding: 0 30px 0 0;
+      border-right: 1px solid #eee;
       h2 {
         color: #81545F; // from stars pic
       }
 
     }
     .img {
-      max-width: 700px;
-      padding: 10px;
+      max-width: 650px;
+      padding: 0;
 
       text-align: left;
       img {
-        max-height: 90px;
+        max-height: 70px;
         max-width: 120px;
-        margin: 15px;
+        margin: 20px 35px;
         opacity: .8;
       }
     }
