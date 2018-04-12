@@ -47,7 +47,7 @@
 
     <div class="open-source">
       <div class="img">
-        <img src="../assets/unicorn2.png" alt="">
+        <img src="../assets/blueprints.png" alt="">
       </div>
       <div class="text">
         <h2 class="md-display-1">Open Source and nonprofit</h2>
@@ -64,18 +64,21 @@
         <p>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vel ornare orci. Nam congue sollicitudin nibh. Nulla ac sollicitudin mi. Pellentesque libero metus, interdum sed dolor in, tincidunt interdum urna. Cras vehicula eget lacus ac bibendum. Nulla tristique sodales lorem, consectetur luctus mi laoreet pharetra.
         </p>
-        <div class="buttons">
-          <md-button class="md-raised md-primary enterprise">Enterprise</md-button>
-          <md-button class="md-raised md-accent research">Research</md-button>
-          <md-button class="md-raised md-accent libraries">Libraries</md-button>
-        </div>
       </div>
 
       <div class="img">
-        <img src="../assets/people.png" alt="">
+        <img src="../assets/aliens.png" alt="">
       </div>
+    </div>
 
-
+    <div class="get-started">
+      <h2 class="md-display-2">Get started</h2>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+      <div class="buttons">
+        <md-button class="md-raised md-primary enterprise">Enterprise</md-button>
+        <md-button class="md-raised md-accent research">Research</md-button>
+        <md-button class="md-raised md-accent libraries">Libraries</md-button>
+      </div>
     </div>
 
 
@@ -143,7 +146,7 @@ export default {
     background: url("../assets/stars.jpg") no-repeat;
     background-size: cover;
     background-position: bottom;
-    height: 700px;
+    height: 100vh;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -175,7 +178,7 @@ export default {
       padding: 0 30px 0 0;
       border-right: 1px solid #eee;
       h2 {
-        color: #81545F; // from stars pic
+        /*color: #81545F; // from stars pic*/
       }
 
     }
@@ -203,13 +206,13 @@ export default {
       max-width: 600px;
       padding: 30px;
       h2 {
-        color: #4DC8E5; // from unicorn pic
+        /*color: #4DC8E5; // from unicorn pic*/
       }
     }
     .img {
       padding: 30px;
       img {
-        max-width: 400px;
+        max-width: 300px;
       }
     }
   }
@@ -240,6 +243,23 @@ export default {
       padding: 30px;
       img {
         max-width: 400px;
+      }
+    }
+  }
+
+  .get-started {
+    text-align: center;
+    margin: 80px 0;
+    h2 {
+      margin-bottom: 0;
+    }
+    .buttons {
+      margin-top: 20px;
+      button {
+        font-size: 30px;
+        padding: 15px 30px;
+        height: auto;
+        margin: 10px 20px;
       }
     }
   }
