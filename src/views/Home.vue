@@ -183,7 +183,7 @@ export default {
       max-width: 650px;
       padding: 0;
 
-      text-align: left;
+      text-align: center;
       img {
         max-height: 70px;
         max-width: 120px;
