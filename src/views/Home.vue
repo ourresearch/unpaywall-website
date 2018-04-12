@@ -173,6 +173,9 @@ export default {
     .text {
       max-width: 400px;
       padding: 10px;
+      h2 {
+        color: #81545F; // from stars pic
+      }
 
     }
     .img {
@@ -181,7 +184,7 @@ export default {
 
       text-align: left;
       img {
-        max-height: 80px;
+        max-height: 90px;
         max-width: 120px;
         margin: 15px;
         opacity: .8;
@@ -196,13 +199,16 @@ export default {
     align-items: center;
     justify-content: center;
     .text {
-      max-width: 400px;
+      max-width: 600px;
       padding: 30px;
+      h2 {
+        color: #4DC8E5; // from unicorn pic
+      }
     }
     .img {
       padding: 30px;
       img {
-        max-height: 400px;
+        max-width: 400px;
       }
     }
   }
