@@ -1,11 +1,7 @@
 <template>
-    <md-toolbar class="main-header">
-        <div class="md-toolbar-row">
-                <h1>
-                    Unpaywall Data
-                </h1>
-        </div>
-    </md-toolbar>
+    <div class="container">
+        <img src="../assets/logo.png" alt="">
+    </div>
 
 
 </template>
@@ -20,12 +16,23 @@
 </script>
 
 <style scoped lang="scss">
-    h1 {
-        width: 140px;
-        margin:0;
-        display:block;
-        font-size: 20px;
-        text-align: center;
+    body.home {
+        .container {
+            background: none;
+        }
     }
+    .container {
+        background: #333;
+        height: 88px;
+        display: flex;
+        align-items: center;
+        padding: 0 30px;
+        img {
+            height: 35px;
+
+        }
+    }
+
+
 
 </style>
