@@ -47,7 +47,7 @@
 
     <div class="open-source">
       <div class="img">
-        <img src="../assets/unicorn.png" alt="">
+        <img src="../assets/unicorn2.png" alt="">
       </div>
       <div class="text">
         <h2 class="md-display-1">Open Source and nonprofit</h2>
@@ -55,6 +55,27 @@
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vel ornare orci. Nam congue sollicitudin nibh. Nulla ac sollicitudin mi. Pellentesque libero metus, interdum sed dolor in, tincidunt interdum urna. Cras vehicula eget lacus ac bibendum. Nulla tristique sodales lorem, consectetur luctus mi laoreet pharetra.
         </p>
       </div>
+    </div>
+
+
+    <div class="how-to-access">
+      <div class="text">
+        <h2 class="md-display-1">Easy access for anyone</h2>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vel ornare orci. Nam congue sollicitudin nibh. Nulla ac sollicitudin mi. Pellentesque libero metus, interdum sed dolor in, tincidunt interdum urna. Cras vehicula eget lacus ac bibendum. Nulla tristique sodales lorem, consectetur luctus mi laoreet pharetra.
+        </p>
+        <div class="buttons">
+          <md-button class="md-raised md-primary enterprise">Enterprise</md-button>
+          <md-button class="md-raised md-accent research">Research</md-button>
+          <md-button class="md-raised md-accent libraries">Libraries</md-button>
+        </div>
+      </div>
+
+      <div class="img">
+        <img src="../assets/people.png" alt="">
+      </div>
+
+
     </div>
 
 
@@ -182,6 +203,36 @@ export default {
       padding: 30px;
       img {
         max-height: 400px;
+      }
+    }
+  }
+
+  .how-to-access {
+    background: #fff;
+    padding: 50px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .text {
+      max-width: 500px;
+      padding: 30px;
+      button {
+        &.enterprise {
+          background: #3F51B5 !important;
+        }
+        &.research {
+          background: #795548 !important;
+        }
+        &.libraries {
+          background: #F06292 !important;
+        }
+      }
+
+    }
+    .img {
+      padding: 30px;
+      img {
+        max-width: 400px;
       }
     }
   }
