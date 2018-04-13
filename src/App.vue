@@ -39,6 +39,9 @@
 </script>
 
 <style lang="scss">
+    // phones
+    $screen-xs-max: 576px;
+
 
   body {
     font-size: 16px;

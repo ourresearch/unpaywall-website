@@ -47,7 +47,7 @@
 
     <div class="open-source">
       <div class="img">
-        <img src="../assets/blueprints.png" alt="">
+        <img src="../assets/blueprints2.png" alt="">
       </div>
       <div class="text">
         <h2 class="md-display-1">Open Source and nonprofit</h2>
@@ -212,7 +212,7 @@ export default {
     .img {
       padding: 30px;
       img {
-        max-width: 300px;
+        max-width: 400px;
       }
     }
   }
