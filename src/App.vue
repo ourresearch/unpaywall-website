@@ -39,6 +39,8 @@
 </script>
 
 <style lang="scss">
+  @import url("https://use.fontawesome.com/releases/v5.0.10/css/all.css");
+
     // phones
     $screen-xs-max: 576px;
 
