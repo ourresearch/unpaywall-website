@@ -39,7 +39,6 @@
         <img src="../assets/logos/mit.png" alt="">
         <img src="../assets/logos/nlm.png" alt="">
         <img src="../assets/logos/rcuk.png" alt="">
-        <img src="../assets/logos/wiley.png" alt="">
         <img src="../assets/logos/wos.png" alt="">
 
       </div>
