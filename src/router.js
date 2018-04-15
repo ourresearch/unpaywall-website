@@ -14,6 +14,19 @@ Vue.use(Meta)
 
 export default new Router({
   mode: "history",
+  scrollBehavior (to, from, savedPosition) {
+    if (savedPosition) {
+        return savedPosition
+    }
+    else if (to.hash){
+      return {
+        selector: to.hash,
+        offset: { x: 0, y: 10 }
+      }
+    } else {
+      return { x: 0, y: 0 }
+    }
+  },
   routes: [
     {
       path: '/',

@@ -3,250 +3,26 @@
 
 
         <h1>Data Format</h1>
-        <div class="intro">
+
+
+        <h2>Overview</h2>
+        <p>
             The
-            <router-link to="products/snapshot">database snapshot,</router-link>
+            <router-link to="products/snapshot">database snapshot, </router-link>
             <router-link to="products/api">REST API,</router-link> and
-            <router-link to="products/data-feed">Data Feed,</router-link> products all return data in in JSON and all use the same schema. Here's the documentation for that schema.
-        </div>
+            <router-link to="products/data-feed">Data Feed</router-link> products all return JSON-formatted data. For simplicity, that data is organized under the same schema in all cases; that schema is informally described on this page.
+        </p>
+        <p>
+            Regardless of the source, each record returned consists of one <router-link to="#doi-object">DOI Object, </router-link> containing resource metadata. Each DOI Object in turn contains a list of zero or more <router-link to="#oa-location-object">OA Location Objects.</router-link>
+        </p>
 
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        <!-------------------------------------------------------------------------
-
-        RESPONSE OBJECTS
-
-        --------------------------------------------------------------------------->
-
-        <h2 class="anchor"  id="response-objects">Response objects</h2>
-        <p>The API returns three different types of response objects. Really two, since more users won't ever need the API Status object, which just defines the root of the API. The OA Location object describes a place we found an OA copy of an article. There are one or more of these associated with DOI object, which describes a given DOI-assigned resource.</p>
-
-
-        <h3 class="anchor" id="api-status-object">API Status object</h3>
-        <table class="api-responses">
-            <tr>
-                <td class="key">
-                    <span class="name">documentation_url</span>
-                    <span class="type">String</span>
-                </td>
-                <td class="contents">
-                    Where you can find documentation for this version.
-                </td>
-                <td class="notes">
-                </td>
-            </tr>
-            <tr>
-                <td class="key">
-                    <span class="name">msg</span>
-                    <span class="type">String</span>
-                </td>
-                <td class="contents">
-                    Relevant messages.
-                </td>
-                <td class="notes">
-                </td>
-            </tr>
-            <tr>
-                <td class="key">
-                    <span class="name">version</span>
-                    <span class="type">String</span>
-                </td>
-                <td class="contents">
-                    Version string.
-                </td>
-                <td class="notes">
-                    Example: <code>2.0.1</code>
-                </td>
-            </tr>
-        </table>
-
-
-
-
-
-
-        <h3 class="anchor" id="oa-location-object">OA Location object</h3>
-        <p>The OA Location object describes particular location where we found a given OA article. The same article is often available from multiple locations. There may be differences in format, version, and license from one location to another, even if it's the same article in all cases.</p>
-        <table class="api-responses">
-            <tr>
-                <td class="key">
-                    <span class="name">evidence</span>
-                    <span class="type">String</span>
-                </td>
-                <td class="contents">
-                    How we found this OA location.
-                </td>
-                <td class="notes">
-                    <p>
-                        Used for debugging. Don’t depend on the exact contents of this for anything, because values are subject to change without warning. Example values:
-
-                    </p>
-                    <ul>
-                        <li>
-                            <span class="value"><code>oa journal (via journal title in doaj)</code></span>
-                            <span class="notes">
-                            We found the name of the journal that publishes this article in the DOAJ database.
-                        </span>
-                        </li>
-                        <li>
-                            <span class="value"><code>oa repository (via pmcid lookup)</code></span>
-                            <span class="notes">
-                            We found this article in an index of PubMed Central articles.
-                        </span>
-                        </li>
-                    </ul>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="key">
-                    <span class="name">host_type</span>
-                    <span class="type">String</span>
-                </td>
-                <td class="contents">
-                    The type of host that serves this OA location.
-                </td>
-                <td class="notes">
-                    <p>
-                        There are two possible values:
-                    </p>
-                    <ul>
-                        <li>
-                            <span class="value"><code>publisher</code></span>
-                            <span class="notes">
-                            means the this location is served by the article’s publisher (in practice, this means it is hosted on the same domain the DOI resolves to).
-                        </span>
-                        </li>
-                        <li>
-                            <span class="value"><code>repository</code></span>
-                            <span class="notes">
-                            means this location is served by an Open Access repository.
-                        </span>
-                        </li>
-                    </ul>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="key">
-                    <span class="name">license</span>
-                    <span class="type">String</span>
-                </td>
-                <td class="contents">
-                    The license under which this copy is published.
-                </td>
-                <td class="notes">
-                    <p>We return several types of licenses:</p>
-                    <ul>
-                        <li>
-                            Creative Commons licenses are uniformly abbreviated and lowercased. Example: <code>cc-by-nc</code>
-                        </li>
-                        <li>
-                            Publisher-specific licenses are normalized using this format: <code>acs-specific: authorchoice/editors choice usage agreement</code>
-                        </li>
-                        <li>
-                            When we have evidence that an OA license of <em>some</em> kind was used, but it’s not reported directly on the webpage at this location, this field returns <code>implied-oa</code>
-                        </li>
-                    </ul>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="key">
-                    <span class="name">updated</span>
-                    <span class="type">String</span>
-                </td>
-                <td class="contents">
-                    Time when the data for this location was last updated.
-                </td>
-                <td class="notes">
-                    Returned as an <a href="https://xkcd.com/1179/">ISO8601-formatted</a> timestamp. Example: <code>2017-08-17T23:43:27.753663</code>
-                </td>
-            </tr>
-
-
-
-
-
-
-
-
-            <tr>
-                <td class="key">
-                    <span class="name">url</span>
-                    <span class="type">String</span>
-                </td>
-                <td class="contents">
-                    The URL where you can find this OA copy.
-                </td>
-                <td class="notes">
-                    <p>
-                        Although this URL points to fulltext of <em>some</em> kind, there is (for now) no format normalization...it could be PDF, HTML, or even Word or TeX.
-                    </p>
-                </td>
-            </tr>
-
-
-
-
-
-
-
-            <tr>
-                <td class="key">
-                    <span class="name">versions</span>
-                    <span class="type">String</span>
-                </td>
-                <td class="contents">
-                    The content version accessible at this location.
-                </td>
-                <td class="notes">
-                    <p>
-                        We use the <a href="https://wiki.surfnet.nl/display/DRIVERguidelines/DRIVER-VERSION+Mappings">DRIVER Guidelines v2.0 VERSION standard</a> to define  versions of a given article; see those docs for complete definitions of terms. Here's the basic idea, though, for the three version types we support:
-                    </p>
-                    <ul>
-                        <li><code>submittedVersion</code> is not yet peer-reviewed.</li>
-                        <li><code>acceptedVersion</code> is peer-reviewed, but lacks publisher-specific formatting.</li>
-                        <li><code>publishedVersion</code> is the version of record.</li>
-                    </ul>
-                </td>
-            </tr>
-
-
-
-        </table>
-
-
-
-
-
-
-
-
-        <h3 class="anchor" id="doi-object">DOI object</h3>
-        <p>The DOI object describes a given DOI-assigned resource. It contains metadata about the resource itself, as well as information about its OA status.</p>
+        <h2 class="anchor" id="doi-object">DOI object</h2>
+        <p>The DOI object is more or less a row in our main database...it's everything we know about a given DOI-assigned resource, including metadata about the resource itself, and information about its OA status. It includes a list of zero or more <router-link to="#oa-location-object">OA Location Objects</router-link>, as well as a <code>best_oa_location</code> property that's probably the OA Location you'll want to use.</p>
 
         <table class="api-responses">
 
@@ -256,7 +32,7 @@
                     <span class="type">Object|null</span>
                 </td>
                 <td class="contents">
-                    The best <a href="#oa-location-object">OA Location</a> object we could find for this DOI.
+                    The best <router-link to="#oa-location-object">OA Location Object</router-link> we could find for this DOI.
                 </td>
                 <td class="notes">
                     <p>
@@ -418,6 +194,164 @@
 
 
 
+
+
+        <h2 class="anchor" id="oa-location-object">OA Location object</h2>
+        <p>The OA Location object describes particular place where we found a given OA article. The same article is often available from multiple locations, and there may be differences in format, version, and license depending on the location; the OA Location object describes these key attributes. An OA Location Object is always a Child of a <router-link to="#doi-object">DOI Object.</router-link></p>
+        <table class="api-responses">
+            <tr>
+                <td class="key">
+                    <span class="name">evidence</span>
+                    <span class="type">String</span>
+                </td>
+                <td class="contents">
+                    How we found this OA location.
+                </td>
+                <td class="notes">
+                    <p>
+                        Used for debugging. Don’t depend on the exact contents of this for anything, because values are subject to change without warning. Example values:
+
+                    </p>
+                    <ul>
+                        <li>
+                            <span class="value"><code>oa journal (via journal title in doaj)</code></span>
+                            <span class="notes">
+                            We found the name of the journal that publishes this article in the DOAJ database.
+                        </span>
+                        </li>
+                        <li>
+                            <span class="value"><code>oa repository (via pmcid lookup)</code></span>
+                            <span class="notes">
+                            We found this article in an index of PubMed Central articles.
+                        </span>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="key">
+                    <span class="name">host_type</span>
+                    <span class="type">String</span>
+                </td>
+                <td class="contents">
+                    The type of host that serves this OA location.
+                </td>
+                <td class="notes">
+                    <p>
+                        There are two possible values:
+                    </p>
+                    <ul>
+                        <li>
+                            <span class="value"><code>publisher</code></span>
+                            <span class="notes">
+                            means the this location is served by the article’s publisher (in practice, this means it is hosted on the same domain the DOI resolves to).
+                        </span>
+                        </li>
+                        <li>
+                            <span class="value"><code>repository</code></span>
+                            <span class="notes">
+                            means this location is served by an Open Access repository.
+                        </span>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="key">
+                    <span class="name">license</span>
+                    <span class="type">String</span>
+                </td>
+                <td class="contents">
+                    The license under which this copy is published.
+                </td>
+                <td class="notes">
+                    <p>We return several types of licenses:</p>
+                    <ul>
+                        <li>
+                            Creative Commons licenses are uniformly abbreviated and lowercased. Example: <code>cc-by-nc</code>
+                        </li>
+                        <li>
+                            Publisher-specific licenses are normalized using this format: <code>acs-specific: authorchoice/editors choice usage agreement</code>
+                        </li>
+                        <li>
+                            When we have evidence that an OA license of <em>some</em> kind was used, but it’s not reported directly on the webpage at this location, this field returns <code>implied-oa</code>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="key">
+                    <span class="name">updated</span>
+                    <span class="type">String</span>
+                </td>
+                <td class="contents">
+                    Time when the data for this location was last updated.
+                </td>
+                <td class="notes">
+                    Returned as an <a href="https://xkcd.com/1179/">ISO8601-formatted</a> timestamp. Example: <code>2017-08-17T23:43:27.753663</code>
+                </td>
+            </tr>
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="key">
+                    <span class="name">url</span>
+                    <span class="type">String</span>
+                </td>
+                <td class="contents">
+                    The URL where you can find this OA copy.
+                </td>
+                <td class="notes">
+                    <p>
+                        Although this URL points to fulltext of <em>some</em> kind, there is (for now) no format normalization...it could be PDF, HTML, or even Word or TeX.
+                    </p>
+                </td>
+            </tr>
+
+
+
+
+
+
+
+            <tr>
+                <td class="key">
+                    <span class="name">versions</span>
+                    <span class="type">String</span>
+                </td>
+                <td class="contents">
+                    The content version accessible at this location.
+                </td>
+                <td class="notes">
+                    <p>
+                        We use the <a href="https://wiki.surfnet.nl/display/DRIVERguidelines/DRIVER-VERSION+Mappings">DRIVER Guidelines v2.0 VERSION standard</a> to define  versions of a given article; see those docs for complete definitions of terms. Here's the basic idea, though, for the three version types we support:
+                    </p>
+                    <ul>
+                        <li><code>submittedVersion</code> is not yet peer-reviewed.</li>
+                        <li><code>acceptedVersion</code> is peer-reviewed, but lacks publisher-specific formatting.</li>
+                        <li><code>publishedVersion</code> is the version of record.</li>
+                    </ul>
+                </td>
+            </tr>
+
+
+
+        </table>
+
+
+
     </div>
 
 
@@ -460,11 +394,71 @@
 </template>
 
 <script>
-    export default {
-        name: "DataForma"
-    }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+    div.page.data-format {
+        max-width: 800px;
+        table {
+            margin-bottom: 80px;
+            td {
+                padding:10px 20px;
+                vertical-align: top;
+                p {
+                    margin-top: 0;
+                }
+            }
+
+            td.notes {
+                font-size: 14px;
+            }
+            td.contents {
+                min-width:200px;
+            }
+            td.key {
+                span.name {
+                    display: block;
+                    font-weight: bold;
+                }
+                span.type {
+                    font-size: 12px;
+                }
+            }
+        }
+
+    }
+
+
 
 </style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

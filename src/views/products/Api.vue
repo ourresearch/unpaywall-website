@@ -64,7 +64,7 @@
 
         <h2>Schema</h2>
         <p>
-            The API response uses the same <router-link to="data-format">shared schema</router-link> as the database snapshot and Data Feed.
+            The API response uses the same <router-link to="/data-format">shared schema</router-link> as the database snapshot and Data Feed.
         </p>
 
         <h2>Authentication</h2>
@@ -103,7 +103,8 @@
 
 
 
-<style scoped>
+<style scoped lang="scss">
+
 
 
 
