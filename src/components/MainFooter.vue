@@ -1,7 +1,7 @@
 <template>
     <div class="site-footer">
         <div class="col products">
-            <h3>Products and integrations</h3>
+            <h3>Products & integrations</h3>
             <router-link to="products/database-snapshot">Database snapshot</router-link>
             <router-link to="products/data-feed">Data Feed</router-link>
             <router-link to="products/api">REST API</router-link>
@@ -20,7 +20,7 @@
         </div>
 
         <div class="col user-guides">
-            <h3>About Unpaywall Data</h3>
+            <h3>About</h3>
             <router-link to="data-format">Data format guide</router-link>
             <router-link to="data-sources">Data sources</router-link>
             <router-link to="faq">FAQ</router-link>

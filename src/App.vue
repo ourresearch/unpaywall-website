@@ -47,6 +47,11 @@
 
   body {
     font-size: 16px;
+    code {
+      padding: 2px 5px;
+      border: 1px solid #ddd;
+      border-radius: 3px;
+    }
   }
   div.page {
     line-height: 1.5;
