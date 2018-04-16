@@ -394,11 +394,16 @@
 </template>
 
 <script>
+    export default {
+        name: "DataFormat",
+        metaInfo: {
+            title: "Data Format"
+        }
+    }
 </script>
 
 <style scoped lang="scss">
     div.page.data-format {
-        max-width: 800px;
         table {
             margin-bottom: 80px;
             td {

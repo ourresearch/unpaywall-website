@@ -19,12 +19,14 @@
       <!--</div>-->
 
       <div class="cta">
-        <md-button class="md-raised md-accent">Learn more</md-button>
+        <md-button class="md-raised md-accent" href="#" v-scroll-to="'#learn-more'">
+          Learn more
+        </md-button>
       </div>
     </div>
 
 
-    <div class="social-proof">
+    <div id="learn-more" class="social-proof">
       <div class="text">
         <h2 class="md-display-1">Trusted by top institutions</h2>
         <p>
@@ -225,17 +227,6 @@ export default {
     .text {
       max-width: 500px;
       padding: 30px;
-      button {
-        &.enterprise {
-          background: #3F51B5 !important;
-        }
-        &.research {
-          background: #795548 !important;
-        }
-        &.libraries {
-          background: #F06292 !important;
-        }
-      }
 
     }
     .img {
@@ -255,10 +246,19 @@ export default {
     .buttons {
       margin-top: 20px;
       button {
-        font-size: 30px;
+        font-size: 25px;
         padding: 15px 30px;
         height: auto;
         margin: 10px 20px;
+        &.enterprise {
+          background: #E98535 !important;
+        }
+        &.research {
+          background: #499841 !important;
+        }
+        &.libraries {
+          background: #255C9B !important;
+        }
       }
     }
   }

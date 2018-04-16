@@ -64,7 +64,10 @@
 
         <h2>Schema</h2>
         <p>
-            The API response uses the same <router-link to="/data-format">shared schema</router-link> as the database snapshot and Data Feed.
+            The API response uses the same <router-link to="/data-format">shared schema</router-link> as the
+            <router-link to="/products/snapshot">database snapshot</router-link> and
+            <router-link to="/products/data-feed">Data Feed.</router-link>
+
         </p>
 
         <h2>Authentication</h2>
@@ -101,6 +104,14 @@
     </div>
 </template>
 
+<script>
+    export default {
+        name: "Api",
+        metaInfo: {
+            title: "REST API"
+        }
+    }
+</script>
 
 
 <style scoped lang="scss">

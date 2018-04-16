@@ -53,11 +53,17 @@
       border-radius: 3px;
       font-size: 90%;
     }
+    h1 {
+      margin-top: 50px;
+    }
+    h2 {
+      margin-top: 50px;
+    }
   }
   div.page {
     line-height: 1.5;
     padding: 10px;
-    max-width: 600px;
+    max-width: 800px;
     margin: 0 auto;
     padding-bottom: 100px;
     table {
@@ -71,15 +77,16 @@
 
   }
 
-
-  #nav {
-  padding: 30px;
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-    &.router-link-exact-active {
-      color: #42b983;
+  // hack to make the menu dropdowns match the navbar color (dark)
+  .md-menu-content-container ul.md-list {
+    background: #444;
+    li a {
+      color: #fff !important;
+    }
+    .router-link-exact-active .md-list-item-content {
+      color: #fff !important;
     }
   }
-}
+
+
 </style>
