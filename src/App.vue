@@ -66,6 +66,7 @@
     max-width: 800px;
     margin: 0 auto;
     padding-bottom: 100px;
+    min-height: 80vh;
     table {
       margin: 20px 0;
       border-top: 1px solid #ddd;

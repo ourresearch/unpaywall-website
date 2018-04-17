@@ -6,15 +6,13 @@
 
     <div class="banner">
       <div class="headline">
-        An open database of
-        <span class="number">
-          {{(numOa).toLocaleString() }}
-        </span>
-        free fulltext scholarly articles.
+        What could you build with {{(numOa).toLocaleString() }} Open Access articles?
       </div>
 
       <div class="subheadline">
-        Unpaywall harvests legally Open Access articles from over 50,000 publisher and institutional repositories, supporting the world's largest and most trusted index of free-to-read scholarship.
+        Find out using our free, comprehensive index of OA papers harvested from over 50,000 publishers and repositories.
+
+
       </div>
 
       <div class="cta">
@@ -152,8 +150,9 @@ export default {
 
   div.banner {
     background: url("../assets/stars.jpg") no-repeat;
+    background-color: #111;
     background-size: cover;
-    background-position: bottom;
+    background-position: 50% 50%;
     height: 100vh;
     width: 100%;
     display: flex;
@@ -163,19 +162,28 @@ export default {
     text-align: left;
 
     div.headline {
+      font-size: 40px;
+      @media (max-width: 600px) {
+        font-size: 30px;
+      }
       color: #fff;
       font-weight: bold;
-      font-size: 40px;
       line-height: 1.3;
       padding: 30px;
       max-width: 800px;
+      text-shadow: 1px 1px 50px #000;
+
+
     }
     div.subheadline {
-      display:none;
-      color: #fff;
-      max-width: 500px;
-      padding: 0 30px;
       font-size: 20px;
+      /*@media (max-width: 600px) {*/
+        /*font-size: 30px;*/
+      /*}      */
+      color: #fff;
+      max-width: 600px;
+      padding: 0 30px;
+      text-shadow: 0 0 30px #000, 1px 1px 50px #000;
     }
 
     div.cta {
