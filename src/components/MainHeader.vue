@@ -69,17 +69,17 @@
                         <i class="fas fa-sort-down"></i>
                     </md-button>
                     <md-menu-content>
+                        <md-menu-item to="/team">
+                                Team
+                        </md-menu-item>
+                        <md-menu-item to="/faq">
+                                FAQ
+                        </md-menu-item>
                         <md-menu-item to="/data-format">
                                 Data format
                         </md-menu-item>
                         <md-menu-item to="/sources">
                                 Data sources
-                        </md-menu-item>
-                        <md-menu-item to="/faq">
-                                FAQ
-                        </md-menu-item>
-                        <md-menu-item to="/terms-and-conditions">
-                                Terms and Conditions
                         </md-menu-item>
                         <md-menu-item to="/contact">
                                 Contact

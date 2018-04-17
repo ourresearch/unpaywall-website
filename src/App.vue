@@ -95,5 +95,9 @@
     background: rgba(0, 0, 0, .66);
   }
 
+  .md-menu-content {
+    max-height: inherit;
+  }
+
 
 </style>

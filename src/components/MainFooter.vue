@@ -20,9 +20,10 @@
 
         <div class="col md-layout-item md-size-20 md-xsmall-size-100 about">
             <h3>About</h3>
+            <router-link to="/team">Team</router-link>
+            <router-link to="/faq">FAQ</router-link>
             <router-link to="/data-format">Data format guide</router-link>
             <router-link to="/sources">Data sources</router-link>
-            <router-link to="/faq">FAQ</router-link>
             <router-link to="/terms-and-conditions">Terms and Conditions</router-link>
             <router-link to="/contact">Contact</router-link>
         </div>

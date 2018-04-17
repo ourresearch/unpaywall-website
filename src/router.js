@@ -12,6 +12,7 @@ import Sources from './views/Sources'
 import Faq from './views/Faq'
 import TermsAndConditions from './views/TermsAndConditions'
 import Contact from './views/Contact'
+import Team from './views/Team'
 
 // user guides
 import UserGuides from './views/UserGuides'
@@ -82,6 +83,10 @@ export default new Router({
     {
       path: '/contact',
       component: Contact
+    },
+    {
+      path: '/team',
+      component: Team
     },
 
 
