@@ -26,7 +26,7 @@
     </div>
 
 
-    <div id="learn-more" class="social-proof">
+    <div id="learn-more" class="selling-point social-proof">
       <div class="text">
         <h2 class="md-display-1">Trusted by top institutions</h2>
         <p>
@@ -34,19 +34,23 @@
         </p>
       </div>
       <div class="img">
-        <img src="../assets/logos/bl.png" alt="">
-        <img src="../assets/logos/europe-pmc.png" alt="">
-        <img src="../assets/logos/internet-archive.png" alt="">
-        <img src="../assets/logos/merck.png" alt="">
-        <img src="../assets/logos/mit.png" alt="">
-        <img src="../assets/logos/nlm.png" alt="">
-        <img src="../assets/logos/rcuk.png" alt="">
-        <img src="../assets/logos/wos.png" alt="">
+        <img src="../assets/all-logos.png" alt="">
+
+
+        <!--<img src="../assets/logos/bl.png" alt="">-->
+        <!--<img src="../assets/logos/europe-pmc.png" alt="">-->
+        <!--<img src="../assets/logos/internet-archive.png" alt="">-->
+        <!--<img src="../assets/logos/merck.png" alt="">-->
+        <!--<img src="../assets/logos/mit.png" alt="">-->
+        <!--<img src="../assets/logos/nlm.png" alt="">-->
+        <!--<img src="../assets/logos/rcuk.png" alt="">-->
+        <!--<img src="../assets/logos/wos.png" alt="">-->
+
 
       </div>
     </div>
 
-    <div class="open-source">
+    <div class="selling-point open-source">
       <div class="img">
         <img src="../assets/blueprints2.png" alt="">
       </div>
@@ -59,7 +63,7 @@
     </div>
 
 
-    <div class="how-to-access">
+    <div class="selling-point easy-access">
       <div class="text">
         <h2 class="md-display-1">Easy access for anyone</h2>
         <p>
@@ -143,6 +147,10 @@ export default {
 
   }
 
+
+
+
+
   div.banner {
     background: url("../assets/stars.jpg") no-repeat;
     background-size: cover;
@@ -168,74 +176,41 @@ export default {
     }
   }
 
-  .social-proof {
-    background: #fff;
-    padding: 50px 0;
+
+  .selling-point {
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 50px 0;
     .text {
+      padding: 0 30px;
       max-width: 400px;
-      padding: 0 30px 0 0;
-      border-right: 1px solid #eee;
-      h2 {
-        /*color: #81545F; // from stars pic*/
-      }
-
     }
     .img {
-      max-width: 650px;
-      padding: 0;
-
-      text-align: center;
-      img {
-        max-height: 65px;
-        max-width: 120px;
-        margin: 20px 35px;
-        opacity: .8;
-      }
+      max-width: 400px;
+      padding: 30px;
     }
+
+
+    @media (max-width: 600px) {
+      background: red;
+      flex-wrap: wrap;
+    }
+
+    &.social-proof {
+      background: #fff;
+    }
+    &.open-source {
+      background: #eee;
+    }
+    &.easy-access {
+      background: #fff;
+    }
+
+
   }
 
-  .open-source {
-    background: #fafafa;
-    padding: 50px 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    .text {
-      max-width: 600px;
-      padding: 30px;
-      h2 {
-        /*color: #4DC8E5; // from unicorn pic*/
-      }
-    }
-    .img {
-      padding: 30px;
-      img {
-        max-width: 400px;
-      }
-    }
-  }
 
-  .how-to-access {
-    background: #fff;
-    padding: 50px 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    .text {
-      max-width: 500px;
-      padding: 30px;
-
-    }
-    .img {
-      padding: 30px;
-      img {
-        max-width: 400px;
-      }
-    }
-  }
 
   .get-started {
     text-align: center;

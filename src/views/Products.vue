@@ -1,14 +1,14 @@
 <template>
-    <div class="page about">
-        <h1>About</h1>
+    <div class="page products">
+        <h1>Products</h1>
     </div>
 </template>
 
 <script>
     export default {
-        name: "About",
+        name: "Products",
         metaInfo: {
-            title: "About"
+            title: "Products"
         }
     }
 </script>

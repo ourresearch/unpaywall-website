@@ -18,6 +18,7 @@ import UserGuides from './views/UserGuides'
 
 
 // products
+import Products from './views/Products'
 import Api from './views/products/Api'
 import Snapshot from './views/products/Snapshot'
 import DataFeed from './views/products/DataFeed'
@@ -92,7 +93,7 @@ export default new Router({
     // user guides, they share a route
 
     {
-      path: '/user-guides/:guideName',
+      path: '/user-guides/:guideName?',
       component: UserGuides
     },
 
@@ -101,6 +102,10 @@ export default new Router({
 
     // product pages
 
+    {
+      path: '/products',
+      component: Products
+    },
     {
       path: '/products/snapshot',
       component: Snapshot

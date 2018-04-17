@@ -6,11 +6,15 @@
             </router-link>
         </div>
         <div class="site-nav">
-            <div class="desktop md-xsmall-hide">
+            <div class="desktop">
 
                 <!--  User Guides menu  -->
-                <md-menu md-align-trigger>
-                    <md-button md-menu-trigger>User guides</md-button>
+                <md-menu md-align-trigger :md-active.sync="allowOpen[0]"
+>
+                    <md-button md-menu-trigger>
+                        User guides
+                        <i class="fas fa-sort-down"></i>
+                    </md-button>
                     <md-menu-content>
                         <md-menu-item to="/user-guides/enterprise">
                                 Enterprise
@@ -26,8 +30,11 @@
 
 
                 <!-- Products menu -->
-                <md-menu md-align-trigger>
-                    <md-button md-menu-trigger>Products</md-button>
+                <md-menu md-align-trigger :md-active.sync="allowOpen[1]">
+                    <md-button md-menu-trigger>
+                        Products
+                        <i class="fas fa-sort-down"></i>
+                    </md-button>
                     <md-menu-content>
                         <md-menu-item to="/products/snapshot">
                             Database snapshot
@@ -56,8 +63,11 @@
                 <md-button to="/integrations">Integrations</md-button>
 
                 <!--  About menu  -->
-                <md-menu md-align-trigger>
-                    <md-button md-menu-trigger>About</md-button>
+                <md-menu md-align-trigger :md-active.sync="allowOpen[2]">
+                    <md-button md-menu-trigger>
+                        About
+                        <i class="fas fa-sort-down"></i>
+                    </md-button>
                     <md-menu-content>
                         <md-menu-item to="/data-format">
                                 Data format
@@ -81,7 +91,25 @@
             </div>
 
             <div class="phone">
-                phone!
+                <md-menu md-align-trigger :md-active.sync="allowOpen[3]">
+                    <md-button md-menu-trigger>
+                        <i class="fas fa-bars"></i>
+                    </md-button>
+                    <md-menu-content>
+                        <md-menu-item to="/user-guides">
+                                User Guides
+                        </md-menu-item>
+                        <md-menu-item to="/products">
+                                Products
+                        </md-menu-item>
+                        <md-menu-item to="/integrations">
+                                Integrations
+                        </md-menu-item>
+                        <md-menu-item to="/about">
+                                About
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
             </div>
 
 
@@ -94,7 +122,23 @@
 
 <script>
     export default {
-        name: 'MainHeader'
+        name: 'MainHeader',
+        data(){
+          return {
+              allowOpen: [false, false, false, false]
+          }
+        },
+        watch: {
+
+            // This is a hack...the menus are supposed to close themselves
+            // when you click them, but they don't do it.
+            // So, close programmatically from here
+            // when the route changes.
+            '$route' (to, from){
+                console.log("router changing in header", to)
+                this.allowOpen = [false, false, false, false]
+            }
+        }
     }
 
 
@@ -116,19 +160,33 @@
         justify-content: space-between;
         padding: 0 30px;
 
+
         div.logo a img {
-            max-height: 30px;
-
+            max-height: 35px;
         }
-
         div.site-nav {
+            color: #fff;
             .md-button {
                 text-transform: capitalize;
                 margin: 0 20px;
-                font-size: 14px;
+                font-size: 16px;
                 color: #fff;
             }
-
+            .desktop {
+                @media (max-width: 960px) {
+                    display:none;
+                }
+            }
+            .phone {
+                .md-button {
+                    font-size: 24px;
+                    margin: 0;
+                    min-width: auto;
+                }
+                @media (min-width: 960px) {
+                    display:none;
+                }
+            }
         }
 
     }

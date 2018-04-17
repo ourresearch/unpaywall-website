@@ -41,8 +41,8 @@
 <style lang="scss">
   @import url("https://use.fontawesome.com/releases/v5.0.10/css/all.css");
 
-    // phones
-    $screen-xs-max: 576px;
+    $screen-xsmall: 600px;
+    $screen-small: 960px;
 
 
   body {
@@ -79,13 +79,19 @@
 
   // hack to make the menu dropdowns match the navbar color (dark)
   .md-menu-content-container ul.md-list {
-    background: #444;
+    background: rgba(0, 0, 0, .8);
+    background: #393939;
     li a {
       color: #fff !important;
     }
     .router-link-exact-active .md-list-item-content {
       color: #fff !important;
     }
+  }
+
+  // semi-transparent is prettier on the landing page
+  .home .md-menu-content-container ul.md-list {
+    background: rgba(0, 0, 0, .66);
   }
 
 

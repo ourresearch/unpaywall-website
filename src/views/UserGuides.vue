@@ -4,6 +4,10 @@
 
 
 
+        <div class="table-of-contents" v-if="!guideName">
+            ToC stuff
+        </div>
+
         <div class="enterprise" v-if="guideName=='enterprise'">
             enterprise stuff
         </div>
@@ -30,9 +34,13 @@
             }
         },
         metaInfo(){
-            return {
-                title: _.capitalize(this.guideName + " user guide")
+            let ret = {
+                title: "User guides"
             }
+            if (this.guideName){
+                ret.title = _.capitalize(this.guideName + " user guide")
+            }
+            return ret
         },
         mounted(){
              this.guideName = this.$route.params.guideName

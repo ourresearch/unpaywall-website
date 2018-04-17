@@ -60,13 +60,12 @@
     .site-footer {
         background: #333;
         display: flex;
-        padding: 50px;
+        padding: 0 50px 50px 50px;
+        font-size: 14px;
 
         .col {
             color: #fff;
-            /*&.spacer {*/
-                /*flex-grow:2;*/
-            /*}*/
+            margin-top: 50px;
             &.made-by {
                 display: flex;
                 flex-direction: column;
@@ -92,7 +91,7 @@
             }
             a {
                 display: block;
-                padding: 5px 0;
+                padding: 3px 0;
                 color: #fff;
             }
         }
