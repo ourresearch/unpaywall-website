@@ -13,10 +13,9 @@
         free fulltext scholarly articles.
       </div>
 
-      <!--<div class="subheadline">-->
-        <!--The Unpaywall database is the most comprehensive list of free-to-read scholarly papers,-->
-        <!--and it's available for use in your projects.-->
-      <!--</div>-->
+      <div class="subheadline">
+        Unpaywall harvests legally Open Access articles from over 50,000 publisher and institutional repositories, supporting the world's largest and most trusted index of free-to-read scholarship.
+      </div>
 
       <div class="cta">
         <md-button class="md-raised md-accent" href="#" v-scroll-to="'#learn-more'">
@@ -80,9 +79,9 @@
       <h2 class="md-display-2">Get started</h2>
       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
       <div class="buttons">
-        <md-button class="md-raised md-primary enterprise">Enterprise</md-button>
-        <md-button class="md-raised md-accent research">Research</md-button>
-        <md-button class="md-raised md-accent libraries">Libraries</md-button>
+        <md-button to="/user-guides/enterprise" class="md-raised md-primary enterprise">Enterprise</md-button>
+        <md-button to="/user-guides/research" class="md-raised md-accent research">Research</md-button>
+        <md-button to="/user-guides/libraries" class="md-raised md-accent libraries">Libraries</md-button>
       </div>
     </div>
 
@@ -171,6 +170,14 @@ export default {
       padding: 30px;
       max-width: 800px;
     }
+    div.subheadline {
+      display:none;
+      color: #fff;
+      max-width: 500px;
+      padding: 0 30px;
+      font-size: 20px;
+    }
+
     div.cta {
       padding: 30px;
     }
@@ -220,7 +227,7 @@ export default {
     }
     .buttons {
       margin-top: 20px;
-      button {
+      a {
         font-size: 25px;
         padding: 15px 30px;
         height: auto;
