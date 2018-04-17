@@ -6,11 +6,11 @@
 
     <div class="banner">
       <div class="headline">
-        What could you build with {{(numOa).toLocaleString() }} Open Access articles?
+        An open database of {{(numOa).toLocaleString() }} free scholarly articles.
       </div>
 
       <div class="subheadline">
-        Find out using our free, comprehensive index of OA papers harvested from over 50,000 publishers and repositories.
+        We harvest Open Access content from over 50,000 publishers and repositories, and make it easy to find, track, and use.
 
 
       </div>
@@ -181,7 +181,7 @@ export default {
         /*font-size: 30px;*/
       /*}      */
       color: #fff;
-      max-width: 600px;
+      max-width: 655px;
       padding: 0 30px;
       text-shadow: 0 0 30px #000, 1px 1px 50px #000;
     }
