@@ -25,23 +25,33 @@
 
     <div id="learn-more" class="selling-point social-proof">
       <div class="text">
-        <h2 class="md-display-1">Trusted by top institutions</h2>
+        <h2 class="md-display-1">Used and trusted by top organizations</h2>
         <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vel ornare orci. Nam congue sollicitudin nibh. Nulla ac sollicitudin mi. Pellentesque libero metus, interdum sed dolor in, tincidunt interdum urna.
+          We're integrated into thousands of library systems, search platforms, and other information products worldwide. In fact, if you're involved in scholarly communication, there's a good chance you've already used Unpaywall data.
+
         </p>
       </div>
-      <div class="img">
+      <div class="img logos">
         <img src="../assets/all-logos.png" alt="">
 
 
-        <!--<img src="../assets/logos/bl.png" alt="">-->
-        <!--<img src="../assets/logos/europe-pmc.png" alt="">-->
-        <!--<img src="../assets/logos/internet-archive.png" alt="">-->
-        <!--<img src="../assets/logos/merck.png" alt="">-->
-        <!--<img src="../assets/logos/mit.png" alt="">-->
-        <!--<img src="../assets/logos/nlm.png" alt="">-->
-        <!--<img src="../assets/logos/rcuk.png" alt="">-->
-        <!--<img src="../assets/logos/wos.png" alt="">-->
+        <!--<div class="img-row">-->
+          <!--<img class="logo" src="../assets/logos/bl.png" alt="">-->
+          <!--<img class="logo" src="../assets/logos/digital-science.png" alt="">-->
+          <!--<img class="logo" src="../assets/logos/dartmouth.png" alt="">-->
+        <!--</div>-->
+
+        <!--<div class="img-row">-->
+          <!--<img class="logo" src="../assets/logos/europe-pmc.png" alt="">-->
+          <!--<img class="logo" src="../assets/logos/internet-archive.png" alt="">-->
+          <!--<img class="logo" src="../assets/logos/merck.png" alt="">-->
+          <!--<img class="logo" src="../assets/logos/mit.png" alt="">-->
+        <!--</div>-->
+        <!--<div class="img-row">-->
+          <!--<img class="logo" src="../assets/logos/nlm.png" alt="">-->
+          <!--<img class="logo" src="../assets/logos/rcuk.png" alt="">-->
+          <!--<img class="logo" src="../assets/logos/wos.png" alt="">-->
+        <!--</div>-->
 
 
       </div>
@@ -204,6 +214,21 @@ export default {
     .img {
       max-width: 400px;
       padding: 30px;
+
+      &.logos {
+        padding: 30px 0;
+        div.img-row {
+          width: 420px;
+          text-align: center;
+          img.logo {
+            max-width: 85px;
+            max-height: 70px;
+            margin: 15px 13px;
+            opacity: .9;
+          }
+        }
+      }
+
     }
 
 
