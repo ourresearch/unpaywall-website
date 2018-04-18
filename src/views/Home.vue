@@ -25,7 +25,7 @@
 
     <div id="learn-more" class="selling-point social-proof">
       <div class="text">
-        <h2 class="md-display-1">Used and trusted by top organizations</h2>
+        <h2>Used and trusted by top organizations</h2>
         <p>
           We're integrated into thousands of library systems, search platforms, and other information products worldwide. In fact, if you're involved in scholarly communication, there's a good chance you've already used Unpaywall data.
 
@@ -62,9 +62,9 @@
         <img src="../assets/blueprints2.png" alt="">
       </div>
       <div class="text">
-        <h2 class="md-display-1">Open Source and nonprofit</h2>
+        <h2>Open Source and nonprofit</h2>
         <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vel ornare orci. Nam congue sollicitudin nibh. Nulla ac sollicitudin mi. Pellentesque libero metus, interdum sed dolor in, tincidunt interdum urna. Cras vehicula eget lacus ac bibendum. Nulla tristique sodales lorem, consectetur luctus mi laoreet pharetra.
+          Unpaywall is run by Impactstory, a nonprofit dedicated to making scholarship more accessible to everyone. Open is our passion. So it's only natural our source code is open, too.
         </p>
       </div>
     </div>
@@ -72,9 +72,9 @@
 
     <div class="selling-point easy-access">
       <div class="text">
-        <h2 class="md-display-1">Easy access for anyone</h2>
+        <h2>Easy access for everyone</h2>
         <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vel ornare orci. Nam congue sollicitudin nibh. Nulla ac sollicitudin mi. Pellentesque libero metus, interdum sed dolor in, tincidunt interdum urna. Cras vehicula eget lacus ac bibendum. Nulla tristique sodales lorem, consectetur luctus mi laoreet pharetra.
+          We've helped with projects ranging from undergrad class assignments to global enterprise integrations. So no matter what your use case, we've probably got an easy way for you to access our data...after all, access is what this is all about.
         </p>
       </div>
 
@@ -84,8 +84,8 @@
     </div>
 
     <div class="get-started">
-      <h2 class="md-display-2">Get started</h2>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+      <h2>Get started</h2>
+      <p>There are oodles of ways to access the dataset, which can be a bit confusing. So, we recommend you get started with one of these user guides:</p>
       <div class="buttons">
         <md-button to="/user-guides/enterprise" class="md-raised md-primary enterprise">Enterprise</md-button>
         <md-button to="/user-guides/research" class="md-raised md-accent research">Research</md-button>
@@ -207,6 +207,10 @@ export default {
     align-items: center;
     justify-content: center;
     padding: 50px 0;
+    h2 {
+      font-weight: 300;
+      margin-top: 0;
+    }
     .text {
       padding: 0 30px;
       max-width: 400px;
@@ -257,6 +261,12 @@ export default {
     margin: 80px 0;
     h2 {
       margin-bottom: 0;
+      font-size: 38px;
+      font-weight: 300;
+    }
+    p {
+      max-width: 500px;
+      margin: 0 auto;
     }
     .buttons {
       margin-top: 20px;
