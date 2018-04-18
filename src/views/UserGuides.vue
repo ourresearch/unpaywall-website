@@ -5,6 +5,12 @@
             User guides are still under construction. Please <a href="mailto:team@impactstory.org">drop us a line</a> with any questions!
         </p>
 
+        <p>
+            The Unpaywall database has a very simple structure: we have one record for every article with a Crossref DOI (that's about 95 million records all told). We harvest from <router-link to="/sources">lots of sources</router-link> to find Open Access content, and then we match it to these DOIs using content fingerprints. So, for any given DOI, we know about any OA versions that exist anywhere (at least that's the idea).
+        </p>
+        <p>We support a variety of products to help folks access these 95 million records in different ways; all of these are free to use, except the <router-link to="/products/data-feed">Data Feed.</router-link> We also support a number of <router-link to="/integrations">integrations,</router-link> where other organizations have built useful tools on top of our dataset.
+        </p>
+
 
 
         <div class="table-of-contents" v-if="!guideName">
@@ -17,19 +23,32 @@
 
         <div class="enterprise" v-if="guideName=='enterprise'">
             <p>
-                Most of our enterprise users end up using the <router-link to="/products/data-feed">Data Feed</router-link> in order to keep their data fresh, so we recommend you check that out.
+                Most of our enterprise users end up using the <router-link to="/products/data-feed">Data Feed</router-link> in order to keep their data up to date, and that's a good first stop. Other tools that are popular with enterprise users include:
             </p>
+                    <ul>
+            <li><router-link to="/products/snapshot">Database snapshot</router-link></li>
+                <li><router-link to="/products/api">REST API</router-link></li>
+                <li><router-link to="/products/simple-query-tool">Simple Query Tool</router-link></li>
+
+        </ul>
+
         </div>
+
+
+
+
+
+
 
         <div class="research" v-if="guideName=='research'">
             <p>
                 OA researchers can use Unpaywall to answer research questions about the current and historical state of open access.
             </p>
             <p>
-                There are several ways to access the data for research: you can use the
-                                <router-link to="/products/api">REST API</router-link>
-                                <a href="https://cran.r-project.org/web/packages/roadoi/vignettes/intro.html">or the R API wrapper,</a>
-                                <router-link to="/products/simple-query-tool">Simple Query Tool,</router-link>
+                There are several popular ways  to access the data for research: you can use the
+                                <router-link to="/products/api">REST API, </router-link>
+                                <a href="https://cran.r-project.org/web/packages/roadoi/vignettes/intro.html"> the R API wrapper, </a>
+                                <router-link to="/products/simple-query-tool">the Simple Query Tool, </router-link>
                                 or
                                 <router-link to="/products/snapshot">download the whole dataset.</router-link>
 
