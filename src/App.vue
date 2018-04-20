@@ -46,7 +46,7 @@
 
 
   body {
-    font-size: 16px;
+    font-size: 18px;
     code {
       padding: 2px 5px;
       border: 1px solid #ddd;
