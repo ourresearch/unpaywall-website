@@ -46,7 +46,6 @@
 
 
   body {
-    font-size: 18px;
     code {
       padding: 2px 5px;
       border: 1px solid #ddd;
@@ -61,6 +60,7 @@
     }
   }
   div.page {
+    font-size: 18px;
     line-height: 1.5;
     padding: 10px;
     max-width: 800px;

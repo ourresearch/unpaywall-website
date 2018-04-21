@@ -85,7 +85,7 @@
 
     <div class="get-started">
       <h2>Get started</h2>
-      <p>There are oodles of ways to access the dataset, which can be a bit confusing. So, we recommend you get started with one of these user guides:</p>
+      <p>There are oodles of ways to access our data. We recommend you get started with one of these user guides:</p>
       <div class="buttons">
         <md-button to="/user-guides/enterprise" class="md-raised md-primary enterprise">Enterprise</md-button>
         <md-button to="/user-guides/research" class="md-raised md-accent research">Research</md-button>
@@ -151,6 +151,7 @@ export default {
     margin-top: -88px;
     line-height: 1.5;
     letter-spacing: 0.05em;
+    font-size: 16px;
 
   }
 
