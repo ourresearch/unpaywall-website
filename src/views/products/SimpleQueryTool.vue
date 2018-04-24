@@ -9,57 +9,72 @@
         </p>
 
 
-        <div class="io success" v-show="readyState=='success'">
-            <h2>Success!</h2>
-            <p>
-                Your DOIs have been submitted. In a few minutes, you'll get an email
-                from us with an attached spreadsheet showing the results. Keep an eye on your spam folder, since automated emails can often be flagged as spam.
-            </p>
-        </div>
 
-        <div class="io error" v-show="readyState=='error'">
-            <h2>Sorry, there was a problem!</h2>
-            <p>
-                Looks like we're having trouble processing your request. There may have been a problem with either the DOIs or the email you entered. Please email us at
-                <a href="mailto:team@impactstory.org">team@impactstory.org</a> and we'll work to get the problem fixed.
-            </p>
-        </div>
+        <!-- READY STATE -->
+        <md-card class="io input" v-show="readyState=='ready'">
+            <md-card-header>
+                <h2>Submit DOIs</h2>
+            </md-card-header>
+            <md-card-content>
+                <md-field>
+                    <label for="dois-textarea">Paste DOIs here, one per line</label>
+                    <md-textarea id="dois-textarea" v-model="dois">
 
-        <div class="io working" v-show="readyState=='working'">
-            <h2>Submitting your DOIs now...</h2>
-            <md-progress-bar md-mode="indeterminate"></md-progress-bar>
-        </div>
+                    </md-textarea>
+                </md-field>
 
-        <div class="io input" v-show="readyState=='ready'">
+                <md-field>
+                    <label for="email-input">Your email</label>
+                    <md-input v-model="email" id="email-input"></md-input>
+                </md-field>
 
-            <md-field>
-                <label for="dois-textarea">Paste DOIs here, one per line</label>
-                <md-textarea id="dois-textarea" v-model="dois">
+                <div>
+                    <md-button @click="submit"
+                               :disabled="!email || !dois"
+                               class="md-primary md-raised">
+                        Submit your DOIs
+                    </md-button>
+                </div>
+            </md-card-content>
+        </md-card>
 
-                </md-textarea>
-            </md-field>
-
-            <md-field>
-                <label for="#email-input">Your email</label>
-                <md-input v-model="email"></md-input>
-            </md-field>
-
-            <div>
-                <md-button @click="submit"
-                           :disabled="!email || !dois"
-                           class="md-primary md-raised">
-                    Submit your DOIs
-                </md-button>
-            </div>
+        <!-- WORKING.... -->
+        <md-card class="io working" v-show="readyState=='working'">
+            <md-card-header>
+                <h2>Submitting your DOIs now...</h2>
+            </md-card-header>
+            <md-card-content>
+                <md-progress-bar md-mode="indeterminate"></md-progress-bar>
+            </md-card-content>
+        </md-card>
 
 
+        <!-- SUCCESS! -->
+        <md-card class="io success" v-show="readyState=='success'">
+            <md-card-header>
+                <h2>Success!</h2>
+            </md-card-header>
+            <md-card-content>
+                <p>
+                    Your DOIs have been submitted. In a few minutes, you'll get an email
+                    from us with an attached spreadsheet showing the results. Keep an eye on your spam folder, since automated emails can often be flagged as spam.
+                </p>
+            </md-card-content>
+        </md-card>
 
 
-
-        </div>
-
-
-
+        <!-- ERROR! -->
+        <md-card class="io error" v-show="readyState=='error'">
+            <md-card-header>
+                <h2>Sorry, there was a problem!</h2>
+            </md-card-header>
+            <md-card-content>
+                <p>
+                    Looks like we're having trouble processing your request. There may have been a problem with either the DOIs or the email you entered. Please email us at
+                    <a href="mailto:team@impactstory.org">team@impactstory.org</a> and we'll work to get the problem fixed.
+                </p>
+            </md-card-content>
+        </md-card>
 
 
 
@@ -117,5 +132,8 @@
 </script>
 
 <style scoped>
+    h2 {
+        margin: 0;
+    }
 
 </style>

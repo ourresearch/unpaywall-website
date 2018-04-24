@@ -46,6 +46,7 @@
 
 
   body {
+    background: #fff;
     code {
       padding: 2px 5px;
       border: 1px solid #ddd;
