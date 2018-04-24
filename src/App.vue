@@ -33,7 +33,10 @@
         // if no subcomponents specify a metaInfo.title, this title will be used
         // title: 'Unpaywall Data',
         // all titles will be injected into this template
-        titleTemplate: '%s | Unpaywall Data'
+        titleTemplate: '%s | Unpaywall Data',
+          link: [
+            { rel: 'favicon', href: 'favicon.png' }
+          ]
       }
   }
 </script>

@@ -16,9 +16,16 @@
       </div>
 
       <div class="cta">
-        <md-button class="md-raised md-accent" href="#" v-scroll-to="'#learn-more'">
-          Learn more
-        </md-button>
+        <div>
+        <div>
+          <md-button class="md-raised md-accent main" href="#" v-scroll-to="'#learn-more'">
+            Learn more
+          </md-button>
+        </div>
+          <router-link class="secondary" to="/products/extension">
+            Get the extension
+          </router-link>
+        </div>
       </div>
     </div>
 
@@ -199,6 +206,27 @@ export default {
 
     div.cta {
       padding: 30px;
+      div {
+        display:inline;
+        @media (max-width: 600px) {
+          display:block;
+        }
+      }
+      .md-button {
+        /*background: rgba(255,255,255, .2);*/
+        /*background: rgba(0,0,0, .4);*/
+        color: #fff;
+        margin:10px 20px 0 0;
+        min-width: 150px;
+      }
+      a.secondary {
+        text-shadow: 0 0 30px #000, 1px 1px 50px #000;
+        color: #fff;
+        text-transform: uppercase;
+        padding: 18px 0;
+        display: inline-block;
+        font-size: 15px;
+      }
     }
   }
 
