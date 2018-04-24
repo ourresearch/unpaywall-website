@@ -38,7 +38,7 @@
                         </span>
                         <span class="fallback" v-show="browserName==='unsupported' || isMobileBrowser">
                             <i class="fa fa-envelope-o"></i>
-                            Send myself a reminder to install later
+                            Send yourself a reminder
                         </span>
                     </md-button>
 
@@ -57,7 +57,7 @@
                     </div>
                     <div class="num-users">
                         <span class="num">
-                            124,492
+                            {{(153097).toLocaleString()}}
                         </span>
                         <span class="light">users on Chrome and Firefox.</span>
                     </div>
@@ -165,16 +165,20 @@
     .top-screen {
         display: flex;
         margin-top: 50px;
-        /*@media @mobile {*/
-        /*margin-top: 0;*/
-        /*flex-wrap: wrap;*/
-        /*}*/
+        @media (max-width: 600px) {
+            margin-top: 0;
+            flex-wrap: wrap;
+        }
 
         .main-img {
             display:flex;
             align-content: center;
             align-items: center;
             min-width: 400px;
+            @media (max-width: 600px){
+                min-width: 0;
+            }
+
             img.screenshot {
                 /*max-width: 438px;*/
                 /*display:block;*/
@@ -194,9 +198,14 @@
             /*margin: 20px;*/
             /*font-size: 18px;*/
             /*}*/
+
+            @media (max-width: 600px){
+                margin: 0;
+            }
+
             div.tagline h2 {
-                font-weight: 300;
-                font-size: 200%;
+                font-weight: bold;
+                font-size: 180%;
                 color: #333;
                 margin: 0;
                 /*@media @xs {*/
@@ -207,14 +216,16 @@
             }
 
             div.about {
-                margin: 0 0 20px;
-                font-size: 70%;
+                margin: 0 0 10px;
+                font-size: 85%;
                 line-height: 1.5;
+                max-width: 666px;
                 .button-info {
                     color: darkred;
                     border-left: 3px solid darkred;
                     padding-left: 20px;
                     max-width:400px;
+                    font-size: 16px;
                 }
             }
 
@@ -256,9 +267,9 @@
             }
 
             .about-users {
-                font-size: 14px;
-                color: #777;
-                margin-top: 50px;
+                font-size: 16px;
+                color: #999;
+                margin-top: 30px;
                 line-height: 1.9;
                 font-weight: 300;
                 .rating {
