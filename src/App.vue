@@ -15,7 +15,6 @@
 
 
 
-
 </template>
 
 <script>
@@ -35,7 +34,8 @@
         // all titles will be injected into this template
         titleTemplate: '%s | Unpaywall Data',
           link: [
-            { rel: 'favicon', href: 'favicon.png' }
+            { rel: 'favicon', href: 'favicon.png' },
+            { rel: 'chrome-webstore-item', href: 'https://chrome.google.com/webstore/detail/iplffkdpngmdjhlpjmppncnlhomiipha' }
           ]
       }
   }
