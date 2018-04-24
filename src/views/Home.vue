@@ -287,14 +287,15 @@ export default {
 
   .get-started {
     text-align: center;
-    margin: 80px 0;
+    background: #eee;
+    padding: 50px 0 80px;
     h2 {
-      margin-bottom: 0;
+      margin: 0;
       font-size: 38px;
       font-weight: 300;
     }
     p {
-      max-width: 500px;
+      max-width: 600px;
       margin: 0 auto;
     }
     .buttons {
