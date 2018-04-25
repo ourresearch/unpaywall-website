@@ -13,6 +13,7 @@ import Faq from './views/Faq'
 import TermsAndConditions from './views/TermsAndConditions'
 import Contact from './views/Contact'
 import Team from './views/Team'
+import Welcome from './views/Welcome'
 
 // user guides
 import UserGuides from './views/UserGuides'
@@ -87,6 +88,10 @@ export default new Router({
     {
       path: '/team',
       component: Team
+    },
+      {
+      path: '/welcome',
+      component: Welcome
     },
 
 
