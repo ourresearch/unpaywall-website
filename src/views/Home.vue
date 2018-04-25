@@ -266,7 +266,6 @@ export default {
 
 
     @media (max-width: 600px) {
-      background: red;
       flex-wrap: wrap;
     }
 

@@ -71,6 +71,110 @@
 
 
 
+        <div class="social-proof">
+            <div class="quote">
+                <div class="content">
+                    "Must-have for anyone who wants to access the research literature."
+                </div>
+                <div class="attribution">
+                    &mdash;Andrew Treloar, <em>Australian National Data Service</em>
+                </div>
+            </div>
+
+            <div class="logos">
+                <img src="~@/assets/logos/nature.png" alt="">
+                <img src="~@/assets/logos/techcrunch.png" alt="">
+                <img src="~@/assets/logos/science.png" alt="" class="science">
+                <img src="~@/assets/logos/boingboing.png" class="boingboing" alt="">
+                <img src="~@/assets/logos/chronicle.png" class="chronicle" alt="">
+            </div>
+
+        </div>
+
+
+        <div class="selling-point millions">
+            <div class="img">
+                <img src="~@/assets/many-articles.png" alt="">
+            </div>
+            <div class="text">
+                <h2>Access millions of research articles, instantly.</h2>
+                <p>
+                    Unpaywall users read <strong>52%</strong> of research papers for free. Here's how: when you browse to a paywalled paper, we check to see if there's a free copy in our database. If there is, you'll see a green tab on your screen...just click, and read!
+                </p>
+            </div>
+        </div>
+
+        <div class="selling-point legal">
+            <div class="text">
+                <h2>Legal, fair, and sustainable.</h2>
+                <p>
+                    We harvest our content from thousands of university and government web servers all over the world. The fulltext articles we find there have been legally uploaded by authors, with permission from publishers.
+                </p>
+            </div>
+            <div class="img">
+                <img src="~@/assets/legal.png" alt="">
+            </div>
+        </div>
+
+
+        <div class="testimonials">
+            <h2>What people say about Unpaywall.</h2>
+            <div class="cards">
+                <md-card>
+                    <md-card-header>
+                        <md-avatar>
+                            <img src="~@/assets/tom.jpg" alt="Avatar">
+                        </md-avatar>
+
+                        <div class="md-title">Tom Mueller</div>
+                        <div class="md-subhead">Author</div>
+                    </md-card-header>
+
+                    <md-card-content>
+                        Yesterday I found Unpaywall, and my life changed.  I've already gotten four publications by clicking on the Mystical Green Padlock...Thank you, from the heart.
+                    </md-card-content>
+                </md-card>
+
+                <md-card>
+                    <md-card-header>
+                        <md-avatar>
+                            <img src="~@/assets/stacy.jpg" alt="Avatar">
+                        </md-avatar>
+
+                        <div class="md-title">Stacy Konkiel</div>
+                        <div class="md-subhead">Dir. of Research & Education</div>
+                    </md-card-header>
+
+                    <md-card-content>
+                        Unpaywall makes it really easy to (legally!) find free versions of journal articles.
+                    </md-card-content>
+                </md-card>
+
+                <md-card>
+                    <md-card-header>
+                        <md-avatar>
+                            <img src="~@/assets/jon.jpg" alt="Avatar">
+                        </md-avatar>
+
+                        <div class="md-title">Jon Tennant</div>
+                        <div class="md-subhead">Paleontologist</div>
+                    </md-card-header>
+
+                    <md-card-content>
+                        Way, way, WAY easier than having to be at a place with institutional access, using a VPN, emailing authors, or using inter-library loan....
+                    </md-card-content>
+                </md-card>
+
+            </div>
+
+
+
+        </div>
+
+
+
+
+
     </div>
 </template>
 
@@ -160,6 +264,7 @@
     .page {
         width: 100%;
         max-width: 100%;
+        padding-bottom: 0;
     }
 
     .top-screen {
@@ -193,11 +298,6 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
-            /*max-width: 510px;*/
-            /*@media @xs {*/
-            /*margin: 20px;*/
-            /*font-size: 18px;*/
-            /*}*/
 
             @media (max-width: 600px){
                 margin: 0;
@@ -208,6 +308,7 @@
                 font-size: 180%;
                 color: #333;
                 margin: 0;
+                padding: 0;
                 /*@media @xs {*/
                 /*font-size: 30px;*/
                 /*line-height: 1.3;*/
@@ -215,8 +316,8 @@
                 /*}*/
             }
 
-            div.about {
-                margin: 0 0 10px;
+            div.about p {
+                margin: 5px 0 35px;
                 font-size: 85%;
                 line-height: 1.5;
                 max-width: 666px;
@@ -240,29 +341,6 @@
                         font-size: 80%;
                         text-transform: lowercase;
                     }
-                    /*cursor: pointer;*/
-                    /*display: inline-block;*/
-                    /*font-size: 18px;*/
-                    /*padding: 20px 30px;*/
-                    /*border-radius: 10px;*/
-
-                    /*color: #fff;*/
-                    /*font-weight: bold;*/
-                    /*transition: all 0.15s ease;*/
-                    /*&:hover {*/
-                    /*transform: scale(1.03125);*/
-                    /*}*/
-
-                    /*.small {*/
-                    /*font-size: 66%;*/
-                    /*display: block;*/
-                    /*text-align: center;*/
-                    /*}*/
-
-                    /*@media @xs {*/
-                    /*padding: 14px 20px;*/
-                    /*font-size: 16px;*/
-                    /*}*/
                 }
             }
 
@@ -288,10 +366,107 @@
                 }
             }
         }
+    }
 
 
 
 
+
+
+
+    div.social-proof {
+        margin-top: 50px;
+        background: #fafafa;
+        text-align: center;
+        padding: 70px 0;
+        .quote {
+            padding: 20px;
+            .content {
+                font-weight: bold;
+                font-size: 34px;
+            }
+            .attribution {
+                font-size: 14px;
+                color: #999;
+                margin-top: 10px;
+            }
+        }
+        .logos {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+
+            img {
+                height: 23px;
+                margin: 50px 50px;
+                opacity: .2;
+                &.boingboing {
+                    height: 25px;
+                }
+                &.science {
+                    height: 27px;
+                }
+                &.chronicle {
+                    height: 30px;
+                }
+            }
+        }
+    }
+
+
+    .selling-point {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 50px 0;
+        h2 {
+            font-weight: bold;
+            margin-top: 0;
+            letter-spacing: 0;
+        }
+        .text {
+            padding: 0 30px;
+            max-width: 600px;
+        }
+        .img {
+            max-width: 300px;
+            padding: 30px;
+        }
+
+
+        @media (max-width: 600px) {
+            flex-wrap: wrap;
+        }
+
+        &.legal {
+            background: #fafafa;
+        }
+
+    }
+
+
+    .testimonials {
+        text-align: center;
+        margin-top: 50px;
+        padding: 20px 0 70px 0;
+        /*background: #fafafa;*/
+        h2 {
+            font-size: 34px;
+        }
+
+        .md-card {
+            max-width: 320px;
+            margin: 20px 10px;
+            text-align: left;
+            display: inline-block;
+            vertical-align: top;
+            min-height: 220px;
+            * {
+                font-size: 16px !important;
+            }
+          }
     }
 
 </style>

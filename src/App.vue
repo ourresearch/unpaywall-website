@@ -66,7 +66,6 @@
   div.page {
     font-size: 18px;
     line-height: 1.5;
-    padding: 10px;
     max-width: 800px;
     margin: 0 auto;
     padding-bottom: 100px;
