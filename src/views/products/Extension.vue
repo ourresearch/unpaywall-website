@@ -269,7 +269,7 @@
 
     .top-screen {
         display: flex;
-        margin-top: 50px;
+        margin: 100px 0 140px;
         @media (max-width: 600px) {
             margin-top: 0;
             flex-wrap: wrap;
@@ -383,7 +383,7 @@
             padding: 20px;
             .content {
                 font-weight: bold;
-                font-size: 34px;
+                font-size: 20px;
             }
             .attribution {
                 font-size: 14px;
