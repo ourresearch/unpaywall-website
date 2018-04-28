@@ -124,10 +124,22 @@ export default new Router({
       path: '/products/data-feed',
       component: DataFeed
     },
+    {
+      path: '/sla', // legacy URL
+      redirect: '/products/data-feed'
+    },
 
     {
       path: '/products/api',
       component: Api
+    },
+    {
+      path: '/api/v2', // legacy URL
+      redirect: '/products/api'
+    },
+    {
+      path: '/api', // legacy URL
+      redirect: '/products/api'
     },
     {
       path: '/products/simple-query-tool',
