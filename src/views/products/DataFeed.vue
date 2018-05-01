@@ -16,7 +16,7 @@
         </p>
 
         <p>
-            So, we built the Data Feed to address this issue. Subscribers to the feed get password-protected access to a server where we post weekly diffs to the database. These diff files use the same <router-link to="/data-format">data format</router-link> as the API and snapshot, and contain a row for every record that has changed in any way in the previous week. We provide both a <router-link to="/products/data-feed/changefiles">web interface</router-link> and
+            So, we built the Data Feed to address this issue. Subscribers to the feed get password-protected access to a server where we post weekly changefiles to the database. These changefiles use the same <router-link to="/data-format">data format</router-link> as the API and snapshot, and contain a row for every record that has changed in any way in the previous week. We provide both a <router-link to="/products/data-feed/changefiles">web interface</router-link> and
             <a href="http://api.unpaywall.org/feed/changefiles ">JSON endpoint</a> for accessing changefiles.
         </p>
         <p>
