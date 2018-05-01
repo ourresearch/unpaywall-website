@@ -24,6 +24,7 @@ import Products from './views/Products'
 import Api from './views/products/Api'
 import Snapshot from './views/products/Snapshot'
 import DataFeed from './views/products/DataFeed'
+import Changefiles from './views/products/Changefiles'
 import SimpleQueryTool from './views/products/SimpleQueryTool'
 import Extension from './views/products/Extension'
 
@@ -123,6 +124,10 @@ export default new Router({
     {
       path: '/products/data-feed',
       component: DataFeed
+    },
+    {
+      path: '/products/data-feed/changefiles',
+      component: Changefiles
     },
     {
       path: '/sla', // legacy URL
