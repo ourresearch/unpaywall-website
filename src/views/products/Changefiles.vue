@@ -17,51 +17,54 @@
 
 
 
-        <!-- READY STATE -->
-        <div>
+        <md-progress-bar v-if="changefiles.length==0" md-mode="indeterminate"></md-progress-bar>
+        <div v-if="changefiles.length > 0">
             <md-card>
                 <md-card-content>
                     <md-field>
                       <label>Paste your API key here to enable download</label>
                       <md-input v-model="apiKey"></md-input>
                     </md-field>
-
-                    <md-list>
-                        <md-list-item v-for="changefile in changefiles" v-if="changefile.filetype=='jsonl'">
-
-                            <md-avatar>
-                                    <i class="far fa-file-archive"></i>
-
-                            </md-avatar>
-
-
-
-                            <div class="main md-list-item-text">
-                                <div class="row">
-                                    <span class="date">
-                                        {{ changefile.last_modified | moment("MMMM Do, YYYY")}}
-                                    </span>
-                                </div>
-                                <div class="row">
-                                    {{changefile.lines.toLocaleString()}} lines
-                                </div>
-                                <div class="row">
-                                    {{changefile.size.toLocaleString()}} bytes
-                                </div>
-                            </div>
-                            <div class="metadata">
-                                <md-button
-                                        class="md-raised"
-                                        :disabled="!apiKey"
-                                        :href="changefile.url.replace('YOUR_API_KEY', myApiKey)">
-                                    <i class="fas fa-download"></i>
-                                    Download
-                                </md-button>
-                            </div>
-                        </md-list-item>
-                    </md-list>
                 </md-card-content>
+
             </md-card>
+
+
+
+            <md-list>
+                <md-list-item v-for="changefile in changefiles" v-if="changefile.filetype=='jsonl'">
+
+                    <md-avatar>
+                            <i class="far fa-file-archive"></i>
+
+                    </md-avatar>
+
+
+
+                    <div class="main md-list-item-text">
+                        <div class="row">
+                            <span class="date">
+                                {{ changefile.last_modified | moment("MMMM Do, YYYY")}}
+                            </span>
+                        </div>
+                        <div class="row">
+                            {{changefile.lines.toLocaleString()}} lines
+                        </div>
+                        <div class="row">
+                            {{changefile.size.toLocaleString()}} bytes
+                        </div>
+                    </div>
+                    <div class="metadata">
+                        <md-button
+                                class="md-raised"
+                                :disabled="!apiKey"
+                                :href="changefile.url.replace('YOUR_API_KEY', myApiKey)">
+                            <i class="fas fa-download"></i>
+                            Download
+                        </md-button>
+                    </div>
+                </md-list-item>
+            </md-list>
         </div>
 
 
@@ -130,6 +133,10 @@
 <style scoped>
     h2 {
         margin: 0;
+    }
+
+    .md-card {
+        margin: 40px 0;
     }
 
     li.md-list-item {
