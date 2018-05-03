@@ -6,7 +6,7 @@
         </p>
 
         <p>
-            This list is also available via a <a href="http://api.unpaywall.org/feed/changefiles ">JSON endpoint</a> for programmatic access.
+            This list is also available via a <a href="http://api.unpaywall.org/feed/changefiles?api_key=YOUR_API_KEY">JSON endpoint</a> for programmatic access.
         </p>
 
         <p>
@@ -107,7 +107,7 @@
         },
         methods: {
             getList(){
-                let url = "https://api.unpaywall.org/feed/changefiles "
+                let url = "https://api.unpaywall.org/feed/changefiles"
                 let that = this
 
                 this.readyState = "loading"
