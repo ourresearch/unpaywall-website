@@ -9,6 +9,7 @@
         <p>
             The
             <router-link to="products/snapshot">database snapshot, </router-link>
+            <router-link to="products/simple-query-tool">Simple Query Tool, </router-link>
             <router-link to="products/api">REST API,</router-link> and
             <router-link to="products/data-feed">Data Feed</router-link> products all return JSON-formatted data. For simplicity, that data is organized under the same schema in all cases; that schema is informally described on this page.
         </p>
