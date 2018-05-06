@@ -2,11 +2,19 @@
     <div class="page product-page simple-query-tool">
         <h1>Simple Query Tool</h1>
         <p>
-            If you want to check a few articles to see if they are Open Access and don't want to mess with the <router-link to="/products/api">REST API,</router-link> you're in the right place.
+            If you want to check a few articles to see if they are Open Access and don't want to mess with the <router-link to="/products/api">REST API,</router-link> you're in the right place. You can check up to 10,000 DOIs at once using this tool.
         </p>
         <p>
-            Paste the DOIs for your articles below, and we'll email you the results you'd have gotten from the API. Unlike the API or <router-link to="/products/snapshot">database snapshot,</router-link> the query tool returns CSV, to make it easier to integrate results into spreadsheet-based workflows. However, the column names still map to the same schema, <router-link to="/data-format">documented here.</router-link> You can check up to 10,000 DOIs at once using this tool.
+            We'll run the list through our API for you and give you a report on the Open Access status of each DOI. In a few minutes, you'll get an email with the results, as two attachments:
         </p>
+        <ul>
+            <li>A CSV file that lets you easily import results into a spreadsheet like Excel.</li>
+            <li>A <a href="http://jsonlines.org/">JSON Lines</a> file that shows what you'd get if you called our API once for each DOI.</li>
+        </ul>
+        <p>
+             Don't forget to see check the <router-link to="/data-format">schema documentation,</router-link> which includes definitions that will help you interpret the the result files.
+        </p>
+
 
 
 
