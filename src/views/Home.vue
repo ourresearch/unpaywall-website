@@ -138,7 +138,7 @@ export default {
       numOa(){
           let BenchmarkTs = 1523379020302
           let numOaAtBenchmarkTs = 15983601
-          let rateOfNewOaAdded = 2000
+          let rateOfNewOaAdded = 3000 // ms it takes a new article to be added
 
 
           let msSinceBenchmarkTs = this.now - BenchmarkTs
