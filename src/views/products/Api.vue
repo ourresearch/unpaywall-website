@@ -92,7 +92,7 @@
                         Example
                     </td>
                     <td class="v">
-                        <a href="https://api.unpaywall.org/v2/10.1038/nature12373?email=test@example.com">https://api.unpaywall.org/v2/10.1038/nature12373?email=test@example.com</a>
+                        <a href="https://api.unpaywall.org/v2/10.1038/nature12373?email=YOUR_EMAIL">https://api.unpaywall.org/v2/10.1038/nature12373?email=YOUR_EMAIL</a>
                     </td>
                 </tr>
             </table>
