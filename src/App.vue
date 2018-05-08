@@ -35,7 +35,14 @@
         titleTemplate: '%s | Unpaywall Data',
           link: [
             { rel: 'favicon', href: 'favicon.png' },
-            { rel: 'chrome-webstore-item', href: 'https://chrome.google.com/webstore/detail/iplffkdpngmdjhlpjmppncnlhomiipha' }
+            { rel: 'chrome-webstore-item', href: 'https://chrome.google.com/webstore/detail/iplffkdpngmdjhlpjmppncnlhomiipha' },
+          ],
+
+          meta: [
+              {
+                  name: "google-site-verification",
+                  content: "9ZfLncZ21UQ_fujN92zThG86oGRlFQaXzEllfP59xqI"
+              }
           ]
       }
   }
@@ -46,7 +53,6 @@
 
     $screen-xsmall: 600px;
     $screen-small: 960px;
-
 
   body {
     background: #fff;
