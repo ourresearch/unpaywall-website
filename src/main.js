@@ -1,6 +1,6 @@
 
 // from https://github.com/vuetifyjs/vue-cli-plugin-vuetify/issues/3
-import '@babel/polyfill'
+// import '@babel/polyfill'
 
 import Vue from 'vue'
 import App from './App.vue'
