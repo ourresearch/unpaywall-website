@@ -39,10 +39,7 @@
           ],
 
           meta: [
-              {
-                  name: "google-site-verification",
-                  content: "9ZfLncZ21UQ_fujN92zThG86oGRlFQaXzEllfP59xqI"
-              }
+
           ]
       }
   }
