@@ -1,3 +1,11 @@
 module.exports = {
-  lintOnSave: false
+  lintOnSave: false,
+    "presets": [
+    [
+      "@vue/app",
+      {
+        "useBuiltIns": "entry"
+      }
+    ]
+  ]
 }
