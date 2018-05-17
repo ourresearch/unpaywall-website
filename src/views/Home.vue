@@ -114,7 +114,7 @@ export default {
     HelloWorld
   },
   metaInfo: {
-      title: "Unpaywall Data",
+      title: "Unpaywall: An open database of 17 million free scholarly articles",
       titleTemplate: null,
       bodyAttrs: {
           "class": "home"

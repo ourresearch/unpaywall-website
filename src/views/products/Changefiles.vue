@@ -1,6 +1,12 @@
 <template>
     <div class="page product-page simple-query-tool">
-        <h1>Data Feed: Changefiles</h1>
+        <div class="page-header">
+            <h1>Data Feed: Changefiles</h1>
+            <div class="api-key" v-if="apiKey">
+                Your API key: <span class="val">{{apiKey}}</span>
+            </div>
+        </div>
+
         <p>
             This is a list of changes in the Unpaywall database, provided for subscribers to the Unpaywall Data Feed. A new file is added every Thursday. Files use the same <router-link to="/data-format">schema</router-link> as the <router-link to="/products/api">REST API</router-link> and <router-link to="/products/snapshot">database snapshot.</router-link>
         </p>
@@ -9,27 +15,33 @@
             This list is also available via a <a href="http://api.unpaywall.org/feed/changefiles?api_key=YOUR_API_KEY">JSON endpoint</a> for programmatic access.
         </p>
 
-        <p>
-
-            You'll need an API key to download these files. More information is available on the <router-link to="/products/data-feed">Unpaywall Data Feed</router-link> page.
-        </p>
 
 
 
 
-        <md-progress-bar v-if="changefiles.length==0" md-mode="indeterminate"></md-progress-bar>
-        <div v-if="changefiles.length > 0">
-            <md-card>
+        <md-progress-bar v-if="readyState=='loading'" md-mode="indeterminate"></md-progress-bar>
+
+            <md-card v-if="!apiKey">
+                <md-card-header>
+                    Your API key
+                </md-card-header>
                 <md-card-content>
+                    <p>
+
+                        You'll need an API key to download these files. More information is available on the <router-link to="/products/data-feed">Unpaywall Data Feed</router-link> page.
+                    </p>
                     <md-field>
-                      <label>Paste your API key here to enable download</label>
-                      <md-input v-model="apiKey"></md-input>
+                      <label>Paste your API key here</label>
+                      <md-input v-model="newApiKey"></md-input>
                     </md-field>
+                    <md-button class="md-raised md-primary" :href="'changefiles?api_key=' + newApiKey">Access changefiles</md-button>
                 </md-card-content>
 
             </md-card>
 
 
+        <div class="file-list" v-if="changefiles.length > 0">
+            <h2>Changefiles</h2>
 
             <md-list>
                 <md-list-item v-for="changefile in changefiles" v-if="changefile.filetype=='jsonl'">
@@ -87,9 +99,10 @@
         },
         data: () => {
             return {
-                readyState:"loading",
+                readyState:"ready",
                 changefiles: [],
-                apiKey: ""
+                apiKey: "",
+                newApiKey: ""
             }
         },
         computed: {
@@ -107,7 +120,9 @@
         },
         methods: {
             getList(){
-                let url = "https://api.unpaywall.org/feed/changefiles"
+                let baseUrl = "https://api.unpaywall.org/feed/changefiles"
+                let url = baseUrl + "?api_key=" + this.apiKey
+
                 let that = this
 
                 this.readyState = "loading"
@@ -124,13 +139,22 @@
             }
         },
         mounted(){
-            this.getList()
+            this.apiKey = this.$route.query.api_key
+            if (this.apiKey){
+                this.getList()
+            }
         }
 
     }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+    .page-header {
+        h1 {
+            margin-bottom: 0;
+        }
+        margin-bottom: 20px;
+    }
     h2 {
         margin: 0;
     }

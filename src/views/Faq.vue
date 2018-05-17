@@ -57,7 +57,7 @@
 
                 <dt id="oadoi">How is this related to the oaDOI service?</dt>
                 <dd>
-                    We used to call the browser extension "Unpaywall," and the data source behind it "oaDOI." That got confusing, so now the whole project is just called Unpaywall, including the database, the API, the extension, and everything else. If you're just talking about the database, it's Unpaywall Data.
+                    We used to call the browser extension "Unpaywall," and the data source behind it "oaDOI." That got confusing, so now the whole project is just called Unpaywall, including the database, the API, the extension, and everything else.
 
                 </dd>
 
