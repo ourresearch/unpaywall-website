@@ -8,7 +8,16 @@
         </div>
 
         <p>
-            This is a list of changes in the Unpaywall database, provided for subscribers to the Unpaywall Data Feed. A new file is added every Thursday. Files use the same <router-link to="/data-format">schema</router-link> as the <router-link to="/products/api">REST API</router-link> and <router-link to="/products/snapshot">database snapshot.</router-link>
+            <span class="no-key" v-if="!apiKey">
+                The Data Feed changefiles show all the changes in the Unpaywall database over time. They are provided for subscribers to the <router-link to="/data-format">Unpaywall Data Feed</router-link>.
+            </span>
+            <span class="no-key" v-if="apiKey">
+                These files show all the changes in the Unpaywall database over time. You have access based on your subscription to the <router-link to="/data-format">Unpaywall Data Feed</router-link>.
+            </span>
+
+
+
+            A new file is added every Thursday. Files use the same <router-link to="/data-format">schema</router-link> as the <router-link to="/products/api">REST API</router-link> and <router-link to="/products/snapshot">database snapshot.</router-link>
         </p>
 
         <p>
@@ -23,13 +32,10 @@
 
             <md-card v-if="!apiKey">
                 <md-card-header>
-                    Your API key
+                    API key required
                 </md-card-header>
                 <md-card-content>
-                    <p>
 
-                        You'll need an API key to download these files. More information is available on the <router-link to="/products/data-feed">Unpaywall Data Feed</router-link> page.
-                    </p>
                     <md-field>
                       <label>Paste your API key here</label>
                       <md-input v-model="newApiKey"></md-input>
@@ -70,7 +76,7 @@
                         <md-button
                                 class="md-raised"
                                 :disabled="!apiKey"
-                                :href="changefile.url.replace('YOUR_API_KEY', myApiKey)">
+                                :href="changefile.url">
                             <i class="fas fa-download"></i>
                             Download
                         </md-button>
@@ -153,7 +159,14 @@
         h1 {
             margin-bottom: 0;
         }
-        margin-bottom: 20px;
+        margin-bottom: 30px;
+        .api-key {
+            font-size: 14px;
+            .val {
+                font-family: "Consolas", "Monaco", monospace;
+                font-weight: bold;
+            }
+        }
     }
     h2 {
         margin: 0;
