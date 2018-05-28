@@ -99,9 +99,9 @@
     import axios from 'axios'
 
     export default {
-        name: "SimpleQueryTool",
+        name: "Changefiles",
         metaInfo: {
-            title: "Simple Query Tool"
+            title: "Data Feed changefiles"
         },
         data: () => {
             return {
