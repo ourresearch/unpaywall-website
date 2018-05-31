@@ -14,6 +14,7 @@ import TermsAndConditions from './views/TermsAndConditions'
 import Contact from './views/Contact'
 import Team from './views/Team'
 import Welcome from './views/Welcome'
+import Outreach from './views/Outreach'
 
 // user guides
 import UserGuides from './views/UserGuides'
@@ -90,9 +91,13 @@ export default new Router({
       path: '/team',
       component: Team
     },
-      {
+    {
       path: '/welcome',
       component: Welcome
+    },
+    {
+      path: '/outreach',
+      component: Outreach
     },
 
 
