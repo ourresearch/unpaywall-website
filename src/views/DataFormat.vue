@@ -27,6 +27,7 @@
 
         <table class="api-responses">
 
+            <!--best_oa_location-->
             <tr>
                 <td class="key">
                     <span class="name">best_oa_location</span>
@@ -45,6 +46,7 @@
                 </td>
             </tr>
 
+            <!--data_standard-->
             <tr>
                 <td class="key">
                     <span class="name">data_standard</span>
@@ -72,6 +74,7 @@
                 </td>
             </tr>
 
+            <!--doi-->
             <tr>
                 <td class="key">
                     <span class="name">doi</span>
@@ -85,6 +88,40 @@
                 </td>
             </tr>
 
+            <!--doi_url-->
+            <tr>
+                <td class="key">
+                    <span class="name">doi_url</span>
+                    <span class="type">String</span>
+                </td>
+                <td class="contents">
+                    The DOI in hyperlink form.
+                </td>
+                <td class="notes">
+                    This field simply contains <code>"https://doi.org/"</code> prepended to the <code>doi</code> field. It expresses the DOI in its correct format according to <a href="https://www.crossref.org/display-guidelines/">the Crossref DOI display guidelines.</a>
+                </td>
+            </tr>
+
+
+
+            <!--genre-->
+            <tr>
+                <td class="key">
+                    <span class="name">genre</span>
+                    <span class="type">String</span>
+                </td>
+                <td class="contents">
+                    The type of resource.
+                </td>
+                <td class="notes">
+                    Currently the <code>genre</code> is identical to the Crossref-reported <a href="http://api.crossref.org/types">type</a> of a given resource. The "journal-article" type is most common, but there are many others.
+                </td>
+            </tr>
+
+
+
+
+            <!--is_oa-->
             <tr>
                 <td class="key">
                     <span class="name">is_oa</span>
@@ -98,20 +135,36 @@
                 </td>
             </tr>
 
+            <!--journal_is_in_doaj-->
+            <tr>
+                <td class="key">
+                    <span class="name">journal_is_in_doaj</span>
+                    <span class="type">Boolean</span>
+                </td>
+                <td class="contents">
+                    Is this resource published in a <a href="https://doaj.org/">DOAJ-indexed</a> journal.
+                </td>
+                <td class="notes">
+                    Useful for defining whether a resource is Gold OA (depending on your definition).
+                </td>
+            </tr>
+
+
+            <!--journal_is_oa-->
             <tr>
                 <td class="key">
                     <span class="name">journal_is_oa</span>
                     <span class="type">Boolean</span>
                 </td>
                 <td class="contents">
-                    Is this resource published in a completely OA journal
+                    Is this resource published in a completely OA journal.
                 </td>
                 <td class="notes">
-                    Useful for most definitions of Gold OA. Currently this is based entirely on inclusion in the <a
-                        href="http://doaj.org">DOAJ,</a> but eventually may use additional ways of identifying all-OA journals.
+                    Under construction. Included for future compatibility.  Will eventually include any fully-OA publication venue, regardless of inclusion in DOAJ.
                 </td>
             </tr>
 
+            <!--journal_issns-->
             <tr>
                 <td class="key">
                     <span class="name">journal_issns</span>
@@ -125,6 +178,7 @@
                 </td>
             </tr>
 
+            <!--journal_name-->
             <tr>
                 <td class="key">
                     <span class="name">journal_name</span>
@@ -138,6 +192,8 @@
                 </td>
             </tr>
 
+
+            <!--oa_locations-->
             <tr>
                 <td class="key">
                     <span class="name">oa_locations</span>
@@ -151,6 +207,23 @@
                 </td>
             </tr>
 
+
+
+            <!--published_date-->
+            <tr>
+                <td class="key">
+                    <span class="name">published_date</span>
+                    <span class="type">String</span>
+                </td>
+                <td class="contents">
+                    The date this resource was published.
+                </td>
+                <td class="notes">
+                    As reported by the publishers, who unfortunately have inconsistent definitions of what counts as officially "published." Returned as an <a href="https://xkcd.com/1179/">ISO8601-formatted</a> timestamp, generally with only year-month-day.
+                </td>
+            </tr>
+
+            <!--publisher-->
             <tr>
                 <td class="key">
                     <span class="name">publisher</span>
@@ -164,6 +237,8 @@
                 </td>
             </tr>
 
+
+            <!--title-->
             <tr>
                 <td class="key">
                     <span class="name">title</span>
@@ -177,6 +252,7 @@
                 </td>
             </tr>
 
+            <!--updated-->
             <tr>
                 <td class="key">
                     <span class="name">updated</span>
@@ -190,6 +266,33 @@
                 </td>
             </tr>
 
+            <!--year-->
+            <tr>
+                <td class="key">
+                    <span class="name">year</span>
+                    <span class="type">String</span>
+                </td>
+                <td class="contents">
+                    The year this resource was published.
+                </td>
+                <td class="notes">
+                    Just the year part of the <code>published_date</code>
+                </td>
+            </tr>
+
+            <!--z_authors-->
+            <tr>
+                <td class="key">
+                    <span class="name">z_authors</span>
+                    <span class="type">List of author objects</span>
+                </td>
+                <td class="contents">
+                    The authors of this resource.
+                </td>
+                <td class="notes">
+                    Contains a list of simple author objects. Each author object has two attributes: <code>family</code> and <code>given</code>, for family name and given name respectively.
+                </td>
+            </tr>
 
         </table>
 
@@ -200,6 +303,8 @@
         <h2 class="anchor" id="oa-location-object">OA Location object</h2>
         <p>The OA Location object describes particular place where we found a given OA article. The same article is often available from multiple locations, and there may be differences in format, version, and license depending on the location; the OA Location object describes these key attributes. An OA Location Object is always a Child of a <router-link to="#doi-object">DOI Object.</router-link></p>
         <table class="api-responses">
+
+            <!--evidence-->
             <tr>
                 <td class="key">
                     <span class="name">evidence</span>
@@ -231,6 +336,7 @@
             </tr>
 
 
+            <!--host_type-->
             <tr>
                 <td class="key">
                     <span class="name">host_type</span>
@@ -261,10 +367,27 @@
             </tr>
 
 
+
+            <!--is_best-->
+            <tr>
+                <td class="key">
+                    <span class="name">is_best</span>
+                    <span class="type">Boolean</span>
+                </td>
+                <td class="contents">
+                    Is this location the <code>best_oa_location</code> for its resource.
+                </td>
+                <td class="notes">
+                    See the DOI object's <code>best_oa_location</code> description for more on how we select which location is "best."
+                </td>
+            </tr>
+
+
+            <!--license-->
             <tr>
                 <td class="key">
                     <span class="name">license</span>
-                    <span class="type">String</span>
+                    <span class="type">String|Null</span>
                 </td>
                 <td class="contents">
                     The license under which this copy is published.
@@ -286,6 +409,22 @@
             </tr>
 
 
+            <!--pmh_id-->
+            <tr>
+                <td class="key">
+                    <span class="name">pmh_id</span>
+                    <span class="type">String|Null</span>
+                </td>
+                <td class="contents">
+                    OAI-PMH endpoint where we found this location.
+                </td>
+                <td class="notes">
+                    This is primarily for internal debugging. It's <code>Null</code> for locations that weren't found using OAI-PMH.
+                </td>
+            </tr>
+
+
+            <!--updated-->
             <tr>
                 <td class="key">
                     <span class="name">updated</span>
@@ -306,17 +445,52 @@
 
 
 
+            <!--url-->
             <tr>
                 <td class="key">
                     <span class="name">url</span>
                     <span class="type">String</span>
                 </td>
                 <td class="contents">
-                    The URL where you can find this OA copy.
+                    The <code>url_for_pdf</code> if there is one; otherwise landing page URL.
                 </td>
                 <td class="notes">
                     <p>
-                        Although this URL points to fulltext of <em>some</em> kind, there is (for now) no format normalization...it could be PDF, HTML, or even Word or TeX.
+                        When we can't find a <code>url_for_pdf</code> (or there isn't one), this field uses the <code>url_for_landing_page</code>, which is a useful fallback for some use cases.
+                    </p>
+                </td>
+            </tr>
+
+
+            <!--url_for_landing_page-->
+            <tr>
+                <td class="key">
+                    <span class="name">url_for_landing_page</span>
+                    <span class="type">String</span>
+                </td>
+                <td class="contents">
+                    The URL for a landing page describing this OA copy.
+                </td>
+                <td class="notes">
+                    <p>
+                        When the <code>host_type</code> is <code>"publisher"</code> the landing page <em>usually</em> includes HTML fulltext.
+                    </p>
+                </td>
+            </tr>
+
+
+            <!--url_for_pdf-->
+            <tr>
+                <td class="key">
+                    <span class="name">url_for_pdf</span>
+                    <span class="type">String|Null</span>
+                </td>
+                <td class="contents">
+                    The URL with a PDF version of this OA copy.
+                </td>
+                <td class="notes">
+                    <p>
+                        Pretty much what it says.
                     </p>
                 </td>
             </tr>
