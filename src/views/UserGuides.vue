@@ -83,8 +83,8 @@
                 <strong>Institutional Repository managers</strong>
                 can use Unpaywall data to find OA resources that faculty have posted online, without depositing in their IR. These can be automatically ingested, significantly increasing IR coverage without needing to convince faculty to deposit. Repositories of all sizes have used Unpaywall data in this way.  SwePub (national repository of Sweden) added 75,000 new OA records, increasing number of OA records by over 30%, while the smaller
                 <a href="https://ir.library.carleton.ca/">the Carleton University IR</a> added 1000 OA records, doubling their fulltext coverage. There are a few good ways to access our data for this use case:
-                <router-link to="/products/snapshot">download the whole dataset,</router-link>
-                <router-link to="products/simple-query-tool">check lists of records by DOI,</router-link> or
+                <router-link to="/products/snapshot">download the whole dataset, </router-link>
+                <router-link to="/products/simple-query-tool">check lists of records by DOI,</router-link> or
                 taking advantage of Unpaywall's integration into the
                 <a href="https://app.dimensions.ai/discover/publication?and_facet_open_access=True">Dimensions</a> and
                 <a href="https://clarivate.com/wp-content/uploads/2017/10/Clarivate-OA-Impact-Story_Intro-sheet.pdf?elqTrackId=c5abee7048934a3da317e296a3e2a9c8&elqaid=5350&elqat=2">Web of Science.</a>

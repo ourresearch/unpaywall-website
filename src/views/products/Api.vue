@@ -42,7 +42,7 @@
 
         <h2>Rate limits</h2>
         <p>
-            Please limit use to 100,000 calls per day. If you need faster access, you'll be better served by downloading the entire <router-link to="products/snapshot">database snapshot</router-link> for local access.
+            Please limit use to 100,000 calls per day. If you need faster access, you'll be better served by downloading the entire <router-link to="/products/snapshot">database snapshot</router-link> for local access.
         </p>
 
 
@@ -54,9 +54,9 @@
         <h2>Alternatives</h2>
         <p>Depending on your use case, there are often easier ways to access the data than using the API. You can learn more about these in our brief user guides:</p>
         <ul>
-            <li><router-link to="user-guides/enterprise">Enterprise user guide</router-link></li>
-            <li><router-link to="user-guides/libraries">Library user guide</router-link></li>
-            <li><router-link to="user-guides/research">Research user guide</router-link></li>
+            <li><router-link to="/user-guides/enterprise">Enterprise user guide</router-link></li>
+            <li><router-link to="/user-guides/libraries">Library user guide</router-link></li>
+            <li><router-link to="/user-guides/research">Research user guide</router-link></li>
         </ul>
 
         <h2>Endpoint</h2>
