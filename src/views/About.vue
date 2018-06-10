@@ -6,7 +6,6 @@
             <li><router-link to="/faq">FAQ</router-link></li>
             <li><router-link to="/data-format">Data format guide</router-link></li>
             <li><router-link to="/sources">Data sources</router-link></li>
-            <li><router-link to="/terms-and-conditions">Terms and Conditions</router-link></li>
             <li><router-link to="/contact">Contact</router-link></li>
         </ul>
     </div>

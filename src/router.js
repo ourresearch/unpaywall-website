@@ -10,7 +10,6 @@ import DataFormat from './views/DataFormat'
 import Integrations from './views/Integrations'
 import Sources from './views/Sources'
 import Faq from './views/Faq'
-import TermsAndConditions from './views/TermsAndConditions'
 import Contact from './views/Contact'
 import Team from './views/Team'
 import Welcome from './views/Welcome'
@@ -28,6 +27,12 @@ import DataFeed from './views/products/DataFeed'
 import Changefiles from './views/products/Changefiles'
 import SimpleQueryTool from './views/products/SimpleQueryTool'
 import Extension from './views/products/Extension'
+
+
+// legal
+import Privacy from './views/legal/Privacy'
+import TermsOfService from './views/legal/TermsOfService'
+
 
 Vue.use(Router)
 Vue.use(Meta)
@@ -78,10 +83,6 @@ export default new Router({
     {
       path: '/faq',
       component: Faq
-    },
-    {
-      path: '/terms-and-conditions',
-      component: TermsAndConditions
     },
     {
       path: '/contact',
@@ -159,6 +160,20 @@ export default new Router({
       path: '/products/extension',
       component: Extension
     },
+
+
+
+
+    // legal pages
+
+    {
+      path: '/legal/privacy',
+      component: Privacy
+    },
+    {
+      path: '/legal/terms-of-service',
+      component: TermsOfService
+    }
 
 
   ]

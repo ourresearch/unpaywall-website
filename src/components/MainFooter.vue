@@ -24,7 +24,8 @@
             <router-link to="/faq">FAQ</router-link>
             <router-link to="/data-format">Data format guide</router-link>
             <router-link to="/sources">Data sources</router-link>
-            <router-link to="/terms-and-conditions">Terms and Conditions</router-link>
+            <router-link to="/legal/terms-of-service">Terms of Service</router-link>
+            <router-link to="/legal/privacy">Privacy policy</router-link>
             <router-link to="/contact">Contact</router-link>
         </div>
         <div class="col md-layout-item md-xsmall-size-100 spacer"></div>
