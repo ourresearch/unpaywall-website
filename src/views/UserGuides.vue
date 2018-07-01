@@ -76,7 +76,7 @@
 
                 <a href="https://developers.exlibrisgroup.com/blog/Adding-an-oadoi-dot-org-GES-link-to-Primo">Primo</a>
 
-                link resolvers, so library users can read OA copies in cases where there's no subscription access. Over 1000 libraries worldwide are now using this now.
+                link resolvers, so library users can read OA copies in cases where there's no subscription access. Over 1000 libraries worldwide are using this now.
             </p>
 
             <p>
