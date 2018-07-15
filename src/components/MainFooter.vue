@@ -34,10 +34,10 @@
                 <a href="https://twitter.com/unpaywall_data">
                     <i class="fab fa-twitter"></i>
                 </a>
-                <a href="https://twitter.com/unpaywall_data">
+                <a href="https://github.com/Impactstory">
                     <i class="fab fa-github"></i>
                 </a>
-                <a href="https://twitter.com/unpaywall_data">
+                <a href="mailto:team@impactstory.org">
                     <i class="far fa-envelope"></i>
                 </a>
             </div>
