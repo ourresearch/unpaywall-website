@@ -31,13 +31,13 @@
         <div class="col md-layout-item md-xsmall-size-100 spacer"></div>
         <div class="col md-layout-item md-xsmall-size-100 made-by">
             <div class="social">
-                <a href="https://twitter.com/unpaywall_data">
+                <a href="https://twitter.com/unpaywall">
                     <i class="fab fa-twitter"></i>
                 </a>
-                <a href="https://twitter.com/unpaywall_data">
+                <a href="https://github.com/Impactstory/oadoi">
                     <i class="fab fa-github"></i>
                 </a>
-                <a href="https://twitter.com/unpaywall_data">
+                <a href="mailto:team@impactstory.org">
                     <i class="far fa-envelope"></i>
                 </a>
             </div>
