@@ -33,7 +33,7 @@
                     <a href="https://www.crossref.org/">Crossref</a> (particulary their license info), and
                     <a href="https://www.datacite.org/">DataCite.</a>
                 </dd>
-
+www
 
                 <dt id="legal">Is Unpaywall legal?</dt>
                 <dd>
