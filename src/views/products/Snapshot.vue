@@ -14,7 +14,7 @@
             Versions
         </h2>
         <p>
-            We release a new snapshot about twice a year. The most recent version was released June 21, 2018.  If you want more up-to-date data, it works well to pair the snapshot with ongoing diffs, available via our <router-link to="/products/api">Data Feed</router-link> product.
+            We release a new snapshot about twice a year. The most recent version was released June 21, 2018.  If you want more up-to-date data, it works well to pair the snapshot with ongoing diffs, available via our <router-link to="/products/data-feed">Data Feed</router-link> product.
         </p>
 
 
