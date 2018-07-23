@@ -503,7 +503,7 @@
 
             <tr>
                 <td class="key">
-                    <span class="name">versions</span>
+                    <span class="name">version</span>
                     <span class="type">String</span>
                 </td>
                 <td class="contents">
