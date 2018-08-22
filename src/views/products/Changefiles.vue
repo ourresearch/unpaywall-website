@@ -62,7 +62,7 @@
                     <div class="main md-list-item-text">
                         <div class="row">
                             <span class="date">
-                                {{ changefile.last_modified | moment("MMMM Do, YYYY")}}
+                                {{ changefile.to_date | moment("MMMM Do, YYYY")}}
                             </span>
                         </div>
                         <div class="row">
