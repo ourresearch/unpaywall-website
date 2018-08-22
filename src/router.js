@@ -173,7 +173,14 @@ export default new Router({
     {
       path: '/legal/terms-of-service',
       component: TermsOfService
-    }
+    },
+
+
+    // redirect for old URLs to old site
+    {
+      path: '/data', // legacy URL
+      redirect: '/'
+    },
 
 
   ]
