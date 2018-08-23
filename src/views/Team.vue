@@ -50,6 +50,10 @@
 
     .row {
         display: flex;
+        margin: 10px;
+        @media (max-width: 600px) {
+            flex-wrap: wrap;
+        }
         div.img {
             margin-right: 20px;
             img {
