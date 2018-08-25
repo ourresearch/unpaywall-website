@@ -46,6 +46,7 @@
           <!--<img class="logo" src="../assets/logos/bl.png" alt="">-->
           <!--<img class="logo" src="../assets/logos/digital-science.png" alt="">-->
           <!--<img class="logo" src="../assets/logos/dartmouth.png" alt="">-->
+          <!--<img class="logo" src="https://i.imgur.com/sA5dwma.png" alt="">-->
         <!--</div>-->
 
         <!--<div class="img-row">-->
@@ -58,6 +59,7 @@
           <!--<img class="logo" src="../assets/logos/nlm.png" alt="">-->
           <!--<img class="logo" src="../assets/logos/rcuk.png" alt="">-->
           <!--<img class="logo" src="../assets/logos/wos.png" alt="">-->
+          <!--<img class="logo" src="https://i.imgur.com/5Hlsp38.png" alt="">-->
         <!--</div>-->
 
 
@@ -245,19 +247,20 @@ export default {
       max-width: 400px;
     }
     .img {
-      max-width: 400px;
+      max-width: 425px;
       padding: 30px;
 
       &.logos {
         padding: 30px 0;
         div.img-row {
-          width: 420px;
+          width: 520px;
           text-align: center;
           img.logo {
             max-width: 85px;
             max-height: 70px;
             margin: 15px 13px;
             opacity: .9;
+            filter: grayscale(100%);
           }
         }
       }
