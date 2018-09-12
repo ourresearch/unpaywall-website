@@ -23,17 +23,17 @@
                 <dd>
                     We harvest content directly from
                     <router-link to="/sources">
-                        over 50,000 journals open-access repositories
+                        over 50,000 journals' open-access repositories
                     </router-link>
                     from all over the world.
 
                     We also use great open data from
                     <a href="https://www.ncbi.nlm.nih.gov/pmc/">PubMed Central</a>,
-                    <a href="https://doaj.org/">the DOAJ,</a>
+                    <a href="https://doaj.org/">the DOAJ</a>,
                     <a href="https://www.crossref.org/">Crossref</a> (particulary their license info), and
                     <a href="https://www.datacite.org/">DataCite.</a>
                 </dd>
-www
+
 
                 <dt id="legal">Is Unpaywall legal?</dt>
                 <dd>
