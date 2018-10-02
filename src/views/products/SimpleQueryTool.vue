@@ -12,7 +12,7 @@
             <li>A <a href="http://jsonlines.org/">JSON Lines</a> file that shows what you'd get if you called our API once for each DOI.</li>
         </ul>
         <p>
-             Don't forget to see check the <router-link to="/data-format">schema documentation,</router-link> which includes definitions that will help you interpret the the result files.
+             Don't forget to check the <router-link to="/data-format">schema documentation,</router-link> which includes definitions that will help you interpret the the result files.
         </p>
 
 
