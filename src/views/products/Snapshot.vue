@@ -14,7 +14,7 @@
             Versions
         </h2>
         <p>
-            We release a new snapshot about twice a year. The most recent version was released June 21, 2018.  If you want more up-to-date data, it works well to pair the snapshot with ongoing diffs, available via our <router-link to="/products/data-feed">Data Feed</router-link> product.
+            We release a new snapshot about twice a year. If you want more up-to-date data, it works well to pair the snapshot with ongoing diffs, available via our <router-link to="/products/api">Data Feed</router-link> product.
         </p>
 
 
@@ -22,14 +22,14 @@
             Size
         </h2>
         <p>
-            The latest version of the snapshot file is 16GB (83G unzipped), and contains 95,842,233 lines.
+            The latest version of the snapshot file is about 16GB (85G unzipped), and contains over 100 million lines.
         </p>
 
         <h2>
             Download
         </h2>
         <p>
-            To complete the download of the full dataset, please <a href="https://goo.gl/forms/AZqaqKEzMcjLGdTT2">fill out this form,</a> which helps us report usage back to our funders. Once we get the form, we'll send you a download link along with additional release notes.
+            To complete the download of the full dataset, please <a href="https://goo.gl/forms/AZqaqKEzMcjLGdTT2">fill out this form,</a> which helps us report usage back to our funders, and we'll immediately provide you with a download link.
         </p>
 
 
