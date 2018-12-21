@@ -31,6 +31,7 @@
                     <md-button class="install md-primary md-raised" @click="ctaClick">
                         <span class="chrome" v-show="browserName==='chrome' && !isMobileBrowser">
                             Add to Chrome - It's free
+                            <span class="small">via the Chrome web store</span>
                         </span>
                         <span class="firefox" v-show="browserName==='firefox' && !isMobileBrowser">
                             Add to Firefox - It's free
@@ -57,7 +58,7 @@
                     </div>
                     <div class="num-users">
                         <span class="num">
-                            {{(153097).toLocaleString()}}
+                            {{(194573).toLocaleString()}}
                         </span>
                         <span class="light">users on Chrome and Firefox.</span>
                     </div>
@@ -213,26 +214,7 @@
                 else if (this.browserName === 'chrome') {
                     console.log("Install for Chrome")
                     this.$ga.event("Clicked Install", "chrome")
-                    let webstoreUrl = "https://chrome.google.com/webstore/detail/unpaywall/iplffkdpngmdjhlpjmppncnlhomiipha"
-
-                    // inline install does not work in fullscreen mode.
-                    if( window.outerHeight === screen.height) {
-                        console.log("full screen! opening web store")
-                        window.location = webstoreUrl
-                    }
-
-                    chrome.webstore.install(
-                        undefined,
-                        function(msg){
-                            console.log("inline install success.")
-                            this.$ga.event("Installed", "chrome")
-                        },
-                        function(msg) {
-                            window.location = webstoreUrl
-                            this.$ga.event("Install cancelled", "chrome")
-                            console.log("inline install failure. redirecting to webstore. ", msg)
-                        }
-                    )
+                    window.location = "https://chrome.google.com/webstore/detail/unpaywall/iplffkdpngmdjhlpjmppncnlhomiipha"
 
                 }
             }
