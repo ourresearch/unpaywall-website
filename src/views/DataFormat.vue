@@ -284,13 +284,13 @@
             <tr>
                 <td class="key">
                     <span class="name">z_authors</span>
-                    <span class="type">List of author objects</span>
+                    <span class="type">List of Crossref <code>Contributor</code> objects</span>
                 </td>
                 <td class="contents">
                     The authors of this resource.
                 </td>
                 <td class="notes">
-                    Contains a list of simple author objects. Each author object has two attributes: <code>family</code> and <code>given</code>, for family name and given name respectively.
+                    These are formatted as a list of Crossref <code>Contributor</code> objects, which are <a href="https://github.com/CrossRef/rest-api-doc/blob/master/api_format.md#contributor"> described in the Crossref API docs here.</a>
                 </td>
             </tr>
 
