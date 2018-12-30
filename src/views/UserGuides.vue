@@ -1,9 +1,7 @@
 <template>
     <div class="page user-guide">
         <h1>{{ guideName }} user guide</h1>
-        <p class="construction">
-            User guides are still under construction. Please <a href="mailto:team@impactstory.org">drop us a line</a> with any questions!
-        </p>
+
 
         <p>
             The Unpaywall database has a very simple structure: we have one record for every article with a Crossref DOI (that's about 95 million records all told). We harvest from <router-link to="/sources">lots of sources</router-link> to find Open Access content, and then we match it to these DOIs using content fingerprints. So, for any given DOI, we know about any OA versions that exist anywhere (at least that's the idea).
@@ -95,6 +93,10 @@
 
         </div>
 
+        <p class="construction">
+            Of course, this is just a very quick overview...if you have any questions, or want to use Unpaywall in a way that's not described here, please <a href="mailto:team@impactstory.org">drop us a line</a> and we'll be happy to help!
+        </p>
+
 
     </div>
 </template>
@@ -131,9 +133,6 @@
 
     h1 {
         text-transform: capitalize;
-    }
-    p.construction {
-        font-style: italic;
     }
 
 </style>
