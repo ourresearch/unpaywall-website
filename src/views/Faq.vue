@@ -23,7 +23,7 @@
                 <dd>
                     We harvest content directly from
                     <router-link to="/sources">
-                        over 50,000 journals' open-access repositories
+                        over 50,000 journals and open-access repositories
                     </router-link>
                     from all over the world.
 
