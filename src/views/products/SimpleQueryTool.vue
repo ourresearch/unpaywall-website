@@ -2,7 +2,7 @@
     <div class="page product-page simple-query-tool">
         <h1>Simple Query Tool</h1>
         <p>
-            If you want to check a few articles to see if they are Open Access and don't want to mess with the <router-link to="/products/api">REST API,</router-link> you're in the right place. You can check up to 10,000 DOIs at once using this tool.
+            If you want to check a few articles to see if they are Open Access and don't want to mess with the <router-link to="/products/api">REST API,</router-link> you're in the right place. You can check up to 1,000 DOIs at once using this tool.
         </p>
         <p>
             We'll run the list through our API for you and give you a report on the Open Access status of each DOI. In a few minutes, you'll get an email with the results, as two attachments:
