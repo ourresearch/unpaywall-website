@@ -10,7 +10,7 @@
             If you'd like to add your repository or journal to our list of sources, that's great! You can submit your repository for indexing via
             <a href="https://goo.gl/forms/HBOMqdSFOHEeFOwj1">
                 this form,
-            </a> and submit your journal <a href="mailto:team@impactstory.org">via email.</a>
+            </a> and submit your journal <a href="mailto:bugs@unpaywall.org">via email.</a>
         </p>
 
         <p>

@@ -64,7 +64,7 @@
                 <h2>Sorry, there was a problem!</h2>
                 <p>
                     Looks like we're having trouble processing your request. There may have been a problem with either the DOIs or the email you entered. Please email us at
-                    <a href="mailto:team@impactstory.org">team@impactstory.org</a> and we'll work to get the problem fixed.
+                    <a href="mailto:bugs@unpaywall.org">bugs@unpaywall.org</a> and we'll work to get the problem fixed.
                 </p>
         </div>
 

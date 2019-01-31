@@ -70,7 +70,7 @@
                 <dt id="report-bugs">I found a bug</dt>
                 <dd>
                     Sorry about that!
-                    <a href="mailto:team@impactstory.org">Drop us an email</a> and we'll get it fixed for you.
+                    <a href="mailto:bugs@unpaywall.org">Drop us an email</a> and we'll get it fixed for you.
                 </dd>
 
             </dl>
