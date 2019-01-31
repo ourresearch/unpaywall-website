@@ -58,7 +58,7 @@
                     </div>
                     <div class="num-users">
                         <span class="num">
-                            {{(194573).toLocaleString()}}
+                            {{(204896).toLocaleString()}}
                         </span>
                         <span class="light">users on Chrome and Firefox.</span>
                     </div>
