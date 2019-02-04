@@ -28,9 +28,25 @@
         </div>
       </div>
     </div>
+      
+      <div id="learn-more" class="pullquote">
+          <div class="text">
+              <div class="quote">
+                "Unpaywall is transforming Open Science"
+              </div>
+              <div class="attr">
+                  <span class="journal">&mdash;Nature</span>
+                  feature article,
+                  <a href="https://www.nature.com/articles/d41586-018-05968-3">
+                      August 2018
+                  </a>
+              </div>
+          </div>
+          
+          
+      </div>
 
-
-    <div id="learn-more" class="selling-point social-proof">
+    <div  class="selling-point social-proof">
       <div class="text">
         <h2>Used and trusted by top organizations</h2>
         <p>
@@ -230,6 +246,35 @@ export default {
         font-size: 15px;
       }
     }
+  }
+
+  .pullquote {
+      font-size: 40px;
+      background: #FF706B;
+      background: #181F22;
+      padding: 70px 20px 30px;
+      color: #fff;
+      line-height: 1.3;
+      .text {
+          max-width: 800px;
+          margin: 0 auto;
+          .attr {
+              text-align: right;
+              margin-right: 30px;
+              margin-top: 10px;
+              font-size: 18px;
+              font-weight: 300;
+              span.journal {
+                  font-style: italic;
+                  font-weight: bold;
+              }
+              a {
+                color: #fff;
+
+              }
+          }
+
+      }
   }
 
 
