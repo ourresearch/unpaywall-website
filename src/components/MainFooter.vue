@@ -27,7 +27,7 @@
             <router-link to="/legal/terms-of-service">Terms of Service</router-link>
             <router-link to="/legal/privacy">Privacy policy</router-link>
             <router-link to="/contact">Contact</router-link>
-             <a href="mailto:bugs@unpaywall.org">Report bug</a>
+             <a href="mailto:support@unpaywall.org">Report bug</a>
         </div>
         <div class="col md-layout-item md-xsmall-size-100 spacer"></div>
         <div class="col md-layout-item md-xsmall-size-100 made-by">

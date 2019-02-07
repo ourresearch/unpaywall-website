@@ -27,7 +27,7 @@
         </div>
         <div class="row second">
                 <p>
-                    If you'd like to get in touch, we'd love to hear from you. To report a bug, please email us at <a href="mailto:bugs@unpaywall.org">bugs@unpaywall.org;</a> for everything else, drop us a line at <a href="mailto:team@impactstory.org">team@impactstory.org</a>
+                    If you'd like to get in touch, we'd love to hear from you. To report a bug, please email us at <a href="mailto:support@unpaywall.org">support@unpaywall.org;</a> for everything else, drop us a line at <a href="mailto:team@impactstory.org">team@impactstory.org</a>
                 </p>
         </div>
 
