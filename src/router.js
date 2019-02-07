@@ -33,6 +33,9 @@ import Extension from './views/products/Extension'
 import Privacy from './views/legal/Privacy'
 import TermsOfService from './views/legal/TermsOfService'
 
+// other
+import Repository from './views/Repository'
+
 
 Vue.use(Router)
 Vue.use(Meta)
@@ -181,6 +184,19 @@ export default new Router({
       path: '/data', // legacy URL
       redirect: '/'
     },
+
+
+
+
+
+
+
+    // other pages
+
+    {
+      path: '/sources/repository/:repoId?',
+      component: Repository
+    }
 
 
   ]
