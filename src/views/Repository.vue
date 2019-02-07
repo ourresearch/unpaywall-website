@@ -10,6 +10,69 @@
             </div>
         </div>
 
+        <div class="harvest-status">
+            <h2>Harvest status</h2>
+            <table>
+                <tr>
+                    <td>
+                        Check Identity status
+                    </td>
+                    <td>
+                        {{ status.check0_identify_status }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Check Query status
+                    </td>
+                    <td>
+                        {{ status.check1_query_status }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Last harvested on
+                    </td>
+                    <td>
+                        {{ status.last_harvest }}
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="content">
+            <h2>Content</h2>
+
+
+            <h3>Content by record</h3>
+            <table>
+                <tr>
+                    <td>
+                        Number of PMH records
+                    </td>
+                    <td>
+                        {{ status.num_pmh_records }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Number of PMH records that match a DOI
+                    </td>
+                    <td>
+                        {{ status.num_pmh_records_matching_dois }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Number of PMH records with full text that match a DOI
+                    </td>
+                    <td>
+                        {{ status.num_pmh_records_matching_dois_with_fulltext }}
+                    </td>
+                </tr>
+            </table>
+        </div>
+
 
 
 
@@ -27,7 +90,8 @@
                 repoId: "",
                 name: "",
                 institutionName: "",
-                pmhUrl: ""
+                pmhUrl: "",
+                status: {}
             }
         },
         components: {
@@ -52,6 +116,8 @@
                         this.name = resp.data.results.metadata.repository_name
                         this.institutionName = resp.data.results.metadata.institution_name
                         this.pmhUrl = resp.data.results.metadata.pmh_url
+
+                        this.status = resp.data.results.status
                     })
 
             },
@@ -82,8 +148,10 @@
         }
     }
 
-    h1 {
-        text-transform: capitalize;
+    table {
+        td {
+            max-width: 300px;
+        }
     }
 
 </style>
