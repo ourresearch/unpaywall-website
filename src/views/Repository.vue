@@ -44,7 +44,6 @@
             <h2>Content</h2>
 
 
-            <h3>Content by record</h3>
             <table>
                 <tr>
                     <td>
@@ -64,14 +63,46 @@
                 </tr>
                 <tr>
                     <td>
-                        Number of PMH records with full text that match a DOI
+                        <div>
+                            Number of PMH records that match a DOI and have full text available
+                        </div>
+
+
+
+
                     </td>
                     <td>
                         {{ status.num_pmh_records_matching_dois_with_fulltext }}
                     </td>
                 </tr>
+                <tr class="sub">
+                    <td class="sub-label">
+                        acceptedVersion
+                    </td>
+                    <td>
+                        {{ versions.acceptedVersion }}
+                    </td>
+                </tr>
+                <tr class="sub">
+                    <td class="sub-label">
+                        publishedVersion
+                    </td>
+                    <td>
+                        {{ versions.publishedVersion }}
+                    </td>
+                </tr>
+                <tr class="sub">
+                    <td class="sub-label">
+                        submittedVersion
+                    </td>
+                    <td>
+                        {{ versions.submittedVersion }}
+                    </td>
+                </tr>
             </table>
         </div>
+
+
 
 
 
@@ -91,7 +122,8 @@
                 name: "",
                 institutionName: "",
                 pmhUrl: "",
-                status: {}
+                status: {},
+                versions: {}
             }
         },
         components: {
@@ -118,6 +150,7 @@
                         this.pmhUrl = resp.data.results.metadata.pmh_url
 
                         this.status = resp.data.results.status
+                        this.versions = resp.data.results.by_version_distinct_pmh_records_matching_dois
                     })
 
             },
@@ -151,6 +184,12 @@
     table {
         td {
             max-width: 300px;
+        }
+        tr.sub {
+            font-size: 66%;
+            td.sub-label {
+                padding-left: 30px;
+            }
         }
     }
 

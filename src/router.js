@@ -35,6 +35,7 @@ import TermsOfService from './views/legal/TermsOfService'
 
 // other
 import Repository from './views/Repository'
+import AddRepository from './views/AddRepository'
 
 
 Vue.use(Router)
@@ -196,6 +197,10 @@ export default new Router({
     {
       path: '/sources/repository/:repoId?',
       component: Repository
+    },
+    {
+      path: '/sources/repositories/add',
+      component: AddRepository
     }
 
 
