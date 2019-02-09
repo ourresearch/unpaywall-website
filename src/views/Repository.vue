@@ -107,7 +107,7 @@
 
 
             <div class="actions">
-                <md-button class="md-raised md-primary" href="mailto:heather@impactstory.org">
+                <md-button class="md-raised md-primary" href="mailto:heather@impactstory.org?subject=Unpaywall repository indexing problem">
                     <i class="fa fa-envelope"></i>
                     Report problem
                 </md-button>
