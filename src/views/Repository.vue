@@ -8,6 +8,8 @@
             <div class="url">
                 OAH-PMH endpoint: <a :href="pmhUrl">{{pmhUrl}}</a>
             </div>
+
+
         </div>
 
         <div class="harvest-status">
@@ -64,7 +66,8 @@
                 <tr>
                     <td>
                         <div>
-                            Number of PMH records that match a DOI and have full text available
+                            Number of PMH records that match a DOI and have full text available,
+                            by <a href="http://support.unpaywall.org/support/solutions/articles/44000708792-paper-version-definitions">version.</a>
                         </div>
 
 
@@ -77,18 +80,18 @@
                 </tr>
                 <tr class="sub">
                     <td class="sub-label">
-                        acceptedVersion
-                    </td>
-                    <td>
-                        {{ versions.acceptedVersion }}
-                    </td>
-                </tr>
-                <tr class="sub">
-                    <td class="sub-label">
                         publishedVersion
                     </td>
                     <td>
                         {{ versions.publishedVersion }}
+                    </td>
+                </tr>
+                <tr class="sub">
+                    <td class="sub-label">
+                        acceptedVersion
+                    </td>
+                    <td>
+                        {{ versions.acceptedVersion }}
                     </td>
                 </tr>
                 <tr class="sub">
@@ -103,7 +106,12 @@
         </div>
 
 
-
+            <div class="actions">
+                <md-button class="md-raised md-primary" href="mailto:heather@impactstory.org">
+                    <i class="fa fa-envelope"></i>
+                    Report problem
+                </md-button>
+            </div>
 
 
 
@@ -179,7 +187,15 @@
 
             }
         }
+
+        .actions {
+            a {
+                margin-left: 0px;
+            }
+        }
     }
+
+
 
     table {
         td {
