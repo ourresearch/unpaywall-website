@@ -49,12 +49,21 @@
             <table>
                 <tr>
                     <td>
-                        Number of PMH records
+                        Number of PMH records with a distinct title
                     </td>
                     <td>
                         {{ status.num_pmh_records }}
                     </td>
                 </tr>
+                <!--<tr class="sub">-->
+                    <!--<td class="sub-label">-->
+                        <!--in the last month-->
+                    <!--</td>-->
+                    <!--<td>-->
+                        <!--{{ versions.publishedVersion }} (<a href="">list<a>)-->
+                    <!--</td>-->
+                <!--</tr>-->
+
                 <tr>
                     <td>
                         Number of PMH records that match a DOI
