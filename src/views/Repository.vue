@@ -49,20 +49,20 @@
             <table>
                 <tr>
                     <td>
-                        Number of PMH records with a distinct title
+                        Number of PMH records with a unique title
                     </td>
                     <td>
                         {{ status.num_pmh_records }}
                     </td>
                 </tr>
-                <!--<tr class="sub">-->
-                    <!--<td class="sub-label">-->
-                        <!--in the last month-->
-                    <!--</td>-->
-                    <!--<td>-->
-                        <!--{{ versions.publishedVersion }} (<a href="">list<a>)-->
-                    <!--</td>-->
-                <!--</tr>-->
+                <tr class="sub">
+                    <td class="sub-label">
+                        most recent 100
+                    </td>
+                    <td>
+                        <a href="https://api.unpaywall.org/repo_pulse/endpoint/{{ endpoint_id }}/pmh/recent">list<a>
+                    </td>
+                </tr>
 
                 <tr>
                     <td>
