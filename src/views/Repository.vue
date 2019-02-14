@@ -60,7 +60,7 @@
                         most recent 100
                     </td>
                     <td>
-                        <a href="https://api.unpaywall.org/repo_pulse/endpoint/{{ endpoint_id }}/pmh/recent">list<a>
+                        <a href="https://api.unpaywall.org/repo_pulse/endpoint/{{ endpointId }}/pmh/recent">list<a>
                     </td>
                 </tr>
 
@@ -139,6 +139,7 @@
                 name: "",
                 institutionName: "",
                 pmhUrl: "",
+                endpointId: "",
                 status: {},
                 versions: {}
             }
@@ -165,6 +166,7 @@
                         this.name = resp.data.results.metadata.repository_name
                         this.institutionName = resp.data.results.metadata.institution_name
                         this.pmhUrl = resp.data.results.metadata.pmh_url
+                        this.endpointId = resp.data.results.metadata.endpoint_id
 
                         this.status = resp.data.results.status
                         this.versions = resp.data.results.by_version_distinct_pmh_records_matching_dois
