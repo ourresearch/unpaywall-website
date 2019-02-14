@@ -60,7 +60,7 @@
                         most recent 100
                     </td>
                     <td>
-                        <a href="https://api.unpaywall.org/repo_pulse/endpoint/{{ endpointId }}/pmh/recent">list<a>
+                        <a :href="'https://api.unpaywall.org/repo_pulse/endpoint/' + endpointId + '/pmh/recent'">list<a>
                     </td>
                 </tr>
 
