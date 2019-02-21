@@ -54,18 +54,10 @@
                     <td>
                         {{ status.num_pmh_records }}
                     </td><td>
-                        <a :href="'https://api.unpaywall.org/repo_pulse/endpoint/' + endpointId + '/pmh/recent'">(recent)</a>
+                        <a :href="'https://api.unpaywall.org/repo_pulse/endpoint/' + endpointId + '/pmh/recent'">sample</a>
                     </td>
                 </tr>
 
-                <tr>
-                    <td>
-                        Number of OAI-PMH records that match a DOI
-                    </td>
-                    <td>
-                        {{ status.num_pmh_records_matching_dois }}
-                    </td>
-                </tr>
                 <tr>
                     <td>
                         <div>
@@ -73,13 +65,11 @@
                             by <a href="https://support.unpaywall.org/support/solutions/articles/44000708792-paper-version-definitions">version.</a>
                         </div>
 
-
-
-
                     </td>
                     <td>
                         {{ status.num_pmh_records_matching_dois_with_fulltext }}
                     </td>
+                    <td><!-- no sample--></td>
                 </tr>
                 <tr class="sub">
                     <td class="sub-label">
@@ -88,7 +78,7 @@
                     <td>
                         {{ versions.publishedVersion }}
                     </td><td>
-                        <a :href="'https://api.unpaywall.org/repo_pulse/endpoint/' + endpointId + '/pmh/recent?version=publishedVersion'">(recent)</a>
+                        <a :href="'https://api.unpaywall.org/repo_pulse/endpoint/' + endpointId + '/pmh/recent?version=publishedVersion'">sample</a>
                     </td>
                 </tr>
                 <tr class="sub">
@@ -98,7 +88,7 @@
                     <td>
                         {{ versions.acceptedVersion }}
                     </td><td>
-                        <a :href="'https://api.unpaywall.org/repo_pulse/endpoint/' + endpointId + '/pmh/recent?version=acceptedVersion'">(recent)</a>
+                        <a :href="'https://api.unpaywall.org/repo_pulse/endpoint/' + endpointId + '/pmh/recent?version=acceptedVersion'">sample</a>
                     </td>
                 </tr>
                 <tr class="sub">
@@ -108,7 +98,7 @@
                     <td>
                         {{ versions.submittedVersion }}
                     </td><td>
-                        <a :href="'https://api.unpaywall.org/repo_pulse/endpoint/' + endpointId + '/pmh/recent?version=submittedVersion'">(recent)</a>
+                        <a :href="'https://api.unpaywall.org/repo_pulse/endpoint/' + endpointId + '/pmh/recent?version=submittedVersion'">sample</a>
                     </td>
                 </tr>
             </table>
@@ -116,7 +106,7 @@
 
 
             <div class="actions">
-                <md-button class="md-raised md-primary" href="mailto:heather@impactstory.org?subject=Unpaywall repository indexing problem">
+                <md-button class="md-raised md-primary" :href="'mailto:heather@impactstory.org?subject=Unpaywall repository indexing problem for endpoint '+endpointId+'"'>
                     <i class="fa fa-envelope"></i>
                     Report problem
                 </md-button>
