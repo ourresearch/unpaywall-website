@@ -33,7 +33,7 @@
                 </tr>
                 <tr>
                     <td>
-                        Normally harvested daily.  Last harvested on
+                        Last harvested on
                     </td>
                     <td>
                         {{ status.last_harvest }}
@@ -61,7 +61,7 @@
                 <tr>
                     <td>
                         <div>
-                            Number of OAI-PMH records that match a published article DOI and have full text available,
+                            Number that match a published article DOI and have full text freely available,
                             by <a href="https://support.unpaywall.org/support/solutions/articles/44000708792-paper-version-definitions">version.</a>
                         </div>
 
@@ -106,7 +106,7 @@
 
 
             <div class="actions">
-                <md-button class="md-raised md-primary" :href="'mailto:heather@impactstory.org?subject=Unpaywall repository indexing problem for endpoint '+endpointId+'"'>
+                <md-button class="md-raised md-primary" :href="'mailto:heather@impactstory.org?subject=Unpaywall repository indexing problem for endpoint '+endpointId">
                     <i class="fa fa-envelope"></i>
                     Report problem
                 </md-button>
