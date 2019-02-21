@@ -43,7 +43,7 @@
                 </a>
             </div>
             <div class="made-with-love">
-                Made with <i class="far fa-heart"></i> at <a href="http://impactstory.org">Impactstory.</a>
+                Made with <i class="far fa-heart"></i> at <a href="https://impactstory.org">Impactstory.</a>
 
             </div>
 

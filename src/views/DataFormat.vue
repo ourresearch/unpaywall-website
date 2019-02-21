@@ -114,7 +114,7 @@
                     The type of resource.
                 </td>
                 <td class="notes">
-                    Currently the <code>genre</code> is identical to the Crossref-reported <a href="http://api.crossref.org/types">type</a> of a given resource. The "journal-article" type is most common, but there are many others.
+                    Currently the <code>genre</code> is identical to the Crossref-reported <a href="https://api.crossref.org/types">type</a> of a given resource. The "journal-article" type is most common, but there are many others.
                 </td>
             </tr>
 

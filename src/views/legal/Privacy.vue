@@ -51,8 +51,8 @@
         Information described below when you subscribe to the Data Feed; provide billing information and authorize
         payment(s) for a Data Feed subscription; email us or send a message through the electronic forms provided on the
         Site; provide your email address as part of an API call; provide your email address in order to use a web-based
-        query tool such as our Simple Query Tool (<a href="http://unpaywall.org/products/simple-query-tool"
-                                                     target="_blank">http://unpaywall.org/products/simple-query-tool</a>);
+        query tool such as our Simple Query Tool (<a href="https://unpaywall.org/products/simple-query-tool"
+                                                     target="_blank">https://unpaywall.org/products/simple-query-tool</a>);
         enter a contest or promotion sponsored by us; report a problem with our Service; or respond to polls or surveys
         distributed for research purposes.<br><br>
         <b>Personal Information.</b> Personal Information is generally any information that can be used to identify you
@@ -126,7 +126,7 @@
         provide targeted advertising, so we do not respond to Do Not Track (DNT) signals. However, some third party
         sites do keep track of your browsing activities when they serve you content, which enables them to tailor what
         they present to you. You may set your web browser to transmit a "Do Not Track" signal to websites and online
-        services you visit. For more information on Do Not Track, please visit <a href="http://www.allaboutdnt.com"
+        services you visit. For more information on Do Not Track, please visit <a href="https://www.allaboutdnt.com"
                                                                                   target="_blank">www.allaboutdnt.com</a>.<br>
 
         <h2>How & Why We Use Your Information</h2>
@@ -244,7 +244,7 @@
         If you are a resident of the European Economic Area and you believe we are unlawfully processing your personal
         information, you also have the right to complain to your local data protection supervisory authority. You can
         find their contact details here: <a
-            href="http://ec.europa.eu/justice/data-protection/bodies/authorities/index_en.htm" target="_blank">http://ec.europa.eu/justice/data-protection/bodies/authorities/index_en.htm</a>
+            href="https://ec.europa.eu/justice/data-protection/bodies/authorities/index_en.htm" target="_blank">https://ec.europa.eu/justice/data-protection/bodies/authorities/index_en.htm</a>
         <br>
 
         <h2>Failure to Provide Personal Information</h2>

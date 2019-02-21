@@ -57,7 +57,7 @@
                 </tr>
                 <tr class="sub">
                     <td class="sub-label">
-                        most recent 100
+                        most recent 100 records
                     </td>
                     <td>
                         <a :href="'https://api.unpaywall.org/repo_pulse/endpoint/' + endpointId + '/pmh/recent'">list</a>
@@ -76,7 +76,7 @@
                     <td>
                         <div>
                             Number of PMH records that match a DOI and have full text available,
-                            by <a href="http://support.unpaywall.org/support/solutions/articles/44000708792-paper-version-definitions">version.</a>
+                            by <a href="https://support.unpaywall.org/support/solutions/articles/44000708792-paper-version-definitions">version.</a>
                         </div>
 
 
@@ -159,7 +159,7 @@
         methods: {
             loadRepo() {
                 console.log("loading repo!")
-                let url = "http://api.unpaywall.org/repo_pulse/endpoint/" + this.repoId
+                let url = "https://api.unpaywall.org/repo_pulse/endpoint/" + this.repoId
                 axios.get(url)
                     .then(resp => {
                         console.log("got repo back", resp)

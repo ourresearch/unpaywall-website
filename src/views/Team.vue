@@ -9,7 +9,7 @@
             </div>
             <div class="text">
                 <p>
-                    Unpaywall is a project of <a href="http://impactstory.org">Impactstory,</a> a nonprofit building tools to help make scholarly research more open, accessible, and reusable. Impactstory is <strong>Heather Piwowar</strong> (<a href="https://docs.google.com/document/d/1S7aKmG_l3wJxAc4lb5gJYMwNVDnAT7HlQWcaXADwA1s/edit?usp=sharing">bio, </a>
+                    Unpaywall is a project of <a href="https://impactstory.org">Impactstory,</a> a nonprofit building tools to help make scholarly research more open, accessible, and reusable. Impactstory is <strong>Heather Piwowar</strong> (<a href="https://docs.google.com/document/d/1S7aKmG_l3wJxAc4lb5gJYMwNVDnAT7HlQWcaXADwA1s/edit?usp=sharing">bio, </a>
                     <a href="https://scholar.google.com/citations?user=1YLq0XMAAAAJ&hl=en">publications, </a>
                     <a href="https://twitter.com/researchremix">Twitter</a>) and
 

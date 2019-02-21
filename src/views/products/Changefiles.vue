@@ -21,7 +21,7 @@
         </p>
 
         <p>
-            This list is also available via a <a href="http://api.unpaywall.org/feed/changefiles?api_key=YOUR_API_KEY">JSON endpoint</a> for programmatic access.
+            This list is also available via a <a href="https://api.unpaywall.org/feed/changefiles?api_key=YOUR_API_KEY">JSON endpoint</a> for programmatic access.
         </p>
 
 

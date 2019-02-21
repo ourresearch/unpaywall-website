@@ -198,7 +198,7 @@
                 // can't install it, so let the users email themselves a reminder.
                 if (this.browserName === 'unsupported' || this.isMobileBrowser) {
                     let emailSubject = "Check out Unpaywall"
-                    let emailBody = "Just a small reminder to myself: check out the Unpaywall extension at http://unpaywall.org/products/extension"
+                    let emailBody = "Just a small reminder to myself: check out the Unpaywall extension at https://unpaywall.org/products/extension"
                     let emailUrl = "mailto:?subject=" + encodeURI(emailSubject) + "&body=" + encodeURI(emailBody)
                     window.location = emailUrl
                 }
