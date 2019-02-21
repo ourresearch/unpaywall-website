@@ -49,24 +49,16 @@
             <table>
                 <tr>
                     <td>
-                        Number of PMH records with a unique title
+                        Number of OAI-PMH records with a unique title
                     </td>
                     <td>
-                        {{ status.num_pmh_records }}
-                    </td>
-                </tr>
-                <tr class="sub">
-                    <td class="sub-label">
-                        most recent 100 records
-                    </td>
-                    <td>
-                        <a :href="'https://api.unpaywall.org/repo_pulse/endpoint/' + endpointId + '/pmh/recent'">list</a>
+                        {{ status.num_pmh_records }} (<a :href="'https://api.unpaywall.org/repo_pulse/endpoint/' + endpointId + '/pmh/recent'">recent</a>)
                     </td>
                 </tr>
 
                 <tr>
                     <td>
-                        Number of PMH records that match a DOI
+                        Number of OAI-PMH records that match a DOI
                     </td>
                     <td>
                         {{ status.num_pmh_records_matching_dois }}
@@ -75,7 +67,7 @@
                 <tr>
                     <td>
                         <div>
-                            Number of PMH records that match a DOI and have full text available,
+                            Number of OAI-PMH records that match a published article DOI and have full text available,
                             by <a href="https://support.unpaywall.org/support/solutions/articles/44000708792-paper-version-definitions">version.</a>
                         </div>
 
@@ -92,7 +84,7 @@
                         publishedVersion
                     </td>
                     <td>
-                        {{ versions.publishedVersion }}
+                        {{ versions.publishedVersion }} (<a :href="'https://api.unpaywall.org/repo_pulse/endpoint/' + endpointId + '/pmh/recent?version=publishedVersion'">recent</a>)
                     </td>
                 </tr>
                 <tr class="sub">
@@ -100,7 +92,7 @@
                         acceptedVersion
                     </td>
                     <td>
-                        {{ versions.acceptedVersion }}
+                        {{ versions.acceptedVersion }} (<a :href="'https://api.unpaywall.org/repo_pulse/endpoint/' + endpointId + '/pmh/recent?version=acceptedVersion'">recent</a>)
                     </td>
                 </tr>
                 <tr class="sub">
@@ -108,7 +100,7 @@
                         submittedVersion
                     </td>
                     <td>
-                        {{ versions.submittedVersion }}
+                        {{ versions.submittedVersion }} (<a :href="'https://api.unpaywall.org/repo_pulse/endpoint/' + endpointId + '/pmh/recent?version=submittedVersion'">recent</a>)
                     </td>
                 </tr>
             </table>
