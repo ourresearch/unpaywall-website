@@ -33,7 +33,7 @@
                 </tr>
                 <tr>
                     <td>
-                        Last harvested on
+                        Normally harvested daily.  Last harvested on
                     </td>
                     <td>
                         {{ status.last_harvest }}
@@ -52,7 +52,9 @@
                         Number of OAI-PMH records with a unique title
                     </td>
                     <td>
-                        {{ status.num_pmh_records }} (<a :href="'https://api.unpaywall.org/repo_pulse/endpoint/' + endpointId + '/pmh/recent'">recent</a>)
+                        {{ status.num_pmh_records }}
+                    </td><td>
+                        <a :href="'https://api.unpaywall.org/repo_pulse/endpoint/' + endpointId + '/pmh/recent'">(recent)</a>
                     </td>
                 </tr>
 
@@ -84,7 +86,9 @@
                         publishedVersion
                     </td>
                     <td>
-                        {{ versions.publishedVersion }} (<a :href="'https://api.unpaywall.org/repo_pulse/endpoint/' + endpointId + '/pmh/recent?version=publishedVersion'">recent</a>)
+                        {{ versions.publishedVersion }}
+                    </td><td>
+                        <a :href="'https://api.unpaywall.org/repo_pulse/endpoint/' + endpointId + '/pmh/recent?version=publishedVersion'">(recent)</a>
                     </td>
                 </tr>
                 <tr class="sub">
@@ -92,7 +96,9 @@
                         acceptedVersion
                     </td>
                     <td>
-                        {{ versions.acceptedVersion }} (<a :href="'https://api.unpaywall.org/repo_pulse/endpoint/' + endpointId + '/pmh/recent?version=acceptedVersion'">recent</a>)
+                        {{ versions.acceptedVersion }}
+                    </td><td>
+                        <a :href="'https://api.unpaywall.org/repo_pulse/endpoint/' + endpointId + '/pmh/recent?version=acceptedVersion'">(recent)</a>
                     </td>
                 </tr>
                 <tr class="sub">
@@ -100,7 +106,9 @@
                         submittedVersion
                     </td>
                     <td>
-                        {{ versions.submittedVersion }} (<a :href="'https://api.unpaywall.org/repo_pulse/endpoint/' + endpointId + '/pmh/recent?version=submittedVersion'">recent</a>)
+                        {{ versions.submittedVersion }}
+                    </td><td>
+                        <a :href="'https://api.unpaywall.org/repo_pulse/endpoint/' + endpointId + '/pmh/recent?version=submittedVersion'">(recent)</a>
                     </td>
                 </tr>
             </table>
