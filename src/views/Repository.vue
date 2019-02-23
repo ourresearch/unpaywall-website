@@ -42,7 +42,13 @@
             </table>
         </div>
 
-        <div class="content">
+
+        <div v-if="status.num_pmh_records == 0" class="content">
+            We haven't harvested any content for this repository yet.  Please check back in a few days.
+        </div>
+
+        <div v-else class="content">
+
             <h2>Content</h2>
 
 
@@ -105,12 +111,12 @@
         </div>
 
 
-            <div class="actions">
-                <md-button class="md-raised md-primary" :href="'mailto:heather@impactstory.org?subject=Unpaywall repository indexing problem for endpoint '+endpointId">
-                    <i class="fa fa-envelope"></i>
-                    Report problem
-                </md-button>
-            </div>
+    <div class="actions">
+        <md-button class="md-raised md-primary" :href="'mailto:heather@impactstory.org?subject=Unpaywall repository indexing problem for endpoint '+endpointId">
+            <i class="fa fa-envelope"></i>
+            Report problem
+        </md-button>
+    </div>
 
 
 
