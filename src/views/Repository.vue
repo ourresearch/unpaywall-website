@@ -43,7 +43,7 @@
         </div>
 
 
-        <div v-if="status.num_pmh_records == 0" class="content">
+        <div v-if="!status.num_pmh_records" class="content">
             We haven't harvested any content for this repository yet.  Please check back in a few days.
         </div>
 
