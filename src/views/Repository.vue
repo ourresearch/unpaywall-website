@@ -33,7 +33,7 @@
                 </tr>
                 <tr>
                     <td>
-                        Last harvested on
+                        Last harvested content from
                     </td>
                     <td>
                         {{ status.last_harvest }}
