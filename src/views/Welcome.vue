@@ -9,7 +9,7 @@
             click it to read the full text. Try this example:
         </p>
         <p class="eg">
-            <md-button class="md-raised md-primary" target="_blank" href="http://www.nature.com/nature/journal/v542/n7642/full/nature21360.html">
+            <md-button class="md-raised md-primary" target="_blank" href="https://www.nature.com/nature/journal/v542/n7642/full/nature21360.html">
                 Try it now
             </md-button>
         </p>

@@ -33,7 +33,7 @@
                 </tr>
                 <tr>
                     <td>
-                        Last harvested on
+                        Last harvested content from
                     </td>
                     <td>
                         {{ status.last_harvest }}
@@ -42,41 +42,40 @@
             </table>
         </div>
 
-        <div class="content">
+
+        <div v-if="!status.num_pmh_records" class="content">
+            We haven't harvested any content for this repository yet.  Please check back in a few days.
+        </div>
+
+        <div v-else class="content">
+
             <h2>Content</h2>
 
 
             <table>
                 <tr>
                     <td>
-                        Number of PMH records
+                        Number of OAI-PMH records with a unique title
                     </td>
                     <td>
                         {{ status.num_pmh_records }}
+                    </td><td>
+                        <a :href="'https://api.unpaywall.org/repo_pulse/endpoint/' + endpointId + '/pmh/recent'">sample</a>
                     </td>
                 </tr>
-                <tr>
-                    <td>
-                        Number of PMH records that match a DOI
-                    </td>
-                    <td>
-                        {{ status.num_pmh_records_matching_dois }}
-                    </td>
-                </tr>
+
                 <tr>
                     <td>
                         <div>
-                            Number of PMH records that match a DOI and have full text available,
-                            by <a href="http://support.unpaywall.org/support/solutions/articles/44000708792-paper-version-definitions">version.</a>
+                            Number that match a published article DOI and have full text freely available,
+                            by <a href="https://support.unpaywall.org/support/solutions/articles/44000708792-paper-version-definitions">version.</a>
                         </div>
-
-
-
 
                     </td>
                     <td>
                         {{ status.num_pmh_records_matching_dois_with_fulltext }}
                     </td>
+                    <td><!-- no sample--></td>
                 </tr>
                 <tr class="sub">
                     <td class="sub-label">
@@ -84,6 +83,8 @@
                     </td>
                     <td>
                         {{ versions.publishedVersion }}
+                    </td><td>
+                        <a :href="'https://api.unpaywall.org/repo_pulse/endpoint/' + endpointId + '/pmh/recent?version=publishedVersion'">sample</a>
                     </td>
                 </tr>
                 <tr class="sub">
@@ -92,6 +93,8 @@
                     </td>
                     <td>
                         {{ versions.acceptedVersion }}
+                    </td><td>
+                        <a :href="'https://api.unpaywall.org/repo_pulse/endpoint/' + endpointId + '/pmh/recent?version=acceptedVersion'">sample</a>
                     </td>
                 </tr>
                 <tr class="sub">
@@ -100,18 +103,20 @@
                     </td>
                     <td>
                         {{ versions.submittedVersion }}
+                    </td><td>
+                        <a :href="'https://api.unpaywall.org/repo_pulse/endpoint/' + endpointId + '/pmh/recent?version=submittedVersion'">sample</a>
                     </td>
                 </tr>
             </table>
         </div>
 
 
-            <div class="actions">
-                <md-button class="md-raised md-primary" href="mailto:heather@impactstory.org?subject=Unpaywall repository indexing problem">
-                    <i class="fa fa-envelope"></i>
-                    Report problem
-                </md-button>
-            </div>
+    <div class="actions">
+        <md-button class="md-raised md-primary" :href="'mailto:heather@impactstory.org?subject=Unpaywall repository indexing problem for endpoint '+endpointId">
+            <i class="fa fa-envelope"></i>
+            Report problem
+        </md-button>
+    </div>
 
 
 
@@ -130,6 +135,7 @@
                 name: "",
                 institutionName: "",
                 pmhUrl: "",
+                endpointId: "",
                 status: {},
                 versions: {}
             }
@@ -149,13 +155,14 @@
         methods: {
             loadRepo() {
                 console.log("loading repo!")
-                let url = "http://api.unpaywall.org/repo_pulse/endpoint/" + this.repoId
+                let url = "https://api.unpaywall.org/repo_pulse/endpoint/" + this.repoId
                 axios.get(url)
                     .then(resp => {
                         console.log("got repo back", resp)
                         this.name = resp.data.results.metadata.repository_name
                         this.institutionName = resp.data.results.metadata.institution_name
                         this.pmhUrl = resp.data.results.metadata.pmh_url
+                        this.endpointId = resp.data.results.metadata.endpoint_id
 
                         this.status = resp.data.results.status
                         this.versions = resp.data.results.by_version_distinct_pmh_records_matching_dois

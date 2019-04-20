@@ -41,7 +41,7 @@
         methods: {
             loadRepo() {
                 console.log("loading repo!")
-                let url = "http://api.unpaywall.org/repo_pulse/endpoint/" + this.repoId
+                let url = "https://api.unpaywall.org/repo_pulse/endpoint/" + this.repoId
                 axios.get(url)
                     .then(resp => {
                         console.log("got repo back", resp)

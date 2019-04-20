@@ -17,7 +17,7 @@
 
         <p>
             So, we built the Data Feed to address this issue. Subscribers to the feed get password-protected access to a server where we post weekly changefiles to the database. These changefiles use the same <router-link to="/data-format">data format</router-link> as the API and snapshot, and contain a row for every record that has changed in any way in the previous week. We provide both a <router-link to="/products/data-feed/changefiles">web interface</router-link> and
-            <a href="http://api.unpaywall.org/feed/changefiles?api_key=YOUR_API_KEY">JSON endpoint</a> for accessing changefiles.
+            <a href="https://api.unpaywall.org/feed/changefiles?api_key=YOUR_API_KEY">JSON endpoint</a> for accessing changefiles.
         </p>
         <p>
             The Data Feed is unique among our products in that it costs money. This is because it's more expensive to run than our other products; harvesting everything once is pretty cheap, but doing it in an ongoing way is not. In due time we'd like to have a transparent pricing structure for these, but for now we are handling it on a more custom basis, as we learn more about the market. As a nonprofit, our goal isn't to get rich off this, but rather to give everyone a fair deal while ensuring a sustainable model that keeps Unpaywall a working resource for the long haul.
