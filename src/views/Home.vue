@@ -55,13 +55,13 @@
         </p>
       </div>
       <div class="img logos">
-        <img src="../assets/all-logos.png" alt="">
+        <img src="../assets/logos/all-logos.png" alt="">
 
 
         <!--<div class="img-row">-->
           <!--<img class="logo" src="../assets/logos/bl.png" alt="">-->
           <!--<img class="logo" src="../assets/logos/digital-science.png" alt="">-->
-          <!--<img class="logo" src="../assets/logos/dartmouth.png" alt="">-->
+          <!--<img class="logo" src="../assets/logos/harvard.png" alt="">-->
           <!--<img class="logo" src="https://i.imgur.com/sA5dwma.png" alt="">-->
         <!--</div>-->
 
@@ -73,7 +73,7 @@
         <!--</div>-->
         <!--<div class="img-row">-->
           <!--<img class="logo" src="../assets/logos/nlm.png" alt="">-->
-          <!--<img class="logo" src="../assets/logos/rcuk.png" alt="">-->
+          <!--<img class="logo" src="../assets/logos/oclc.png" alt="">-->
           <!--<img class="logo" src="../assets/logos/wos.png" alt="">-->
           <!--<img class="logo" src="https://i.imgur.com/5Hlsp38.png" alt="">-->
         <!--</div>-->
