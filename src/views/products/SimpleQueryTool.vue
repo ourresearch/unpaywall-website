@@ -5,7 +5,7 @@
             If you want to check a few articles to see if they are Open Access and don't want to mess with the <router-link to="/products/api">REST API,</router-link> you're in the right place. You can check up to 1,000 DOIs at once using this tool.
         </p>
         <p>
-            We'll run the list through our API for you and give you a report on the Open Access status of each DOI. In a few minutes, you'll get an email with the results, as two attachments:
+            We'll run the list through our API for you and give you a report on the Open Access status of each DOI (note: this tool caches API response, so you may see slight differences between data here and in the API for recently-changed articles). In a few minutes, you'll get an email with the results, as two attachments:
         </p>
         <ul>
             <li>A CSV file that lets you easily import results into a spreadsheet like Excel.</li>
