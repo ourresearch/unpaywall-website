@@ -6,7 +6,7 @@
                 <h2>{{ institutionName }}</h2>
             </div>
             <div class="url">
-                OAH-PMH endpoint: <a :href="pmhUrl">{{pmhUrl}}</a>
+                OAI-PMH endpoint: <a :href="pmhUrl">{{pmhUrl}}</a>
             </div>
 
 
