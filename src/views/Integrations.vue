@@ -64,6 +64,7 @@
             <li>French Ministry of Higher Education & Research</li>
             <li>Swiss National Science Foundation</li>
             <li>German Federal Ministry of Education and Research</li>
+            <li>Science Foundation Ireland</li> <!-- https://twitter.com/scienceirel/status/1154055965580259328?s=20 -->
             <li>The Wellcome Trust</li>
         </ul>
 
