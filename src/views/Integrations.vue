@@ -103,6 +103,7 @@
             <li><a href="https://mitpress.mit.edu/kfg">MIT Knowledge Futures Group</a></li>
             <li><a href="https://researchably.com/">Researchably</a></li>
             <li><a href="https://www.scholarcy.com/">Scholarcy</a></li>
+            <li><a href="https://scite.ai/">scite</a></li>
             <li><a href="https://www.semanticscholar.org/">Semantic Scholar</a></li>
             <li><a href="https://www.wizdom.ai/">Wizdom.ai</a></li>
         </ul>
