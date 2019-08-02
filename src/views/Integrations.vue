@@ -20,7 +20,7 @@
             <li><a href="https://cloud.ebsco.com/apps/unpaywall">EBSCO Discovery System (EDS)</a></li>
             <li><a href="http://blog.europepmc.org/2018/04/unlocking-open-europe-pmc-integrates.html">Europe PubMed Central</a></li>
             <li><a href="https://gettheresearch.org">Get The Research</a></li>
-            <li><a href="https://www.meta.org/">Meta</a> (Chan Zuckerberg Institute)</li>
+            <li><a href="https://www.meta.org/">Meta</a> (Chan Zuckerberg Initiative)</li>
             <li>
                 ProQuest <a href="https://knowledge.exlibrisgroup.com/Primo/Community_Knowledge/How_to_%E2%80%93_Add_an_Unpaywall_General_Electronic_Service_to_Alma%2C_for_Open_Access_links_in_Primo">Alma, </a>
                 <a href="https://developers.exlibrisgroup.com/appcenter/unpaywall/">Primo, </a> and
@@ -103,7 +103,7 @@
             <li><a href="https://mitpress.mit.edu/kfg">MIT Knowledge Futures Group</a></li>
             <li><a href="https://researchably.com/">Researchably</a></li>
             <li><a href="https://www.scholarcy.com/">Scholarcy</a></li>
-            <li><a href="https://scite.ai/">scite</a></li>
+            <li><a href="https://scite.ai/">scite.ai</a></li>
             <li><a href="https://www.semanticscholar.org/">Semantic Scholar</a></li>
             <li><a href="https://www.wizdom.ai/">Wizdom.ai</a></li>
         </ul>
