@@ -49,9 +49,6 @@
                 </dd>
 
 
-                <dt id="identify-green-or-gold">Can Unpaywall Data tell me whether an article is "Green," "Gold," or "Bronze" OA?</dt>
-                <dd>We don't include the "OA Color" explicitly in the data schema, because we found that people's definitions of the colors vary pretty widely, and so it was causing confusion. Instead, we include all the data you'll need to decide the color based on your own definitions, whatever they may be. In particular, you'll probably want to look at the  <code>is_oa</code> and <code>journal_is_oa</code> fields of the DOI Object, as well as the <code>license</code> and <code>host_type</code> fields of Location Objects. See the <router-link to="/data-format">schema documentation</router-link> for more details.
-                </dd>
 
 
 
@@ -63,7 +60,8 @@
 
                 <dt id="different-results-from-unpaywall">Why does the Unpaywall extension sometimes give different results from the API or dataset?</dt>
                 <dd>
-                    The extension occasionally reports "open" when the API doesn't because the extension, in addition to checking our API, also checks the source code of publisher pages themselves as you visit them.
+                        The extension occasionally reports "open" when the API doesn't because the extension, in addition to checking our API, also checks the source code of publisher pages themselves as you visit them. You can read
+                    <a href="https://impactstory.freshdesk.com/a/solutions/articles/44001781069-why-does-the-unpaywall-plugin-say-this-paywalled-article-is-open-access-">more about that here.</a>
                 </dd>
 
 
@@ -71,6 +69,11 @@
                 <dd>
                     Sorry about that!
                     <a href="mailto:support@unpaywall.org">Drop us an email</a> and we'll get it fixed for you.
+                </dd>
+
+                <dt id="run-on-click">Can I make Unpaywall run <em>only</em> when I click a button, instead of automatically?</dt>
+                <dd>
+                    Yep! In Chrome, click the settings button (it looks like a vertical ellipsis) at the top right of your window. Then click <code>More tools</code> and then <code>Extensions</code>. Find the Unpaywall extension, and click <code>Details.</code> Under <code>Site Access,</code> select <code>On click.</code> Done! Now Unpaywall will not run unless you click the Unpaywall icon in your Chrome toolbar.
                 </dd>
 
             </dl>
