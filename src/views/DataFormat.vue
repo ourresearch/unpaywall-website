@@ -128,7 +128,7 @@
                     <span class="type">Boolean</span>
                 </td>
                 <td class="contents">
-                    <code>True</code> if there is an OA copy of this resource.
+                    Is there an OA copy of this resource.
                 </td>
                 <td class="notes">
                     Convenience attribute; returns <code>true</code> when <code>best_oa_location</code> is not <code>null</code>.
@@ -145,7 +145,7 @@
                     Is this resource published in a <a href="https://doaj.org/">DOAJ-indexed</a> journal.
                 </td>
                 <td class="notes">
-                    Useful for defining whether a resource is Gold OA (depending on your definition).
+                    Useful for defining whether a resource is Gold OA (depending on your definition, see also <code>journal_is_oa</code>).
                 </td>
             </tr>
 
@@ -160,7 +160,8 @@
                     Is this resource published in a completely OA journal.
                 </td>
                 <td class="notes">
-                    Under construction. Included for future compatibility.  Will eventually include any fully-OA publication venue, regardless of inclusion in DOAJ.
+                    Useful for defining whether a resource is Gold OA. Includes any fully-OA journal, regardless of inclusion in DOAJ. This includes journals by all-OA publishers and journals that would otherwise be all Hybrid or Bronze OA.
+                    <a href="https://support.unpaywall.org/a/solutions/articles/44001792752-how-do-we-decide-if-a-given-journal-is-fully-oa-">See here for more information on OA journals.</a>
                 </td>
             </tr>
 
