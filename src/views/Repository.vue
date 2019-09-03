@@ -112,7 +112,7 @@
 
 
     <div class="actions">
-        <md-button class="md-raised md-primary" :href="'mailto:heather@impactstory.org?subject=Unpaywall repository indexing problem for endpoint '+endpointId">
+        <md-button class="md-raised md-primary" :href="'mailto:heather@ourresearch.org?subject=Unpaywall repository indexing problem for endpoint '+endpointId">
             <i class="fa fa-envelope"></i>
             Report problem
         </md-button>

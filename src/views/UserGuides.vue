@@ -55,7 +55,7 @@
 
 
                 A particularly easy way to get started with research is to use <a href="https://app.dimensions.ai/discover/publication?and_facet_open_access=True">Dimensions</a>,
-                <a href="https://blog.impactstory.org/elsevier-data-feed/">Scopus,</a> or
+                <a href="https://blog.ourresearch.org/elsevier-data-feed/">Scopus,</a> or
                                 <a href="https://clarivate.com/wp-content/uploads/2017/10/Clarivate-OA-Impact-Story_Intro-sheet.pdf?elqTrackId=c5abee7048934a3da317e296a3e2a9c8&elqaid=5350&elqat=2">Web of Science, </a> which all have Unpaywall data integrated into their databases. That's the approach used by
                                 <a href="https://peerj.com/preprints/3520/">this recent paper.</a> You might also check out the
                                 <a href="https://peerj.com/preprints/3119v1/">the canonical reference paper</a> for the dataset, which gives a good overview of the data as a whole.
@@ -87,7 +87,7 @@
                 taking advantage of Unpaywall's integration into
                 <a href="https://app.dimensions.ai/discover/publication?and_facet_open_access=True">Dimensions,</a> 
                 <a href="https://clarivate.com/wp-content/uploads/2017/10/Clarivate-OA-Impact-Story_Intro-sheet.pdf?elqTrackId=c5abee7048934a3da317e296a3e2a9c8&elqaid=5350&elqat=2">Web of Science,</a> and
-                <a href="https://blog.impactstory.org/elsevier-data-feed/">Scopus.</a>
+                <a href="https://blog.ourresearch.org/elsevier-data-feed/">Scopus.</a>
             </p>
 
 

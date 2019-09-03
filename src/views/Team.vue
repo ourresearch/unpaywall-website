@@ -9,7 +9,7 @@
             </div>
             <div class="text">
                 <p>
-                    Unpaywall is a project of <a href="https://impactstory.org">Impactstory,</a> a nonprofit building tools to help make scholarly research more open, accessible, and reusable. Impactstory is <strong>Heather Piwowar</strong> (<a href="https://docs.google.com/document/d/1S7aKmG_l3wJxAc4lb5gJYMwNVDnAT7HlQWcaXADwA1s/edit?usp=sharing">bio, </a>
+                    Unpaywall is a project of <a href="https://ourresearch.org">Our Research,</a> a nonprofit building tools to help make scholarly research more open, accessible, and reusable. Our Research is run by <strong>Heather Piwowar</strong> (<a href="https://docs.google.com/document/d/1S7aKmG_l3wJxAc4lb5gJYMwNVDnAT7HlQWcaXADwA1s/edit?usp=sharing">bio, </a>
                     <a href="https://scholar.google.com/citations?user=1YLq0XMAAAAJ&hl=en">publications, </a>
                     <a href="https://twitter.com/researchremix">Twitter</a>) and
 
@@ -27,7 +27,7 @@
         </div>
         <div class="row second">
                 <p>
-                    If you'd like to get in touch, we'd love to hear from you. To report a bug, please email us at <a href="mailto:support@unpaywall.org">support@unpaywall.org;</a> for everything else, drop us a line at <a href="mailto:team@ourresearch.org">team@impactstory.org</a>
+                    If you'd like to get in touch, we'd love to hear from you. To report a bug, please email us at <a href="mailto:support@unpaywall.org">support@unpaywall.org;</a> for everything else, drop us a line at <a href="mailto:team@ourresearch.org">team@ourresearch.org</a>
                 </p>
         </div>
 
