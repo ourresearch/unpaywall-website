@@ -94,7 +94,7 @@
         </div>
 
         <p class="construction">
-            Of course, this is just a very quick overview...if you have any questions, or want to use Unpaywall in a way that's not described here, please <a href="mailto:team@impactstory.org">drop us a line</a> and we'll be happy to help!
+            Of course, this is just a very quick overview...if you have any questions, or want to use Unpaywall in a way that's not described here, please <a href="mailto:team@ourresearch.org">drop us a line</a> and we'll be happy to help!
         </p>
 
 

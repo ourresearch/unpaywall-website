@@ -68,11 +68,11 @@
             <li>Otherwise interfere or attempt to interfere with the proper functioning of the Service;</li>
         </ul>
         <br>
-        Unauthorized use may result in criminal and/or civil prosecution under Federal, State and local law.  If you become aware of misuse of the Service, please contact us at team@impactstory.org.<br>
+        Unauthorized use may result in criminal and/or civil prosecution under Federal, State and local law.  If you become aware of misuse of the Service, please contact us at team@ourresearch.org.<br>
 
         <h3>Copyright Complaints</h3>
 
-        If you are the copyright owner or an agent thereof and believe, in good faith, that the Data or any portion of the Data, or any materials currently being used in connection with the Service infringe upon your copyrights, you may submit a notification pursuant to the Digital Millennium Copyright Act (see 17 U.S.C 512) ("<u>DMCA</u>") by sending the following information in writing to Impactstory's designated copyright agent at team@impactstory.org: <br>
+        If you are the copyright owner or an agent thereof and believe, in good faith, that the Data or any portion of the Data, or any materials currently being used in connection with the Service infringe upon your copyrights, you may submit a notification pursuant to the Digital Millennium Copyright Act (see 17 U.S.C 512) ("<u>DMCA</u>") by sending the following information in writing to Impactstory's designated copyright agent at team@ourresearch.org: <br>
         <ul type="disc">
             <li>The date of your notification; </li>
             <li>A physical or electronic signature of a person authorized to act on behalf of the owner of an exclusive right that is allegedly infringed; </li>
@@ -105,11 +105,11 @@
 
         <h3>Email is Not Sufficient to Provide Legal Notice to Impactstory</h3>
 
-        You may communicate with us about the Service by sending an email to team@impactstory.org. However, communications made through the Service's e-mail and messaging system, if and when available, will not constitute legal notice to Impactstory or any of its officers, employees, agents or representatives in any situation where notice to Impactstory is required by contract or any law or regulation.<br>
+        You may communicate with us about the Service by sending an email to team@ourresearch.org. However, communications made through the Service's e-mail and messaging system, if and when available, will not constitute legal notice to Impactstory or any of its officers, employees, agents or representatives in any situation where notice to Impactstory is required by contract or any law or regulation.<br>
 
         <h3>You Consent to Electronic Communications</h3>
 
-        For contractual purposes, you (A) consent to receive communications from Impactstory in an electronic form via the email address you have submitted; and (B) agree that all Terms, agreements, notices, disclosures, and other communications that Impactstory provides to you electronically satisfy any legal requirement that such communication would satisfy if it were in writing. The foregoing does not affect your non-waivable rights. We may also use your email address, to send you other messages, consistent with and as described in more detail in our Privacy Policy located at <a href="https://unpaywall.org/legal/privacy">https://unpaywall.org/legal/privacy</a>. You may opt out of such email by sending us an email to team@impactstory.org.<br>
+        For contractual purposes, you (A) consent to receive communications from Impactstory in an electronic form via the email address you have submitted; and (B) agree that all Terms, agreements, notices, disclosures, and other communications that Impactstory provides to you electronically satisfy any legal requirement that such communication would satisfy if it were in writing. The foregoing does not affect your non-waivable rights. We may also use your email address, to send you other messages, consistent with and as described in more detail in our Privacy Policy located at <a href="https://unpaywall.org/legal/privacy">https://unpaywall.org/legal/privacy</a>. You may opt out of such email by sending us an email to team@ourresearch.org.<br>
 
         <h3>You Assume Any Risk of Using the Service</h3>
 
@@ -169,7 +169,7 @@
         If any provision of these Terms is held by an arbitrator or court of competent jurisdiction to be invalid, illegal or unenforceable for any reason, such provision shall be eliminated or limited to the minimum extent such that the remaining provisions of the Terms will continue in full force and effect. Our rights under these Terms will survive any termination of these Terms.<br>
         <br>
         <b>Contacting Us</b><br>
-        Please feel free to contact us if you have any questions about these Terms at: team@impactstory.org<br>
+        Please feel free to contact us if you have any questions about these Terms at: team@ourresearch.org<br>
 
 
     </div>

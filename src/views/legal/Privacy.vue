@@ -37,7 +37,7 @@
         the Service. We encourage parents and legal guardians to monitor their children's Internet usage and to help
         enforce our privacy policy by instructing their children never to provide personal information on the Site. If
         you have reason to believe that a child has provided personal information through the Site, please contact us by
-        email at <a href="mailto:team@impactstory.org">team@impactstory.org</a>. If we learn we have collected or
+        email at <a href="mailto:team@ourresearch.org">team@ourresearch.org</a>. If we learn we have collected or
         received personal information from a child under 13 without verification of parental consent, we will delete
         that information.<br>
 
@@ -238,7 +238,7 @@
         you withdraw your consent, we may not be able to provide certain products or services to you. We will advise you
         if this is the case at the time you withdraw your consent.<br>
         <br>
-        Please direct all requests related to your information to Jason Priem at <a href="mailto:team@impactstory.org">team@impactstory.org</a>.
+        Please direct all requests related to your information to Jason Priem at <a href="mailto:team@ourresearch.org">team@ourresearch.org</a>.
         <br>
         <br>
         If you are a resident of the European Economic Area and you believe we are unlawfully processing your personal
@@ -281,7 +281,7 @@
 
         California Civil Code Section &#xA7; 1798.83 permits users of our Service that are California residents to
         request certain information regarding our disclosure of personal information to third parties for their direct
-        marketing purposes. To make such a request, please send an e-mail to <a href="mailto:team@impactstory.org">team@impactstory.org</a>
+        marketing purposes. To make such a request, please send an e-mail to <a href="mailto:team@ourresearch.org">team@ourresearch.org</a>
         or write us at: 500 Westover Dr #8234, Sanford NC, 27330-8941.<br>
 
         <h2>Links to Other Websites</h2>
@@ -315,12 +315,12 @@
         please contact us first so that we can discuss a resolution with you directly.<br>
         <br>
         If you have any questions regarding this Policy or our data processing practices, please contact us by sending
-        an email to <a href="mailto:team@impactstory.org">team@impactstory.org</a>. <br>
+        an email to <a href="mailto:team@ourresearch.org">team@ourresearch.org</a>. <br>
         <br>
         <b>Our full details are:</b><br>
         <b>Full name of legal entity: Impactstory, Inc.</b><br>
         <b>Individual Contact: Jason Priem or Heather Piwowar</b><br>
-        <b>Email address: <a href="mailto:team@impactstory.org">team@impactstory.org</a></b><br>
+        <b>Email address: <a href="mailto:team@ourresearch.org">team@ourresearch.org</a></b><br>
         <b>Postal address: 500 Westover Dr #8234 Sanford, NC 27330-8941</b><br>
         <b>Telephone number: <a href="tel:778-848-4724">778-848-4724</a></b><br>
 

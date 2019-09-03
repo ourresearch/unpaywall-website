@@ -38,7 +38,7 @@
                 <a href="https://github.com/Impactstory/oadoi">
                     <i class="fab fa-github"></i>
                 </a>
-                <a href="mailto:team@impactstory.org">
+                <a href="mailto:team@ourresearch.org">
                     <i class="far fa-envelope"></i>
                 </a>
             </div>

@@ -23,7 +23,7 @@
             The Data Feed is unique among our products in that it costs money. This is because it's more expensive to run than our other products; harvesting everything once is pretty cheap, but doing it in an ongoing way is not. In due time we'd like to have a transparent pricing structure for these, but for now we are handling it on a more custom basis, as we learn more about the market. As a nonprofit, our goal isn't to get rich off this, but rather to give everyone a fair deal while ensuring a sustainable model that keeps Unpaywall a working resource for the long haul.
         </p>
         <p>
-            If you're interested in the Data Feed, please <a href="mailto:team@impactstory.org">drop us a line</a> and let us know the size of your organization and your intended use of the data, and we'll get right back to you with a quote. We look forward to hearing from you!
+            If you're interested in the Data Feed, please <a href="mailto:team@ourresearch.org">drop us a line</a> and let us know the size of your organization and your intended use of the data, and we'll get right back to you with a quote. We look forward to hearing from you!
         </p>
 
     </div>
