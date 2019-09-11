@@ -208,6 +208,27 @@
                 </td>
             </tr>
 
+            <!--oa_status-->
+            <tr>
+                <td class="key">
+                    <span class="name">oa_status</span>
+                    <span class="type">String</span>
+                </td>
+                <td class="contents">
+                    The OA status, or color, of this resource.
+                </td>
+                <td class="notes">
+                    Classifies OA resources by location and license terms as one of:
+                        <code>gold</code>,
+                        <code>hybrid</code>,
+                        <code>bronze</code>,
+                        <code>green</code> or
+                        <code>closed</code>.
+                    <a href="https://support.unpaywall.org/support/solutions/articles/44001777288-what-do-the-types-of-oa-status-green-gold-hybrid-and-bronze-mean-">
+                    See here for more information on how we assign an oa_status.
+                    </a>
+                </td>
+            </tr>
 
 
             <!--published_date-->
