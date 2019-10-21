@@ -12,7 +12,7 @@
                 </div>
                 <div class="about">
                     <p>
-                        The modern way to shape your serials collection
+                        Unpaywall Journals is a data dashboard to help you get more value from your serials budget.
                     </p>
 
                 </div>
@@ -60,7 +60,7 @@
                 <div class="main">
                     <h2>Keep optimizing</h2>
                     <p>
-                        Identify cost saving opportunities that work for your institution, given your unique usage patterns and priorities.
+                        Identify cost saving opportunities that work for your institution, given your unique assumptions, usage patterns, and priorities.
                     </p>
                 </div>
                 <ul class="extra">
@@ -70,7 +70,7 @@
                     </li>
                     <li>
                         <h3>Look ahead five years</h3>
-                        <p>Base your decisions on projections of future usage and availability, rather than how things have been.</p>
+                        <p>Base your decisions on projections of future usage and availability, rather than how things have been.  Configure model settings to reflect your personal assumptions and risk tolerance.</p>
                     </li>
                     <li>
                         <h3>Customize for your institution's values</h3>
@@ -151,9 +151,9 @@
 
 <script>
     export default {
-        name: "Extension",
+        name: "Unpaywall Journals",
         metaInfo: {
-            title: "Browser Extension"
+            title: "Unpaywall Journals"
         },
         data: () => {
             return {
