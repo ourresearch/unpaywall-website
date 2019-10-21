@@ -111,7 +111,7 @@
             <ul>
                 <li>
                     <h3>Launching on November 4th, 2019</h3>
-                    <p>Sign up to the Our Research newsletter here to be the first to hear when Unpaywall Journals is released.  Then help us spread the word!</p>
+                    <p>Sign up to the waitlist at the bottom of this page to be the first to hear when Unpaywall Journals is released.  Then help us spread the word!</p>
                 </li>
                 <li>
                     <h3>A Partner in Open Infrastructure</h3>
@@ -128,7 +128,7 @@
                 </li>
                 <li>
                     <h3>More questions?</h3>
-                    <p>We'd love to answer them! team@ourresearch.org and follow @unpaywall.</p>
+                    <p>We'd love to answer them! Email team@ourresearch.org and follow <a href="https://twitter.com/unpaywall">@unpaywall</a>.</p>
                 </li>
             </ul>
 
