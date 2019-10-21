@@ -88,6 +88,7 @@
   .md-menu-content-container ul.md-list {
     background: rgba(0, 0, 0, .8);
     background: #393939;
+    background: #4caf50;
     li a {
       color: #fff !important;
     }

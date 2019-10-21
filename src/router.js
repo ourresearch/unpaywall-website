@@ -27,6 +27,7 @@ import DataFeed from './views/products/DataFeed'
 import Changefiles from './views/products/Changefiles'
 import SimpleQueryTool from './views/products/SimpleQueryTool'
 import Extension from './views/products/Extension'
+import UnpaywallJournals from './views/products/UnpaywallJournals'
 
 
 // legal
@@ -163,6 +164,10 @@ export default new Router({
     {
       path: '/products/extension',
       component: Extension
+    },
+    {
+      path: '/journals',
+      component: UnpaywallJournals
     },
 
 

@@ -36,6 +36,14 @@
                         <i class="fas fa-sort-down"></i>
                     </md-button>
                     <md-menu-content>
+                        <md-menu-item to="/products/extension">
+                            Browser extension
+                        </md-menu-item>
+
+                        <md-menu-item to="/journals">
+                            Unpaywall Journals
+                        </md-menu-item>
+
                         <md-menu-item to="/products/snapshot">
                             Database snapshot
                         </md-menu-item>
@@ -52,9 +60,6 @@
                             Simple Query Tool
                         </md-menu-item>
 
-                        <md-menu-item to="/products/extension">
-                            Chrome/Firefox extension
-                        </md-menu-item>
                     </md-menu-content>
                 </md-menu>
 
@@ -153,7 +158,7 @@
 
 
     .container {
-        background: #333;
+        background: #4caf50; // green 500
         height: 88px;
         display: flex;
         align-items: center;
