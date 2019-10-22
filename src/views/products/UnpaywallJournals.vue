@@ -7,12 +7,12 @@
             <div class="main-copy">
                 <div class="tagline">
                     <h2 class="above">
-                        Subscribe informed.
+                        Get more value from your serials budget.
                     </h2>
                 </div>
                 <div class="about">
                     <p>
-                        Unpaywall Journals is a data dashboard to help you get more value from your serials budget.
+                        Unpaywall Journals is a data dashboard that that combines journal-level citations, downloads, Open Access statistics and more, to help librarians confidently manage their serials collections.
                     </p>
 
                 </div>
