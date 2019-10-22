@@ -27,7 +27,7 @@
 
             </div>
 
-        </div>
+        </div>k
 
         <div class="selling-points">
 
