@@ -36,7 +36,7 @@
                 <div class="main">
                     <h2>Get Informed</h2>
                     <p>
-                        Understand the latest data on open access, read and publish models, and real cost-per-use data in the context of your own serials collection.
+                        Pull together comprehensive data on open access, institutional citation rates and authorship, APC spending and more.
                     </p>
                 </div>
                 <ul class="extra">
@@ -49,8 +49,8 @@
                         <p>Automatically determine how much money your institution pays in open access publishing fees to understand your entire spend to publishers.</p>
                     </li>
                     <li>
-                        <h3>Anticipate disruptions</h3>
-                        <p>Learn how upcoming industry changes such as Plan S, read and publish agreements, and new document delivery pathways will affect your access choices.</p>
+                        <h3>Look beyond cost-per-use</h3>
+                        <p>Model how citations and authorship from your faculty affect journal value.</p>
                     </li>
                 </ul>
             </div>
@@ -66,11 +66,12 @@
                 <ul class="extra">
                     <li>
                         <h3>Stop paying for free content</h3>
-                        <p>Use cost-per-use calculations that exclude content which is available for free through open access or your own backfile.</p>
+                        <p>Calculate <a
+                                href="http://www.ala.org/acrl/sites/ala.org.acrl/files/content/conferences/confsandpreconfs/2017/LeveragingtheGrowthofOpenAccess.pdf">OA-adjusted cost-per-use,</a> excluding OA content when assessing subscription value, and exclude backfile access as well where relevant.</p>
                     </li>
                     <li>
                         <h3>Look ahead five years</h3>
-                        <p>Base your decisions on projections of future usage and availability, rather than how things have been.  Configure model settings to reflect your personal assumptions and risk tolerance.</p>
+                        <p>Base your decisions on projections of future usage and availability, rather than how things have been.  Configure every aspect of the model, to reflect your personal assumptions and risk tolerance--from ILL costs, to the effects of Plan S.</p>
                     </li>
                     <li>
                         <h3>Customize for your institution's values</h3>
@@ -115,7 +116,7 @@
                 </li>
                 <li>
                     <h3>A Partner in Open Infrastructure</h3>
-                    <p>Our Research is a US-based non-profit company.  Like everything we do, Unpaywall Journals has open source code, an open data API, and an accessible pricing model.</p>
+                    <p>Unpaywall is from Our Research, a 501(c)3 nonprofit.  Like everything we build, Unpaywall Journals has open source code, an open data API, and an accessible, sustainable pricing model.</p>
                 </li>
                 <li>
                     <h3>Free demo</h3>
@@ -123,7 +124,7 @@
                 </li>
                 <li>
                     <h3>Customization and price</h3>
-                    <p>We want all institutions to be able to afford this tool.  To achieve this, we are setting the introductory price at $1000/year (US dollars) -- less than the price of a single APC or subscription.  In return for this, your institution becomes a supporter of Open Infrastructure, a partner in Unpaywall Journals, and will receive an Unpaywall Journals dashboard customized to your institution.  You will be able to upload your own COUNTER stats, subscription history, and price lists.  We'll use this information to customize the usage, open access percentages, citations, authorships, and prices for your university.  If your institution would like to contribute more, we will <a href="https://blog.ourresearch.org/donations/donate/">gladly accept donations</a> &mdash; we are a 501(c)3 tax-exempt charity &mdash; and will use that money to continue making tools and data as openly available as possible.
+                    <p>We want all institutions to be able to afford this tool.  To achieve this, we are setting the introductory price at $1000/year (US dollars) -- less than the price of a single article APC or single journal subscription.  In return for this, your institution becomes a supporter of Open Infrastructure, a partner in Unpaywall Journals, gets an Unpaywall Journals dashboard customized to your institution.  You will be able to upload your own COUNTER stats, subscription history, and price lists.  We'll use this information to customize the usage, open access percentages, citations, authorships, and prices for your university.  If your institution would like to contribute more, we will <a href="https://blog.ourresearch.org/donations/donate/">gladly accept donations</a> &mdash; we are a 501(c)3 tax-exempt charity &mdash; and will use that money to continue making tools and data as openly available as possible.
 .</p>
                 </li>
                 <li>
