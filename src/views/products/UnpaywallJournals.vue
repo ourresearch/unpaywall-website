@@ -12,7 +12,7 @@
                 </div>
                 <div class="about">
                     <p>
-                        Unpaywall Journals is a data dashboard that that combines journal-level citations, downloads, Open Access statistics and more, to help librarians confidently manage their serials collections.
+                        Unpaywall Journals is a data dashboard that combines journal-level citations, downloads, Open Access statistics and more, to help librarians confidently manage their serials collections.
                     </p>
 
                 </div>
@@ -111,7 +111,7 @@
 
             <ul>
                 <li>
-                    <h3>Launching on November 4th, 2019</h3>
+                    <h3>Launching early November, 2019</h3>
                     <p>Sign up to the waitlist at the bottom of this page to be the first to hear when Unpaywall Journals is released.  Then help us spread the word!</p>
                 </li>
                 <li>
@@ -187,8 +187,9 @@
     }
 
     .top-screen {
+
         display: flex;
-        margin: 100px 0 140px;
+        margin: 100px 0 20px;
         @media (max-width: 600px) {
             margin-top: 0;
             flex-wrap: wrap;
@@ -215,10 +216,11 @@
 
         .main-copy {
             font-size: 24px;
-            margin: -10px 80px 0 80px;
             display: flex;
             flex-direction: column;
             justify-content: center;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 100px;
 
 
 
