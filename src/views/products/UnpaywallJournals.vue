@@ -36,7 +36,7 @@
                 <div class="main">
                     <h2>Get Informed</h2>
                     <p>
-                        Pull together comprehensive data on open access, institutional citation rates and authorship, APC spending and more.
+                        Pull together comprehensive data on open access, read and publish models, and real cost-per-use data in the context of your own serials collection.
                     </p>
                 </div>
                 <ul class="extra">
@@ -49,8 +49,8 @@
                         <p>Automatically determine how much money your institution pays in open access publishing fees to understand your entire spend to publishers.</p>
                     </li>
                     <li>
-                        <h3>Look beyond cost-per-use</h3>
-                        <p>Model how citations and authorship from your faculty affect journal value.</p>
+                        <h3>Anticipate disruptions</h3>
+                        <p>Learn how upcoming industry changes such as Plan S, read and publish agreements, and new document delivery pathways will affect your access choices.</p>
                     </li>
                 </ul>
             </div>
