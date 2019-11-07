@@ -17,6 +17,11 @@ app.get('*', function (req, res) {
         res.redirect(redirectUrl)
 
     }
+    else if (req.path === "/journals"){
+        const redirectUrl = req.protocol + "://journals.unpaywall.org/";
+        res.redirect(redirectUrl);
+
+    }
     else {
         // they want the unpaywall webpage
         res.sendfile('./dist/index.html');
