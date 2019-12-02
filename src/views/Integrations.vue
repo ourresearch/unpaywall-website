@@ -46,6 +46,9 @@
             </li>
             <li><a href="https://knowledge.exlibrisgroup.com/SFX/Knowledge_Articles/How_to_enable_oaDOI_service_on_SFX">SFX</a>
             </li>
+            <li>
+                <a href="https://cloud.ebsco.com/apps/unpaywall">EBSCO FTF</a>
+            </li>
             <li>Roll your own: the shortcut link <code>https://unpaywall.org/YOUR_DOI</code> automatically redirects to
                 an open version of <code>YOUR_DOI</code> if we have one; many libraries have added this as a manual
                 target in their own link resolvers.
