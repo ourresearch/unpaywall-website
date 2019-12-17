@@ -2,7 +2,7 @@
     <div class="site-footer md-layout md-gutter">
         <div class="col md-layout-item md-size-20 md-xsmall-size-100 products">
             <h3>Products & integrations</h3>
-            <router-link to="/journals">Unpaywall Journals</router-link>
+            <a href="https://journals.unpaywall.org/">Unpaywall Journals</a>
             <router-link to="/products/extension">Chrome/Firefox extension</router-link>
             <router-link to="/products/snapshot">Database snapshot</router-link>
             <router-link to="/products/data-feed">Data Feed</router-link>
