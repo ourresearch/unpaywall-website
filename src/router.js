@@ -40,6 +40,10 @@ import AddRepository from './views/AddRepository'
 
 
 Vue.use(Router)
+Vue.component('router-link', Vue.options.components.RouterLink);
+Vue.component('router-view', Vue.options.components.RouterView);
+
+
 Vue.use(Meta)
 
 

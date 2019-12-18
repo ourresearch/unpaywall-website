@@ -40,7 +40,7 @@
                             Browser extension
                         </md-menu-item>
 
-                        <md-menu-item to="/journals">
+                        <md-menu-item target="_blank" href="https://journals.unpaywall.org/">
                             Unpaywall Journals
                         </md-menu-item>
 
@@ -56,9 +56,9 @@
                             REST API
                         </md-menu-item>
 
-                        <md-menu-item to="/products/simple-query-tool">
-                            Simple Query Tool
-                        </md-menu-item>
+<!--                        <md-menu-item to="/products/simple-query-tool">-->
+<!--                            Simple Query Tool-->
+<!--                        </md-menu-item>-->
 
                     </md-menu-content>
                 </md-menu>

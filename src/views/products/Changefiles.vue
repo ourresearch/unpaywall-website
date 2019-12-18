@@ -50,7 +50,7 @@
             <h2>Changefiles</h2>
 
             <md-list>
-                <md-list-item v-for="changefile in changefiles" v-if="changefile.filetype=='jsonl'">
+                <md-list-item :key="changefile.url" v-for="changefile in changefiles" v-if="changefile.filetype=='jsonl'">
 
                     <md-avatar>
                             <i class="far fa-file-archive"></i>

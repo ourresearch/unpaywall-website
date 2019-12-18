@@ -165,6 +165,9 @@
         methods: {
         },
         mounted() {
+            window.location.href= "https://journals.unpaywall.org/"
+
+
             let s = document.createElement('script')
             s.setAttribute('src', 'https://widget.prefinery.com/widget/v2/tpuegk6r.js')
             document.head.appendChild(s)
