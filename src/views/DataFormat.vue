@@ -118,8 +118,21 @@
                 </td>
             </tr>
 
-
-
+            <!--is_paratext-->
+            <tr>
+                <td class="key">
+                    <span class="name">is_paratext</span>
+                    <span class="type">Boolean</span>
+                </td>
+                <td class="contents">
+                    Is the item an ancillary part of a journal, like a table of contents?
+                </td>
+                <td class="notes">
+                    <a href="https://support.unpaywall.org/support/solutions/articles/44001894783">
+                    See here for more information on how we determine whether an article is paratext.
+                    </a>
+                </td>
+            </tr>
 
             <!--is_oa-->
             <tr>
