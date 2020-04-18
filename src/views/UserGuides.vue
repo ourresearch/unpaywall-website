@@ -3,11 +3,13 @@
         <h1>Get started: {{ guideName }}</h1>
 
 
-        <p>
-            The Unpaywall database has a very simple structure: we have one record for every article with a Crossref DOI (that's about 95 million records all told). We harvest from <router-link to="/sources">lots of sources</router-link> to find Open Access content, and then we match it to these DOIs using content fingerprints. So, for any given DOI, we know about any OA versions that exist anywhere (at least that's the idea).
-        </p>
-        <p>We support a variety of products to help folks access these 95 million records in different ways; all of these are free to use, except the <router-link to="/products/data-feed">Data Feed.</router-link> We also support a number of <router-link to="/integrations">integrations,</router-link> where other organizations have built useful tools on top of our dataset.
-        </p>
+        <div v-if="0">
+            <p>
+                The Unpaywall database has a very simple structure: we have one record for every article with a Crossref DOI (that's about 95 million records all told). We harvest from <router-link to="/sources">lots of sources</router-link> to find Open Access content, and then we match it to these DOIs using content fingerprints. So, for any given DOI, we know about any OA versions that exist anywhere (at least that's the idea).
+            </p>
+            <p>We support a variety of products to help folks access these 95 million records in different ways; all of these are free to use, except the <router-link to="/products/data-feed">Data Feed.</router-link> We also support a number of <router-link to="/integrations">integrations,</router-link> where other organizations have built useful tools on top of our dataset.
+            </p>
+        </div>
 
 
 
@@ -64,9 +66,16 @@
         </div>
 
         <div class="libraries" v-if="guideName=='libraries'">
+
             <p>
-                <strong>Librarians:</strong>
-                can integrate Unpaywall into their
+                Our premier tool for libraries is the Unpaywall Journals dashboard. It mashes up journal-level OA data with your institution's citation patterns and COUNTER download info, then builds a comprehensive model to forecast how cancellation or subscription decisions will affect library costs and fulfillment--letting you confidently made decisions about your Big Deals and individual subscriptions. We were named "Most Impactful New Product" at the 2019 Charleston Conference, and hundreds of libraries are already users.
+            </p>
+            <p>
+                <a href="https://journals.unpaywall.org">Check out Unpaywall Journals!</a>
+            </p>
+
+            <p>
+                Librarians can also integrate Unpaywall into their
                 <a href="https://knowledge.exlibrisgroup.com/SFX/Knowledge_Articles/How_to_enable_oaDOI_service_on_SFX">SFX,</a>
 
                 <a href="https://knowledge.exlibrisgroup.com/360_Services/360_Link/0Product_Documentation/Overview/360_Link_with_IEDL%3A_Open_Access_Lookup_Service_Integration">360 Link,</a>
@@ -78,9 +87,9 @@
                 link resolvers, so library users can read OA copies in cases where there's no subscription access. Over 1000 libraries worldwide are using this now.
             </p>
 
+            <h3>Institutional Repository managers</h3>
             <p>
-                <strong>Institutional Repository managers</strong>
-                can use Unpaywall data to find OA resources that faculty have posted online, without depositing in their IR. These can be automatically ingested, significantly increasing IR coverage without needing to convince faculty to deposit. Repositories of all sizes have used Unpaywall data in this way.  SwePub (national repository of Sweden) added 75,000 new OA records, increasing number of OA records by over 30%, while the smaller
+                IR managers can use Unpaywall data to find OA resources that faculty have posted online, without depositing in their IR. These can be automatically ingested, significantly increasing IR coverage without needing to convince faculty to deposit. Repositories of all sizes have used Unpaywall data in this way.  SwePub (national repository of Sweden) added 75,000 new OA records, increasing number of OA records by over 30%, while the smaller
                 <a href="https://ir.library.carleton.ca/">the Carleton University IR</a> added 1000 OA records, doubling their fulltext coverage. There are a few good ways to access our data for this use case:
                 <router-link to="/products/snapshot">download the whole dataset, </router-link>
                 <router-link to="/products/simple-query-tool">check lists of records by DOI,</router-link> or
