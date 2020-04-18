@@ -5,11 +5,12 @@
             If you want to check a few articles to see if they are Open Access and don't want to mess with the <router-link to="/products/api">REST API,</router-link> you're in the right place. You can check up to 1,000 DOIs at once using this tool.
         </p>
         <p>
-            We'll run the list through our API for you and give you a report on the Open Access status of each DOI (note: this tool caches API response, so you may see slight differences between data here and in the API for recently-changed articles). In a few minutes, you'll get an email with the results, as two attachments:
+            We'll run the list through our API for you and give you a report on the Open Access status of each DOI (note: this tool caches API response, so you may see slight differences between data here and in the API for recently-changed articles). In a few minutes, you'll get an email with the results, as up to three attachments:
         </p>
         <ul>
             <li>A CSV file that lets you easily import results into a spreadsheet like Excel.</li>
             <li>A <a href="http://jsonlines.org/">JSON Lines</a> file that shows what you'd get if you called our API once for each DOI.</li>
+            <li>An Excel spreadsheet.</li>
         </ul>
         <p>
              Don't forget to check the <router-link to="/data-format">schema documentation,</router-link> which includes definitions that will help you interpret the the result files.
@@ -28,6 +29,11 @@
                     </md-textarea>
                 </md-field>
 
+                <h2>Select Result Formats</h2>
+                <md-checkbox class="md-primary" v-model="formats" value="csv">CSV</md-checkbox>
+                <md-checkbox class="md-primary" v-model="formats" value="jsonl">JSONL</md-checkbox>
+                <md-checkbox class="md-primary" v-model="formats" value="xlsx">Excel (.xlsx)</md-checkbox>
+
                 <md-field>
                     <label for="email-input">Your email</label>
                     <md-input v-model="email" id="email-input"></md-input>
@@ -35,7 +41,7 @@
 
                 <div>
                     <md-button @click="submit"
-                               :disabled="!email || !dois"
+                               :disabled="!email || !dois || formats.length == 0"
                                class="md-primary md-raised">
                         Submit your DOIs
                     </md-button>
@@ -89,7 +95,8 @@
             return {
                 readyState:"ready",
                 dois: "",
-                email: ""
+                email: "",
+                formats: ["csv", "jsonl"]
             }
         },
         computed: {
@@ -103,7 +110,8 @@
                 let that = this
                 let postData = {
                     dois: this.doisList,
-                    email: this.email
+                    email: this.email,
+                    formats: this.formats
                 }
                 console.log("sending this to server:", postData)
 
