@@ -12,10 +12,10 @@
         </div>
 
         <div class="col md-layout-item md-xsmall-size-100 user-guides">
-            <h3>User guides</h3>
+            <h3>Get Started</h3>
+            <router-link to="/user-guides/libraries">Libraries</router-link>
             <router-link to="/user-guides/enterprise">Enterprise</router-link>
             <router-link to="/user-guides/research">Research</router-link>
-            <router-link to="/user-guides/libraries">Libraries</router-link>
         </div>
 
         <div class="col md-layout-item md-size-20 md-xsmall-size-100 about">

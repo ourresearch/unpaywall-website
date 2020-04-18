@@ -19,7 +19,7 @@
         <div>
         <div>
           <md-button class="md-raised md-accent main" href="#" v-scroll-to="'#learn-more'">
-            Learn more
+            Cancel Journal Subscriptions
           </md-button>
         </div>
           <router-link class="secondary" to="/products/extension">
@@ -110,11 +110,11 @@
 
     <div class="get-started">
       <h2>Get started</h2>
-      <p>There are oodles of ways to access our data. We recommend you get started with one of these user guides:</p>
+      <p>There are oodles of ways to use Unpaywall's data. Check out one of these guides to learn which are right for you!</p>
       <div class="buttons">
+        <md-button to="/user-guides/libraries" class="md-raised md-accent libraries">Libraries</md-button>
         <md-button to="/user-guides/enterprise" class="md-raised md-primary enterprise">Enterprise</md-button>
         <md-button to="/user-guides/research" class="md-raised md-accent research">Research</md-button>
-        <md-button to="/user-guides/libraries" class="md-raised md-accent libraries">Libraries</md-button>
       </div>
     </div>
 

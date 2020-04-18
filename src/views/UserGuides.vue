@@ -1,6 +1,6 @@
 <template>
     <div class="page user-guide">
-        <h1>{{ guideName }} user guide</h1>
+        <h1>Get started: {{ guideName }}</h1>
 
 
         <p>
@@ -13,9 +13,9 @@
 
         <div class="table-of-contents" v-if="!guideName">
             <ul>
-                <li><router-link to="/user-guides/enterprise">Enterprise user guide.</router-link></li>
-                <li><router-link to="/user-guides/research">Research user guide.</router-link></li>
-                <li><router-link to="/user-guides/libraries">Libraries user guide.</router-link></li>
+                <li><router-link to="/user-guides/enterprise">Get started: Enterprise</router-link></li>
+                <li><router-link to="/user-guides/research">Get started: Research</router-link></li>
+                <li><router-link to="/user-guides/libraries">Get started: Libraries</router-link></li>
             </ul>
         </div>
 
@@ -111,10 +111,10 @@
         },
         metaInfo(){
             let ret = {
-                title: "User guides"
+                title: "Get started"
             }
             if (this.guideName){
-                ret.title = _.capitalize(this.guideName + " user guide")
+                ret.title = _.capitalize("Get started: " + this.guideName)
             }
             return ret
         },

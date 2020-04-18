@@ -52,11 +52,11 @@
         </p>
 
         <h2>Alternatives</h2>
-        <p>Depending on your use case, there are often easier ways to access the data than using the API. You can learn more about these in our brief user guides:</p>
+        <p>Depending on your use case, there are often easier ways to access the data than using the API. You can learn more about these in our brief Get Stated pages:</p>
         <ul>
-            <li><router-link to="/user-guides/enterprise">Enterprise user guide</router-link></li>
-            <li><router-link to="/user-guides/libraries">Library user guide</router-link></li>
-            <li><router-link to="/user-guides/research">Research user guide</router-link></li>
+            <li><router-link to="/user-guides/libraries">Get started: Library</router-link></li>
+            <li><router-link to="/user-guides/enterprise">Get started: Enterprise</router-link></li>
+            <li><router-link to="/user-guides/research">Get started: Research</router-link></li>
         </ul>
 
         <h2>Endpoint</h2>

@@ -15,7 +15,7 @@ import Team from './views/Team'
 import Welcome from './views/Welcome'
 import Outreach from './views/Outreach'
 
-// user guides
+// Get Started
 import UserGuides from './views/UserGuides'
 
 
@@ -116,7 +116,7 @@ export default new Router({
 
 
 
-    // user guides, they share a route
+    // Get Started, they share a route
 
     {
       path: '/user-guides/:guideName?',

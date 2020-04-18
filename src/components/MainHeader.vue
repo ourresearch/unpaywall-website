@@ -8,22 +8,22 @@
         <div class="site-nav">
             <div class="desktop">
 
-                <!--  User Guides menu  -->
+                <!--  Get started menu  -->
                 <md-menu md-align-trigger :md-active.sync="allowOpen[0]"
 >
                     <md-button md-menu-trigger>
-                        User guides
+                        Get started
                         <i class="fas fa-sort-down"></i>
                     </md-button>
                     <md-menu-content>
+                        <md-menu-item to="/user-guides/libraries">
+                                Libraries
+                        </md-menu-item>
                         <md-menu-item to="/user-guides/enterprise">
                                 Enterprise
                         </md-menu-item>
                         <md-menu-item to="/user-guides/research">
                                 Research
-                        </md-menu-item>
-                        <md-menu-item to="/user-guides/libraries">
-                                Libraries
                         </md-menu-item>
                     </md-menu-content>
                 </md-menu>
@@ -102,7 +102,7 @@
                     </md-button>
                     <md-menu-content>
                         <md-menu-item to="/user-guides">
-                                User Guides
+                                Get started
                         </md-menu-item>
                         <md-menu-item to="/products">
                                 Products
