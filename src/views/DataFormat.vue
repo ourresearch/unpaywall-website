@@ -192,6 +192,22 @@
                 </td>
             </tr>
 
+            <!--journal_issn_l-->
+            <tr>
+                <td class="key">
+                    <span class="name">journal_issn_l</span>
+                    <span class="type">String</span>
+                </td>
+                <td class="contents">
+                    A single ISSN for the journal publishing this resource.
+                </td>
+                <td class="notes">
+                    An ISSN-L can be used as a primary key for a journal when more than one ISSN is assigned to it.
+                    Resources' <code>journal_issns</code> are mapped to ISSN-Ls using the
+                    <a href="https://www.issn.org/understanding-the-issn/assignment-rules/the-issn-l-for-publications-on-multiple-media/">issn.org table</a>, with some manual corrections.
+                </td>
+            </tr>
+
             <!--journal_name-->
             <tr>
                 <td class="key">
