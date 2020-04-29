@@ -18,7 +18,7 @@
       <div class="cta">
         <div>
         <div>
-          <md-button class="md-raised md-accent main" href="#" v-scroll-to="'#learn-more'">
+          <md-button class="md-raised md-accent main" href="https://journals.unpaywall.org">
             Cancel Journal Subscriptions
           </md-button>
         </div>
