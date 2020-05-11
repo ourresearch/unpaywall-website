@@ -404,7 +404,7 @@
                         <li>
                             <span class="value"><code>publisher</code></span>
                             <span class="notes">
-                            means the this location is served by the article’s publisher (in practice, this usually means it is hosted on the same domain the DOI resolves to).
+                            means this location is served by the article’s publisher (in practice, this usually means it is hosted on the same domain the DOI resolves to).
                         </span>
                         </li>
                         <li>
