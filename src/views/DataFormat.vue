@@ -356,7 +356,7 @@
         <table class="api-responses">
 
             <!--evidence-->
-            <tr>
+            <tr id="oa-location-evidence">
                 <td class="key">
                     <span class="name">evidence</span>
                     <span class="type">String</span>
@@ -388,7 +388,7 @@
 
 
             <!--host_type-->
-            <tr>
+            <tr id="oa-location-host-type">
                 <td class="key">
                     <span class="name">host_type</span>
                     <span class="type">String</span>
@@ -420,7 +420,7 @@
 
 
             <!--is_best-->
-            <tr>
+            <tr id="oa-location-is-best">
                 <td class="key">
                     <span class="name">is_best</span>
                     <span class="type">Boolean</span>
@@ -435,7 +435,7 @@
 
 
             <!--license-->
-            <tr>
+            <tr id="oa-location-license">
                 <td class="key">
                     <span class="name">license</span>
                     <span class="type">String|Null</span>
@@ -461,7 +461,7 @@
 
 
             <!--pmh_id-->
-            <tr>
+            <tr id="oa-location-pmh-id">
                 <td class="key">
                     <span class="name">pmh_id</span>
                     <span class="type">String|Null</span>
@@ -476,7 +476,7 @@
 
 
             <!--updated-->
-            <tr>
+            <tr id="oa-location-updated">
                 <td class="key">
                     <span class="name">updated</span>
                     <span class="type">String</span>
@@ -497,7 +497,7 @@
 
 
             <!--url-->
-            <tr>
+            <tr id="oa-location-url">
                 <td class="key">
                     <span class="name">url</span>
                     <span class="type">String</span>
@@ -514,7 +514,7 @@
 
 
             <!--url_for_landing_page-->
-            <tr>
+            <tr id="oa-location-url-for-landing-page">
                 <td class="key">
                     <span class="name">url_for_landing_page</span>
                     <span class="type">String</span>
@@ -531,7 +531,7 @@
 
 
             <!--url_for_pdf-->
-            <tr>
+            <tr id="oa_location-url-for-pdf">
                 <td class="key">
                     <span class="name">url_for_pdf</span>
                     <span class="type">String|Null</span>
@@ -552,7 +552,7 @@
 
 
 
-            <tr>
+            <tr id="oa-location-version">
                 <td class="key">
                     <span class="name">version</span>
                     <span class="type">String</span>
