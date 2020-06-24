@@ -264,7 +264,7 @@
             <tr>
                 <td class="key">
                     <span class="name">published_date</span>
-                    <span class="type">String</span>
+                    <span class="type">String|Null</span>
                 </td>
                 <td class="contents">
                     The date this resource was published.
@@ -321,7 +321,7 @@
             <tr>
                 <td class="key">
                     <span class="name">year</span>
-                    <span class="type">Integer</span>
+                    <span class="type">Integer|Null</span>
                 </td>
                 <td class="contents">
                     The year this resource was published.
