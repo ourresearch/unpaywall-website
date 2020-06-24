@@ -321,7 +321,7 @@
             <tr>
                 <td class="key">
                     <span class="name">year</span>
-                    <span class="type">String</span>
+                    <span class="type">Integer</span>
                 </td>
                 <td class="contents">
                     The year this resource was published.
