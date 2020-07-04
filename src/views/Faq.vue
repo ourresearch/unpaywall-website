@@ -30,7 +30,7 @@
                     We also use great open data from
                     <a href="https://www.ncbi.nlm.nih.gov/pmc/">PubMed Central</a>,
                     <a href="https://doaj.org/">the DOAJ</a>,
-                    <a href="https://www.crossref.org/">Crossref</a> (particulary their license info), and
+                    <a href="https://www.crossref.org/">Crossref</a> (particularly their license info), and
                     <a href="https://www.datacite.org/">DataCite.</a>
                 </dd>
 
