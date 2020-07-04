@@ -125,6 +125,9 @@
             <li><a href="https://www.zotero.org/blog/improved-pdf-retrieval-with-unpaywall-integration/">Zotero</a></li>
             <li>
                 <a href="https://blog.openaccessbutton.org/new-powerfully-simple-library-tool-to-deliver-articles-no-subscription-needed-1c8b7def604f">InstantILL</a> (Interlibrary loan software from Open Access Button)</li>
+            <li>
+                <a href="https://www.oahelper.org/">Open Access Helper</a>
+            </li>
         </ul>
 
 
