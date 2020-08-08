@@ -5,14 +5,14 @@
             Our dataset changes every day, for a number of reasons:
         </p>
             <ul>
-                <li>New article are published.</li>
+                <li>New articles are published.</li>
                 <li>Authors self-archive new OA copies to repositories for existing articles.</li>
                 <li>Articles become OA as embargoes expire.</li>
                 <li>Publisher-hosted "Bronze OA" articles (free-to-read but without an open license) are moved from OA to toll-access.</li>
             </ul>
 
         <p>
-            For many use-cases, especially in enterprise contexts, it's important to stay up-do-date with these changes. The  <router-link to="/products/snapshot"> snapshot</router-link> is a poor fit for this, since it's only updated a few times a year. Likewise, the <router-link to="/products/api">API</router-link> works poorly for this since it takes many months to scroll through the whole of DOI-space polling for changes.
+            For many use-cases, especially in enterprise contexts, it's important to stay up-to-date with these changes. The <router-link to="/products/snapshot">snapshot</router-link> is a poor fit for this, since it's only updated a few times a year. Likewise, the <router-link to="/products/api">API</router-link> works poorly for this since it takes many months to scroll through the whole of DOI-space polling for changes.
         </p>
 
         <p>
