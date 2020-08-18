@@ -5,7 +5,7 @@
 <script>
     export default {
         mounted() {
-            window.location.href= "https://journals.unpaywall.org/"
+            window.location.href= "https://unsub.org/"
         }
     }
 </script>

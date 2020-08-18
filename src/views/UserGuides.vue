@@ -68,10 +68,10 @@
         <div class="libraries" v-if="guideName=='libraries'">
 
             <p>
-                Our premier tool for libraries is the Unpaywall Journals dashboard. It mashes up journal-level OA data with your institution's citation patterns and COUNTER download info, then builds a comprehensive model to forecast how cancellation or subscription decisions will affect library costs and fulfillment--letting you confidently made decisions about your Big Deals and individual subscriptions. We were named "Most Impactful New Product" at the 2019 Charleston Conference, and hundreds of libraries are already users.
+                Our premier tool for libraries is the Unsub dashboard (formerly called Unpaywall Journals). It mashes up journal-level OA data with your institution's citation patterns and COUNTER download info, then builds a comprehensive model to forecast how cancellation or subscription decisions will affect library costs and fulfillment--letting you confidently made decisions about your Big Deals and individual subscriptions. We were named "Most Impactful New Product" at the 2019 Charleston Conference, and hundreds of libraries are already users.
             </p>
             <p>
-                <a href="https://journals.unpaywall.org">Check out Unpaywall Journals!</a>
+                <a href="https://unsub.org">Check out Unsub!</a>
             </p>
 
             <p>

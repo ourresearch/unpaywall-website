@@ -18,7 +18,7 @@ app.get('*', function (req, res) {
 
     }
     else if (req.path === "/journals"){
-        const redirectUrl = "https://journals.unpaywall.org/";
+        const redirectUrl = "https://unsub.org/";
         res.redirect(redirectUrl);
 
     }

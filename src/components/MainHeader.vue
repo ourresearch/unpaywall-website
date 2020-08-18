@@ -40,8 +40,8 @@
                             Browser extension
                         </md-menu-item>
 
-                        <md-menu-item target="_blank" href="https://journals.unpaywall.org/">
-                            Unpaywall Journals
+                        <md-menu-item target="_blank" href="https://unsub.org/">
+                            Unsub
                         </md-menu-item>
 
                         <md-menu-item to="/products/snapshot">

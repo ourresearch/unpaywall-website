@@ -18,7 +18,7 @@
       <div class="cta">
         <div>
         <div>
-          <md-button class="md-raised md-accent main" href="https://journals.unpaywall.org">
+          <md-button class="md-raised md-accent main" href="https://unsub.org">
             Cancel Journal Subscriptions
           </md-button>
         </div>
