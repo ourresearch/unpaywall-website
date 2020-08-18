@@ -28,6 +28,10 @@
             }
         },
         methods: {
+            search(){
+                const url = `https://api.unpaywall.org/search/?query=${this.q}&email=YOUR_EMAIL`
+            },
+
             submit(){
                 let url = "https://api.unpaywall.org/data/sources/" + this.q
                 let self = this
