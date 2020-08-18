@@ -14,6 +14,7 @@ import Contact from './views/Contact'
 import Team from './views/Team'
 import Welcome from './views/Welcome'
 import Outreach from './views/Outreach'
+import SearchArticles from "./views/SearchArticles";
 
 // Get Started
 import UserGuides from './views/UserGuides'
@@ -88,6 +89,10 @@ export default new Router({
     {
       path: '/sources',
       component: Sources
+    },
+    {
+      path: '/articles',
+      component: SearchArticles,
     },
     {
       path: '/faq',

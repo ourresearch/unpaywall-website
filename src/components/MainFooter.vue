@@ -9,6 +9,7 @@
             <router-link to="/products/api">REST API</router-link>
             <router-link to="/products/simple-query-tool">Simple Query Tool</router-link>
             <router-link to="/integrations#link-resolvers">Library link resolver integration</router-link>
+            <router-link to="/articles">Search articles</router-link>
         </div>
 
         <div class="col md-layout-item md-xsmall-size-100 user-guides">
