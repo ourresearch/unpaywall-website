@@ -1,18 +1,16 @@
 {
   "name": "unpaywall-data-website",
   "version": "0.1.0",
-  "engines": {
-    "node": "9.8.0"
-  },
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve --open",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "start": "node server.js",
-    "heroku-postbuild": "npm install --only=dev --no-shrinkwrap && npm run build"
+    "heroku-postbuild": "npm install --only=dev --no-shrinkwrap && npm run build",
+    "start": "node server.js"
   },
   "dependencies": {
+    "@babel/polyfill": "^7.4.4",
     "axios": "^0.18.1",
     "express": "^4.17.1",
     "lodash": "^4.17.15",
@@ -24,6 +22,7 @@
     "vue-recaptcha": "^1.3.0",
     "vue-router": "^3.1.3",
     "vue-scrollto": "^2.17.1",
+    "vuetify": "^2.2.11",
     "vuex": "^3.1.2"
   },
   "devDependencies": {
@@ -32,6 +31,7 @@
     "@vue/cli-service": "^3.12.1",
     "node-sass": "^4.13.0",
     "sass-loader": "^6.0.6",
+    "vue-cli-plugin-vuetify": "^2.0.7",
     "vue-template-compiler": "^2.6.11"
   },
   "babel": {
@@ -59,6 +59,9 @@
   "browserslist": [
     "> 1%",
     "last 2 versions",
-    "not ie <= 8"
-  ]
+    "not ie <= 10"
+  ],
+  "engines": {
+    "node": "9.8.0"
+  }
 }

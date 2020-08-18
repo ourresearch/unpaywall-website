@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="upw-header">
         <div class="logo">
             <router-link to="/">
                 <img src="../assets/logo.png" alt="">
@@ -157,7 +157,7 @@
     }
 
 
-    .container {
+    .upw-header {
         background: #4caf50; // green 500
         height: 88px;
         display: flex;

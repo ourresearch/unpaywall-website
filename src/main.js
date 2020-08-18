@@ -12,6 +12,7 @@ import 'vue-material/dist/theme/default.css'
 import VueScrollTo from 'vue-scrollto'
 import VueAnalytics from 'vue-analytics'
 import VueMoment from 'vue-moment'
+import vuetify from './plugins/vuetify';
 
 Vue.use(VueMaterial)
 Vue.use(VueScrollTo)
@@ -27,5 +28,6 @@ Vue.config.productionTip = false
 new Vue({
   router,
   store,
+  vuetify,
   render: h => h(App)
 }).$mount('#app')

@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="container">
+  <div id="app" class="">
 
     <main-header/>
 
@@ -64,6 +64,14 @@
     }
     h2 {
       margin-top: 50px;
+    }
+    p {
+      margin-top: 1em;
+      margin-bottom: 1em;
+      font-size: 18px;
+    }
+    ul {
+      margin-left: 2em;
     }
   }
   div.page {
