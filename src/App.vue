@@ -1,12 +1,15 @@
 <template>
   <div id="app" class="">
+    <v-app>
+      <main-header/>
 
-    <main-header/>
+      <div class="container-wrapper md-layout-row">
+        <router-view/>
+      </div>
+      <main-footer/>
 
-    <div class="container-wrapper md-layout-row">
-      <router-view/>
-    </div>
-    <main-footer/>
+    </v-app>
+
 
 
   </div>
