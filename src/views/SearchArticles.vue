@@ -86,7 +86,7 @@
                 return this.sources.slice(0, 100)
             },
             apiUrl(){
-                return `https://api.unpaywall.org/search/?query=${this.q}&email=YOUR_EMAIL`
+                return `https://api.unpaywall.org/v2/search/?query=${this.q}&email=YOUR_EMAIL`
             }
         },
         methods: {
