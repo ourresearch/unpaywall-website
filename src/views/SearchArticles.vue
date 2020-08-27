@@ -1,30 +1,44 @@
 <template>
     <div class="page">
         <v-container>
-            <h1>Articles</h1>
-            <p class="headline">
-                Here you can search all 120M of our articles, by title. This page is still under construction.
-            </p>
-            <div>
+            <h1 class="pb-0 mb-0">Search Articles <span class="title green--text">beta</span></h1>
+            <div class="d-none">
+                Search all 120M of our articles, by title.
+            </div>
+            <div class="mt-4 d-flex">
                 <v-text-field
                         solo
-                        placeholder="Search by title"
+                        single-line
+                        hide-details
+                        placeholder="Search keywords, eg. 'covid'"
                         v-model="q"
                         @keydown.enter="search"
 
                 ></v-text-field>
+                <v-switch
+                        class="ml-12"
+                    v-model="showOaOnly"
+                    label="Show only free-to-read"
+                />
+
+
             </div>
             <div class="results-section">
-                <div class="search-success" v-if="results.length">
-                    <div>
-                        <a :href="apiUrl">View this search in the API</a>
-                        <v-divider></v-divider>
-                        <br><br>
+                <div v-if="readyState==='loading'" class="mt-4">
+                    <v-progress-linear indeterminate></v-progress-linear>
+                </div>
+                <div class="search-success" v-if="readyState==='done'">
+                    <div v-if="results.length" class="">
+                        <span class="">Showing top {{results.length}} results </span>
+                        |
+                        <a :href="apiUrl" target="_blank" class=""><i class="fas fa-cog"></i> view in API</a>
+                        <v-divider class="mb-12 mt-4"></v-divider>
                     </div>
+                    <div v-if="!results.length">No results found</div>
                     <v-row class="result py-4" v-for="result in results" :key="result.doi">
                         <v-col cols="9">
-                            <div class="title pl-0">
-                                {{result.response.title}}
+                            <div class="title pl-0 article-title">
+                                {{result.response.title | truncate }}
                             </div>
                             <div class="font-italic">
                                 {{result.response.journal_name}}
@@ -33,8 +47,9 @@
                                 <a
                                         :href="`https://api.unpaywall.org/v2/${result.response.doi}?email=YOUR_EMAIL`"
                                         target="_blank"
+                                        class="grey--text body-2"
                                 >
-                                    View in API
+                                    <i class="fas fa-cog"></i> view in API
                                 </a>
                             </div>
                         </v-col>
@@ -80,26 +95,29 @@
             isLoading: false,
             q: "",
             results: [],
+            showOaOnly: true,
         }),
         computed: {
             filteredSources() {
                 return this.sources.slice(0, 100)
             },
             apiUrl(){
-                return `https://api.unpaywall.org/v2/search/?query=${this.q}&email=YOUR_EMAIL`
-            }
+                return `https://api.unpaywall.org/v2/search/?query=${this.q}&is_oa=${this.showOaOnly}&email=YOUR_EMAIL`
+            },
         },
         methods: {
             async search() {
+                this.readyState = "loading"
                 this.isLoading = true
                 const resp = await axios.get(this.apiUrl)
                 this.results = resp.data.results
                 console.log("search resp!", this.results)
                 this.isLoading = false
+                this.readyState = "done"
 
             },
 
-            submit() {
+            submit() { // not used now
                 let url = "https://api.unpaywall.org/data/sources/" + this.q
                 let self = this
                 console.log("sending this to server:", this.q)
@@ -118,6 +136,12 @@
             }
         },
         mounted() {
+        },
+        watch: {
+            showOaOnly: function(to){
+                this.results = []
+                this.search()
+            }
         }
     }
 </script>

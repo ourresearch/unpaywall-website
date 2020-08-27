@@ -1,6 +1,7 @@
 
 // from https://github.com/vuetifyjs/vue-cli-plugin-vuetify/issues/3
 import '@babel/polyfill'
+import _ from 'lodash';
 
 import Vue from 'vue'
 import App from './App.vue'
@@ -21,6 +22,12 @@ Vue.use(VueAnalytics, {
   router
 })
 Vue.use(VueMoment);
+
+Vue.filter('truncate', function (value) {
+  if (!value) return ''
+  value = value.toString()
+  return _.truncate(value, {length: 300})
+})
 
 
 
