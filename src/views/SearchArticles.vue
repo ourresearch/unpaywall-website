@@ -10,7 +10,7 @@
                         solo
                         single-line
                         hide-details
-                        placeholder="Search keywords, eg. 'covid'"
+                        placeholder="Search keywords, eg. 'covid-19'"
                         v-model="q"
                         @keydown.enter="search"
 
