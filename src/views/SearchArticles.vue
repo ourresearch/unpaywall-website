@@ -5,24 +5,34 @@
             <div class="d-none">
                 Search all 120M of our articles, by title.
             </div>
-            <div class="mt-4 d-flex">
-                <v-text-field
-                        solo
-                        single-line
-                        hide-details
-                        placeholder="Search keywords, eg. 'parkinson's disease'"
-                        v-model="q"
-                        @keydown.enter="search"
+            <v-row class="mt-4" align-content="flex-end">
+                <v-col cols="8">
+                    <v-text-field
+                            solo
+                            single-line
+                            hide-details
+                            placeholder="Search keywords, eg. 'parkinson's disease'"
+                            v-model="q"
+                            @keydown.enter="search"
 
-                />
-                <v-switch
-                        class="ml-12"
-                    v-model="showOaOnly"
-                    label="Show only free-to-read"
-                />
+                    />
+                </v-col>
+                <v-col cols="4">
+                    <div v-if="!qIsDoi">
+                        <v-switch
+                                class="ml-12"
+                            v-model="showOaOnly"
+                            label="Show only free-to-read"
+                        />
+                    </div>
+                    <div v-if="qIsDoi" class="">
+                        <div class="font-weight-bold">DOI search</div>
+                        <div class="body-1">Single article lookup</div>
+                    </div>
+                </v-col>
 
 
-            </div>
+            </v-row>
             <div class="results-section">
                 <div v-if="readyState==='loading'" class="mt-4">
                     <v-progress-linear indeterminate></v-progress-linear>
@@ -96,7 +106,6 @@
         data: () => ({
             sources: [],
             readyState: "ready",
-            isLoading: false,
             q: "",
             results: [],
             showOaOnly: true,
@@ -105,41 +114,44 @@
             filteredSources() {
                 return this.sources.slice(0, 100)
             },
+            qIsDoi(){
+                return this.q.indexOf("10.") === 0
+            },
             apiUrl(){
-                let ret = `https://api.unpaywall.org/v2/search/?query=${this.q}&email=YOUR_EMAIL`
-                if (this.showOaOnly) ret += "&is_oa=true"
+                let ret
+                if (this.qIsDoi){
+                    ret = `https://api.unpaywall.org/v2/${this.q}?email=YOUR_EMAIL`
+                }
+                else{
+                    ret = `https://api.unpaywall.org/v2/search/?query=${this.q}&email=YOUR_EMAIL`
+                    if (this.showOaOnly) ret += "&is_oa=true"
+                }
                 return ret
             },
         },
         methods: {
             async search() {
                 this.readyState = "loading"
-                this.isLoading = true
-                const resp = await axios.get(this.apiUrl)
-                this.results = resp.data.results
-                console.log("search resp!", this.results)
-                this.isLoading = false
-                this.readyState = "done"
-
+                this.results = []
+                try {
+                    const resp = await axios.get(this.apiUrl)
+                    if (resp.data.results){
+                        this.results = resp.data.results
+                    }
+                    else { // doi search
+                        this.results = [{response: resp.data}]
+                    }
+                    console.log("search resp!", this.results)
+                }
+                catch(e) {
+                    console.log("search error", e)
+                    this.results = []
+                }
+                finally {
+                    this.readyState = "done"
+                }
             },
 
-            submit() { // not used now
-                let url = "https://api.unpaywall.org/data/sources/" + this.q
-                let self = this
-                console.log("sending this to server:", this.q)
-
-                this.readyState = "working"
-                axios.get(url)
-                    .then(function (resp) {
-                        console.log("success!", resp)
-                        self.sources = resp.data.results
-                        self.readyState = "success"
-                    })
-                    .catch(function (error) {
-                        console.log("error :(", error)
-                        self.readyState = "error"
-                    })
-            }
         },
         mounted() {
         },
@@ -147,6 +159,11 @@
             showOaOnly: function(to){
                 this.results = []
                 this.search()
+            },
+            q: function(to){
+                // if (this.qIsDoi) {
+                //     this.showOaOnly = false
+                // }
             }
         }
     }
