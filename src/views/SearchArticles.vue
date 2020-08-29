@@ -10,11 +10,11 @@
                         solo
                         single-line
                         hide-details
-                        placeholder="Search keywords, eg. 'covid-19'"
+                        placeholder="Search keywords, eg. 'parkinson's disease'"
                         v-model="q"
                         @keydown.enter="search"
 
-                ></v-text-field>
+                />
                 <v-switch
                         class="ml-12"
                     v-model="showOaOnly"
@@ -40,8 +40,12 @@
                             <div class="title pl-0 article-title">
                                 {{result.response.title | truncate }}
                             </div>
-                            <div class="font-italic">
-                                {{result.response.journal_name}}
+                            <div>
+                                <span  class="font-italic">
+                                    {{result.response.journal_name}}
+                                </span>
+                                <span v-if="result.response.year">({{result.response.year}})</span>
+
                             </div>
                             <div>
                                 <a
@@ -102,7 +106,9 @@
                 return this.sources.slice(0, 100)
             },
             apiUrl(){
-                return `https://api.unpaywall.org/v2/search/?query=${this.q}&is_oa=${this.showOaOnly}&email=YOUR_EMAIL`
+                let ret = `https://api.unpaywall.org/v2/search/?query=${this.q}&email=YOUR_EMAIL`
+                if (this.showOaOnly) ret += "&is_oa=true"
+                return ret
             },
         },
         methods: {
