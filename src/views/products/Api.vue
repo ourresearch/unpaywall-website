@@ -59,7 +59,7 @@
             <li><router-link to="/user-guides/research">Get started: Research</router-link></li>
         </ul>
 
-        <h2>Endpoint</h2>
+        <h2>Endpoints</h2>
         <div class="endpoint" id="get-doi">
             <code class="endpoint">GET /v2/:doi</code>
             <table class="endpoint">
@@ -96,9 +96,86 @@
                     </td>
                 </tr>
             </table>
-
-
         </div>
+
+      <div class="endpoint" id="title-search">
+        <code class="endpoint">GET /v2/search?query=:your_query[&is_oa=boolean]</code>
+        <p>Usage notes and additional examples are available in the <a
+            href="https://support.unpaywall.org/a/solutions/articles/44001977396">Unpaywall FAQ</a>.</p>
+        <p>This endpoint can be accessed through our
+          <router-link to="/articles">Article Search</router-link>
+          tool.
+        </p>
+        <table class="endpoint">
+          <tr>
+            <td class="k">
+              Description
+            </td>
+            <td class="v">
+              Provides the full <code><a href="#get-doi">GET /v2/:doi</a></code> responses for up to 50 articles whose
+              titles match your query.
+            </td>
+          </tr>
+          <tr>
+            <td class="k">
+              Accepts
+            </td>
+            <td class="v">
+              <ul>
+                <li>
+                  <code>query</code>:
+                  The text to search for. Search terms are separated by whitespace and are AND-ed together by default.
+                  The title must contain all search terms to be matched. This behavior can be modified by:
+                  <ul>
+                    <li><strong>&quot;quoted text&quot;</strong> : words inside quotation marks must appear as a phrase
+                      to match
+                    </li>
+                    <li><strong>OR</strong> : replaces the default AND between words, making a match on either word</li>
+                    <li><strong>-</strong> : negation, only titles not containing this term will match</li>
+                  </ul>
+                </li>
+                <li>
+                  <code>is_oa</code>: (Optional) A boolean value indicating whether the returned records should be Open
+                  Access or not.
+                  <ul>
+                    <li><strong>true</strong>: filter the results to OA articles</li>
+                    <li><strong>false</strong>: filter the results to non-OA articles</li>
+                    <li>null/unspecified: return the most relevant results regardless of OA status</li>
+                  </ul>
+                </li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td class="k">
+              Returns
+            </td>
+            <td class="v">
+              An array of results sorted by the strength of the query match. Each result consists of:
+              <ul>
+                <li><code>response</code>: the full
+                  <router-link to="/data-format">DOI Object</router-link>
+                  for this match
+                </li>
+                <li><code>score</code>: the numeric score used to rank the results</li>
+                <li>
+                  <code>snippet</code>: An HTML-formatted string showing how the title matched the query.
+                  For example:
+                  <pre>&quot;Single-&lt;b&gt;cell&lt;/b&gt; photoacoustic &lt;b&gt;thermometry&lt;/b&gt;&quot;</pre>
+                </li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td class="k">
+              Example
+            </td>
+            <td class="v">
+              <a href="https://api.unpaywall.org/v2/search?query=cell%20thermometry&is_oa=true&email=YOUR_EMAIL">https://api.unpaywall.org/v2/search?query=cell%20thermometry&is_oa=true&email=YOUR_EMAIL</a>
+            </td>
+          </tr>
+        </table>
+      </div>
 
 
     </div>
