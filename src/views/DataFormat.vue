@@ -237,6 +237,22 @@
                 </td>
             </tr>
 
+            <!--first_oa_location-->
+            <tr>
+                <td class="key">
+                    <span class="name">first_oa_location</span>
+                    <span class="type">Object|null</span>
+                </td>
+                <td class="contents">
+                    The <router-link to="#oa-location-object">OA Location Object</router-link> with the earliest <router-link to="#oa-location-oa-date">oa_date</router-link>.
+                </td>
+                <td class="notes">
+                    <p>
+                        Returns <code>null</code> if we couldn't find any OA Locations.
+                    </p>
+                </td>
+            </tr>
+
             <!--oa_status-->
             <tr>
                 <td class="key">
@@ -456,6 +472,23 @@
                             When we have evidence that an OA license of <em>some</em> kind was used, but it’s not reported directly on the webpage at this location, this field returns <code>implied-oa</code>
                         </li>
                     </ul>
+                </td>
+            </tr>
+
+            <!--oa_date-->
+            <tr id="oa-location-oa-date">
+                <td class="key">
+                    <span class="name">oa_date</span>
+                    <span class="type">String|Null</span>
+                </td>
+                <td class="contents">
+                    When this document first became available at this location.
+                </td>
+                <td class="notes">
+                    <p>
+                        oa_date is calculated differently for different host types and is not available for all oa_locations.
+                        See <a href="https://support.unpaywall.org/a/solutions/articles/44002063719">https://support.unpaywall.org/a/solutions/articles/44002063719</a> for details.
+                    </p>
                 </td>
             </tr>
 
