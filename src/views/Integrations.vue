@@ -8,7 +8,7 @@
         <h2 id="search">Citation indices</h2>
         <ul>
             <li><a href="https://app.dimensions.ai/discover/publication?and_facet_open_access=True">Dimensions</a></li>
-            <li><a href="https://scite.ai/">scite.ai</a></li>
+            <li><a href="https://scite.ai/">scite</a></li>
             <li><a href="https://blog.impactstory.org/elsevier-data-feed/">Scopus</a></li>
             <li>
                 <a href="https://clarivate.com/wp-content/uploads/2017/10/Clarivate-OA-Impact-Story_Intro-sheet.pdf?elqTrackId=c5abee7048934a3da317e296a3e2a9c8&elqaid=5350&elqat=2">Web
