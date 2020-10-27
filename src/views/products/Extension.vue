@@ -154,15 +154,15 @@
                 <md-card>
                     <md-card-header>
                         <md-avatar>
-                            <img src="~@/assets/jon.jpg" alt="Avatar">
+                            <img src="~@/assets/rupesh.png" alt="Avatar">
                         </md-avatar>
 
-                        <div class="md-title">Jon Tennant</div>
-                        <div class="md-subhead">Paleontologist</div>
+                        <div class="md-title">Rupesh Paudyal</div>
+                        <div class="md-subhead">Science Writer</div>
                     </md-card-header>
 
                     <md-card-content>
-                        Way, way, WAY easier than having to be at a place with institutional access, using a VPN, emailing authors, or using inter-library loan....
+                        HIGHLY RECOMMENDED ... instantly unlocks articles behind paywalls. A must for all researchers.
                     </md-card-content>
                 </md-card>
 
@@ -203,7 +203,7 @@
                     window.location = emailUrl
                 }
 
-                // install for firefox. 
+                // install for firefox.
                 else if (this.browserName === 'firefox') {
                     console.log("Install for Firefox")
                     this.$ga.event("Clicked Install", "firefox")
