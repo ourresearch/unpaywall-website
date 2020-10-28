@@ -35,7 +35,7 @@
             Requests must include your email as a parameter at the end of the URL, like this:
             <code>
 
-                api.unpaywall.org/my/request<strong>?email=YOUR_EMAIL</strong>
+                api.unpaywall.org/my/request<strong>?email=unpaywall_00@example.com</strong>
             </code>.
 
         </p>
@@ -92,7 +92,7 @@
                         Example
                     </td>
                     <td class="v">
-                        <a href="https://api.unpaywall.org/v2/10.1038/nature12373?email=YOUR_EMAIL">https://api.unpaywall.org/v2/10.1038/nature12373?email=YOUR_EMAIL</a>
+                        <a href="https://api.unpaywall.org/v2/10.1038/nature12373?email=unpaywall_00@example.com">https://api.unpaywall.org/v2/10.1038/nature12373?email=unpaywall_00@example.com</a>
                     </td>
                 </tr>
             </table>
@@ -171,7 +171,7 @@
               Example
             </td>
             <td class="v">
-              <a href="https://api.unpaywall.org/v2/search?query=cell%20thermometry&is_oa=true&email=YOUR_EMAIL">https://api.unpaywall.org/v2/search?query=cell%20thermometry&is_oa=true&email=YOUR_EMAIL</a>
+              <a href="https://api.unpaywall.org/v2/search?query=cell%20thermometry&is_oa=true&email=unpaywall_00@example.com">https://api.unpaywall.org/v2/search?query=cell%20thermometry&is_oa=true&email=unpaywall_00@example.co>>m</a>
             </td>
           </tr>
         </table>
