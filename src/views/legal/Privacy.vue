@@ -2,9 +2,9 @@
     <div class="page privacy legal">
 
         <h1>Unpaywall privacy policy</h1>
-        Last Revised: January 6, 2019<br>
+        Last Revised: November 5, 2020<br>
         <br>
-        Unpaywall is a website featuring web-based tools created and maintained by Impactstory, Inc. (the
+        Unpaywall is a website featuring web-based tools created and maintained by Impactstory, Inc., doing business as Our Research (the
         "<u>Company</u>," "<u>we</u>," "<u>ours</u>," "<u>us</u>"). ImpactStory respects and values your privacy, and we
         are committed to protecting it through our compliance with this privacy policy ("<u>Policy</u>"). This Policy
         describes the types of information we may collect from you when you visit <a href="https://unpaywall.org"
