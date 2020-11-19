@@ -36,7 +36,7 @@
                 <a href="https://twitter.com/unpaywall">
                     <i class="fab fa-twitter"></i>
                 </a>
-                <a href="https://github.com/Impactstory/oadoi">
+                <a href="https://github.com/ourresearch/oadoi">
                     <i class="fab fa-github"></i>
                 </a>
                 <a href="mailto:team@ourresearch.org">

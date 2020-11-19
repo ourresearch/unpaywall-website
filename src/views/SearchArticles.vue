@@ -59,7 +59,7 @@
                             </div>
                             <div>
                                 <a
-                                        :href="`https://api.unpaywall.org/v2/${result.response.doi}?email=YOUR_EMAIL`"
+                                        :href="`https://api.unpaywall.org/v2/${result.response.doi}?email=unpaywall_00@example.com`"
                                         target="_blank"
                                         class="grey--text body-2"
                                 >
@@ -120,10 +120,10 @@
             apiUrl(){
                 let ret
                 if (this.qIsDoi){
-                    ret = `https://api.unpaywall.org/v2/${this.q}?email=YOUR_EMAIL`
+                    ret = `https://api.unpaywall.org/v2/${this.q}?email=unpaywall_00@example.com`
                 }
                 else{
-                    ret = `https://api.unpaywall.org/v2/search/?query=${this.q}&email=YOUR_EMAIL`
+                    ret = `https://api.unpaywall.org/v2/search/?query=${this.q}&email=unpaywall_00@example.com`
                     if (this.showOaOnly) ret += "&is_oa=true"
                 }
                 return ret

@@ -28,7 +28,7 @@
         </div>
       </div>
     </div>
-      
+
       <div id="learn-more" class="pullquote">
           <div class="text">
               <div class="quote">
@@ -42,8 +42,8 @@
                   </a>
               </div>
           </div>
-          
-          
+
+
       </div>
 
     <div  class="selling-point social-proof">
@@ -89,7 +89,7 @@
       <div class="text">
         <h2>Open Source and nonprofit</h2>
         <p>
-          Unpaywall is run by Impactstory, a nonprofit dedicated to making scholarship more accessible to everyone. Open is our passion. So it's only natural our source code is open, too.
+          Unpaywall is run by Our Research, a nonprofit dedicated to making scholarship more accessible to everyone. Open is our passion. So it's only natural our source code is open, too.
         </p>
       </div>
     </div>

@@ -8,6 +8,9 @@
         <h2 id="search">Citation indices</h2>
         <ul>
             <li><a href="https://app.dimensions.ai/discover/publication?and_facet_open_access=True">Dimensions</a></li>
+            <li><a href="https://www.lens.org/lens/search/scholar/list">Lens</a></li>
+            <li><a href="https://www.qeios.com/discover">Qeios</a></li>
+            <li><a href="https://scite.ai/">scite</a></li>
             <li><a href="https://blog.impactstory.org/elsevier-data-feed/">Scopus</a></li>
             <li>
                 <a href="https://clarivate.com/wp-content/uploads/2017/10/Clarivate-OA-Impact-Story_Intro-sheet.pdf?elqTrackId=c5abee7048934a3da317e296a3e2a9c8&elqaid=5350&elqat=2">Web
@@ -109,7 +112,6 @@
             <li><a href="https://mitpress.mit.edu/kfg">MIT Knowledge Futures Group</a></li>
             <li><a href="https://researchably.com/">Researchably</a></li>
             <li><a href="https://www.scholarcy.com/">Scholarcy</a></li>
-            <li><a href="https://scite.ai/">scite.ai</a></li>
             <li><a href="https://www.semanticscholar.org/">Semantic Scholar</a></li>
             <li><a href="https://www.wizdom.ai/">Wizdom.ai</a></li>
         </ul>
