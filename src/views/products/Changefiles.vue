@@ -45,9 +45,101 @@
                     </p>
                     <md-button class="md-raised md-primary" :href="'changefiles?api_key=' + newApiKey + '&api_interval=' + newApiInterval">Access changefiles</md-button>
                 </md-card-content>
-
             </md-card>
 
+        <div v-if="changefiles.length == 0">
+            <p>Each changefile has a timestamp in its filename that tells you the most recent update it contains.</p>
+            <ul>
+                <li>Weekly: changed_dois_with_versions_YYYY-MM-DDThhmmss_to_<strong>YYYY-MM-DDThhmmss</strong>.jsonl.gz</li>
+                <li>Daily: changed_dois_with_versions_<strong>YYYY-MM-DDThhmmss</strong>.jsonl.gz</li>
+            </ul>
+            <p>You can use the snapshot and changefiles together to keep your copy up to date by following these steps:</p>
+            <ol>
+                <li>Download and import the current snapshot.</li>
+                <li>Download all changefiles, starting with the first file with an update timestamp before that of the snapshot.</li>
+                <li>Import each changefile by reading it line by line, overwriting or updating the previous record for that row's DOI.</li>
+                <li>Continue to import changefiles as above, as they are released.</li>
+            </ol>
+
+            <h2 class="section-header">JSON Endpoint</h2>
+
+            <div class="endpoint" id="get-changefiles">
+                <code class="endpoint">GET api.unpaywall.org/feed/changefiles?api_key=YOUR_API_KEY&amp;interval=INTERVAL</code>
+                <table class="endpoint">
+                    <tr>
+                        <td class="k">
+                            Description
+                        </td>
+                        <td class="v">
+                            Provides a JSON object containing a list of changefile attributes and URLs.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="k">
+                            Accepts
+                        </td>
+                        <td class="v">
+                            <ul>
+                                <li><code class="endpoint">api_key (string, required)</code>: Your API key, issued when you subscribe to the data feed.</li>
+                                <li>
+                                    <code class="endpoint">interval (string, optional)</code>: Which set of changefiles to list. Options:
+                                    <ul>
+                                        <li>
+                                            <code>"week" (default)</code>: Files produced weekly on Thursdays, containing all records updated in the previous 9 days.
+                                            Each file overlaps with the previous week's to account for variability in the time to produce the file
+                                            and updates that occur while generating it.
+                                        </li>
+                                        <li>
+                                            <code>"day"</code>: Files produced every day, containing all records updated since the last file was generated.
+                                            No overlap is needed because each export stores the <em>updated</em> timestamp of each record, for use by the next export process.
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+
+                            <p>
+                                The difference in overlap behavior is an implementation detail that shouldn't affect your import process;
+                                each row in a changefile should overwrite the corresponding record in the dataset regardless.
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="k">
+                            Returns
+                        </td>
+                        <td class="v">
+                            <p>An object containing an array of changefiles:</p>
+                            <pre>
+{
+  "list": [
+    {
+      "date": string (YYYY-MM-DD),
+      "filename": string,
+      "filetype": string ("jsonl", or "csv"),
+      "last_modified": string (YYYY-MM-DDThh:mm:ss)
+      "lines": integer,
+      "size": integer,
+      "url": string
+    },
+    …
+  ]
+}
+                            </pre>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="k">
+                            Example
+                        </td>
+                        <td class="v">
+                            <a href="https://api.unpaywall.org/feed/changefiles?api_key=YOUR_API_KEY&interval=day">https://api.unpaywall.org/feed/changefiles?api_key=YOUR_API_KEY&amp;interval=day</a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+
+        </div>
 
         <div class="file-list" v-if="changefiles.length > 0">
             <h2>Changefiles</h2>
@@ -176,6 +268,10 @@
     }
     h2 {
         margin: 0;
+    }
+
+    h2.section-header {
+        margin-top: 30px;
     }
 
     .md-card {
