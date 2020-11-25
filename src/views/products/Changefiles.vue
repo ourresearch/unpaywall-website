@@ -17,10 +17,7 @@
 
 
 
-            A new file is added every Thursday. Files use the same <router-link to="/data-format">schema</router-link> as the <router-link to="/products/api">REST API</router-link> and <router-link to="/products/snapshot">database snapshot.</router-link>
-        </p>
-
-        <p>
+            Files use the same <router-link to="/data-format">schema</router-link> as the <router-link to="/products/api">REST API</router-link> and <router-link to="/products/snapshot">database snapshot.</router-link>
             This list is also available via a <a href="https://api.unpaywall.org/feed/changefiles?api_key=YOUR_API_KEY">JSON endpoint</a> for programmatic access.
         </p>
 
@@ -40,7 +37,13 @@
                       <label>Paste your API key here</label>
                       <md-input v-model="newApiKey"></md-input>
                     </md-field>
-                    <md-button class="md-raised md-primary" :href="'changefiles?api_key=' + newApiKey">Access changefiles</md-button>
+
+                    <p>Show changes in last</p>
+                    <p>
+                    <md-radio class="md-primary" v-model="newApiInterval" value="week">Week</md-radio>
+                    <md-radio class="md-primary" v-model="newApiInterval" value="day">Day</md-radio>
+                    </p>
+                    <md-button class="md-raised md-primary" :href="'changefiles?api_key=' + newApiKey + '&api_interval=' + newApiInterval">Access changefiles</md-button>
                 </md-card-content>
 
             </md-card>
@@ -62,7 +65,7 @@
                     <div class="main md-list-item-text">
                         <div class="row">
                             <span class="date">
-                                {{ changefile.to_date | moment("MMMM Do, YYYY")}}
+                                {{ changefile.to_date ? changefile.to_date : changefile.date | moment("MMMM Do, YYYY")}}
                             </span>
                         </div>
                         <div class="row">
@@ -108,7 +111,9 @@
                 readyState:"ready",
                 changefiles: [],
                 apiKey: "",
-                newApiKey: ""
+                newApiKey: "",
+                apiInterval: "",
+                newApiInterval: "week"
             }
         },
         computed: {
@@ -127,7 +132,7 @@
         methods: {
             getList(){
                 let baseUrl = "https://api.unpaywall.org/feed/changefiles"
-                let url = baseUrl + "?api_key=" + this.apiKey
+                let url = baseUrl + "?api_key=" + this.apiKey + "&interval=" + this.apiInterval
 
                 let that = this
 
@@ -146,6 +151,7 @@
         },
         mounted(){
             this.apiKey = this.$route.query.api_key
+            this.apiInterval = this.$route.query.api_interval
             if (this.apiKey){
                 this.getList()
             }
