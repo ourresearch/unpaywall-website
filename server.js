@@ -19,7 +19,7 @@ app.get('*', function (req, res) {
     }
     else if (req.path === "/journals"){
         const redirectUrl = "https://unsub.org/";
-        res.redirect(redirectUrl);
+        res.redirect(301, redirectUrl);
 
     }
     else {
