@@ -108,7 +108,7 @@
             <tr>
                 <td class="key">
                     <span class="name">genre</span>
-                    <span class="type">String</span>
+                    <span class="type">String|null</span>
                 </td>
                 <td class="contents">
                     The type of resource.
@@ -182,7 +182,7 @@
             <tr>
                 <td class="key">
                     <span class="name">journal_issns</span>
-                    <span class="type">String</span>
+                    <span class="type">String|null</span>
                 </td>
                 <td class="contents">
                     Any ISSNs assigned to the journal publishing this resource.
@@ -196,7 +196,7 @@
             <tr>
                 <td class="key">
                     <span class="name">journal_issn_l</span>
-                    <span class="type">String</span>
+                    <span class="type">String|null</span>
                 </td>
                 <td class="contents">
                     A single ISSN for the journal publishing this resource.
@@ -212,7 +212,7 @@
             <tr>
                 <td class="key">
                     <span class="name">journal_name</span>
-                    <span class="type">String</span>
+                    <span class="type">String|null</span>
                 </td>
                 <td class="contents">
                     The name of the journal publishing this resource.
@@ -280,7 +280,7 @@
             <tr>
                 <td class="key">
                     <span class="name">published_date</span>
-                    <span class="type">String|Null</span>
+                    <span class="type">String|null</span>
                 </td>
                 <td class="contents">
                     The date this resource was published.
@@ -294,7 +294,7 @@
             <tr>
                 <td class="key">
                     <span class="name">publisher</span>
-                    <span class="type">String</span>
+                    <span class="type">String|null</span>
                 </td>
                 <td class="contents">
                     The name of this resource's publisher.
@@ -309,7 +309,7 @@
             <tr>
                 <td class="key">
                     <span class="name">title</span>
-                    <span class="type">String</span>
+                    <span class="type">String|null</span>
                 </td>
                 <td class="contents">
                     The title of this resource.
@@ -337,7 +337,7 @@
             <tr>
                 <td class="key">
                     <span class="name">year</span>
-                    <span class="type">Integer|Null</span>
+                    <span class="type">Integer|null</span>
                 </td>
                 <td class="contents">
                     The year this resource was published.
@@ -351,7 +351,7 @@
             <tr>
                 <td class="key">
                     <span class="name">z_authors</span>
-                    <span class="type">List of Crossref <code>Contributor</code> objects</span>
+                    <span class="type">List of Crossref <code>Contributor</code> objects, or <code>null</code></span>
                 </td>
                 <td class="contents">
                     The authors of this resource.
@@ -454,7 +454,7 @@
             <tr id="oa-location-license">
                 <td class="key">
                     <span class="name">license</span>
-                    <span class="type">String|Null</span>
+                    <span class="type">String|null</span>
                 </td>
                 <td class="contents">
                     The license under which this copy is published.
@@ -479,7 +479,7 @@
             <tr id="oa-location-oa-date">
                 <td class="key">
                     <span class="name">oa_date</span>
-                    <span class="type">String|Null</span>
+                    <span class="type">String|null</span>
                 </td>
                 <td class="contents">
                     When this document first became available at this location.
@@ -497,13 +497,13 @@
             <tr id="oa-location-pmh-id">
                 <td class="key">
                     <span class="name">pmh_id</span>
-                    <span class="type">String|Null</span>
+                    <span class="type">String|null</span>
                 </td>
                 <td class="contents">
                     OAI-PMH endpoint where we found this location.
                 </td>
                 <td class="notes">
-                    This is primarily for internal debugging. It's <code>Null</code> for locations that weren't found using OAI-PMH.
+                    This is primarily for internal debugging. It's <code>null</code> for locations that weren't found using OAI-PMH.
                 </td>
             </tr>
 
@@ -567,7 +567,7 @@
             <tr id="oa_location-url-for-pdf">
                 <td class="key">
                     <span class="name">url_for_pdf</span>
-                    <span class="type">String|Null</span>
+                    <span class="type">String|null</span>
                 </td>
                 <td class="contents">
                     The URL with a PDF version of this OA copy.
