@@ -471,6 +471,9 @@
                         <li>
                             When we have evidence that an OA license of <em>some</em> kind was used, but it’s not reported directly on the webpage at this location, this field returns <code>implied-oa</code>
                         </li>
+                        <li>
+                            If we are unable to determine a license, or it's not an <a href="https://support.unpaywall.org/support/solutions/articles/44002063718-what-is-an-oa-license-">OA license</a>, this field is <code>null</code>.
+                        </li>
                     </ul>
                 </td>
             </tr>
