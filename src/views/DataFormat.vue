@@ -237,6 +237,23 @@
                 </td>
             </tr>
 
+
+            <!--oa_locations_embargoed-->
+            <tr>
+                <td class="key">
+                    <span class="name">oa_locations_embargoed</span>
+                    <span class="type">List</span>
+                </td>
+                <td class="contents">
+                    List of <a href="#oa-location-object">OA Location</a> objects associated with this resource that are not yet available.
+                </td>
+                <td class="notes">
+                    This list includes locations that we expect to be available in the future based on information like license metadata and journals' delayed OA policies.
+                    They do not affect the resource's oa_status and cannot be the best_oa_location or first_oa_location.
+                </td>
+            </tr>
+
+
             <!--first_oa_location-->
             <tr>
                 <td class="key">
