@@ -19,6 +19,17 @@
                     <!--and elsewhere.-->
                 <!--</dd>-->
 
+                <dt id="what-does-unpaywall-find">What articles can Unpaywall find?</dt>
+                    Unpaywall finds the kind of articles you'd see in peer-reviewed scholarly journals like <em><a href="https://science.sciencemag.org/">Science</a></em> or <em><a href="https://journals.plos.org/plosone/">PLOS One</a></em>,
+                    plus pre-publication versions of similar work from preprint repositories like <em><a href="https://arxiv.org/">arXiv</a></em>.
+                    Specifically, it looks for articles with a kind of identifier called a <a href="https://www.doi.org/">DOI</a>.
+                    Although the term "paywall" is known to most people as the thing in front of the newspaper article you want to read,
+                    Unpaywall doesn't help with sites like nytimes.com or washingtonpost.com.
+                <dd>
+
+                </dd>
+
+
                 <dt id="how-do-you-find-articles">How do you find all these fulltext articles?</dt>
                 <dd>
                     We harvest content directly from
@@ -74,6 +85,12 @@
                 <dt id="run-on-click">Can I make Unpaywall run <em>only</em> when I click a button, instead of automatically?</dt>
                 <dd>
                     Yep! In Chrome, click the settings button (it looks like a vertical ellipsis) at the top right of your window. Then click <code>More tools</code> and then <code>Extensions</code>. Find the Unpaywall extension, and click <code>Details.</code> Under <code>Site Access,</code> select <code>On click.</code> Done! Now Unpaywall will not run unless you click the Unpaywall icon in your Chrome toolbar.
+                </dd>
+
+                <dt id="knowledge-base-faq">My question isn't answered here.</dt>
+                <dd>
+                    Try the <a href="https://support.unpaywall.org/a/solutions/categories/44000260577/folders/44000384007">advanced FAQs</a>, especially if you're a user of the API or data snapshot.
+                    If that doesn't help, ask away at <a href="https://support.unpaywall.org">support.unpaywall.org</a> or <a href="mailto:support@unpaywall.org">support@unpaywall.org</a>.
                 </dd>
 
             </dl>
