@@ -16,6 +16,7 @@ import Welcome from './views/Welcome'
 import Outreach from './views/Outreach'
 import SearchArticles from "./views/SearchArticles";
 import IssnlFinder from "./views/IssnlFinder";
+import ArticleInfo from "./views/ArticleInfo";
 
 // Get Started
 import UserGuides from './views/UserGuides'
@@ -118,6 +119,10 @@ export default new Router({
     {
       path: '/issnl-finder',
       component: IssnlFinder
+    },
+    {
+      path: '/article/:doi?',
+      component: ArticleInfo,
     },
 
 
