@@ -9,10 +9,10 @@
 
         <p>
             <span class="no-key" v-if="!apiKey">
-                The Data Feed changefiles show all the changes in the Unpaywall database over time. They are provided for subscribers to the <router-link to="/data-format">Unpaywall Data Feed</router-link>.
+                The Data Feed changefiles show all the changes in the Unpaywall database over time. They are provided for subscribers to the <router-link to="/products/data-feed">Unpaywall Data Feed</router-link>.
             </span>
             <span class="no-key" v-if="apiKey">
-                These files show all the changes in the Unpaywall database over time. You have access based on your subscription to the <router-link to="/data-format">Unpaywall Data Feed</router-link>.
+                These files show all the changes in the Unpaywall database over time. You have access based on your subscription to the <router-link to="/products/data-feed">Unpaywall Data Feed</router-link>.
             </span>
 
 
