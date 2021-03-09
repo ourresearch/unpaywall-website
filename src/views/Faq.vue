@@ -76,11 +76,20 @@
                 </dd>
 
 
-                <dt id="report-bugs">I found a bug</dt>
+                <dt id="report-bugs">I found a bug.</dt>
                 <dd>
                     Sorry about that!
                     <a href="mailto:support@unpaywall.org">Drop us an email</a> and we'll get it fixed for you.
                 </dd>
+
+
+                <dt id="found-article">I found an open access article that isn't in Unpaywall.</dt>
+                <dd>
+                    Great! If it's hosted by the publisher, we can almost certainly add it. If it's somewhere else, like a faculty page or a personal website, it may be trickier.
+                    These sites are difficult to include accurately since they don't provide their data in a structured way like institutional repositories do.
+                    Let us know at <a href="mailto:support@unpaywall.org">support@unpaywall.org</a> and we'll see what we can do.
+                </dd>
+
 
                 <dt id="run-on-click">Can I make Unpaywall run <em>only</em> when I click a button, instead of automatically?</dt>
                 <dd>
