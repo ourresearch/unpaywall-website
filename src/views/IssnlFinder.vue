@@ -74,12 +74,12 @@
         },
         methods: {
             submit(){
-                const urlBase = "https://api.unpaywall.org/issn_ls?issns="
-                const url = urlBase + this.issnsList.join()
+                const url = "https://api.unpaywall.org/issn_ls"
+                const postData = {issns: this.issnsList}
                 let that = this
-                console.log("sending this to server:", url)
+                console.log("sending this to server:", url, postData)
 
-                axios.get(url)
+                axios.post(url, postData)
                     .then(function(resp){
                         console.log("success!", resp)
                         that.readyState = "success"
