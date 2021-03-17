@@ -96,12 +96,43 @@
                     Yep! In Chrome, click the settings button (it looks like a vertical ellipsis) at the top right of your window. Then click <code>More tools</code> and then <code>Extensions</code>. Find the Unpaywall extension, and click <code>Details.</code> Under <code>Site Access,</code> select <code>On click.</code> Done! Now Unpaywall will not run unless you click the Unpaywall icon in your Chrome toolbar.
                 </dd>
 
+                <dt id="extension-privacy">What data does the extension collect?</dt>
+                <dd>
+                    <p>Our full privacy policy is here: <router-link to="/legal/privacy">http://unpaywall.org/legal/privacy</router-link>. In plainer, more practical terms, here is what the extension does:</p>
+                    <p>
+                        When you load a new webpage, the Unpaywall extension scans the text of that page looking for a <a href="https://library.uic.edu/help/article/1966/what-is-a-doi-and-how-do-i-use-them-in-citations">DOI</a> (a short unique identifier key used by scholarly articles—it’s like a URL for academic papers).
+                        If it finds one, we send that DOI over the internet to our <a href="https://unpaywall.org/products/api">API</a> in order to retrieve our best Open Access location for the article.
+                    </p>
+
+                    <p>
+                        This is the only time Unpaywall connects to a remote server. The information sent is:
+                        <ul>
+                            <li>The DOI, which is needed to look up article information.</li>
+                            <li>
+                                The <a href="https://en.wikipedia.org/wiki/IP_address">IP address</a> of your computer, which is needed for all internet requests (This part is not unique to Unpaywall. Your browser sends your IP address to every server it connects to
+                                and every webpage you visit. You can hide your IP address by using a <a href="https://en.wikipedia.org/wiki/Virtual_private_network">VPN</a>).
+                            </li>
+                        </ul>
+                    </p>
+
+                    <p>
+                        Unpaywall does not send your name, email address, or any other content of the pages you browse to our server (except the DOI). Unpaywall does not know or have access to your name or email address.
+                    <p>
+                        Records of individual requests are not shared with third parties. They are stored as part of our server logs, which we use for debugging and load analysis. Our server logging system vendor is <a href="https://www.papertrail.com/">Papertrail</a>.
+                        Aggregated data, stripped of all personal information, may be shared with third parties or published as part of statistical research on Open Access trends and usage.
+                        For example, we might make a blog post saying “Unpaywall delivers Open Access articles in 50% of user requests.”
+                    </p>
+
+                    <p>Unpaywall uses <a href="https://en.wikipedia.org/wiki/Web_storage">local storage</a> to save user settings.</p>
+
+                    <p>Unpaywall's source code is hosted on <a href="https://github.com/ourresearch/unpaywall-extension">github.com</a>.</p>
+                </dd>
+
                 <dt id="knowledge-base-faq">My question isn't answered here.</dt>
                 <dd>
                     Try the <a href="https://support.unpaywall.org/a/solutions/categories/44000260577/folders/44000384007">advanced FAQs</a>, especially if you're a user of the API or data snapshot.
                     If that doesn't help, ask away at <a href="https://support.unpaywall.org">support.unpaywall.org</a> or <a href="mailto:support@unpaywall.org">support@unpaywall.org</a>.
                 </dd>
-
             </dl>
     </div>
 </template>
