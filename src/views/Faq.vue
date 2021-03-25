@@ -23,7 +23,7 @@
                     Unpaywall finds the kind of articles you'd see in peer-reviewed scholarly journals like <em><a href="https://science.sciencemag.org/">Science</a></em> or <em><a href="https://journals.plos.org/plosone/">PLOS One</a></em>,
                     plus pre-publication versions of similar work from preprint repositories like <em><a href="https://arxiv.org/">arXiv</a></em>.
                     Specifically, it looks for articles with a kind of identifier called a <a href="https://www.doi.org/">DOI</a>.
-                    Although the term "paywall" is known to most people as the thing in front of the newspaper article you want to read,
+                    Although the best-known type of paywall is the kind in front of a newspaper or magazine article you want to read,
                     Unpaywall doesn't help with sites like nytimes.com or washingtonpost.com.
                 <dd>
 
