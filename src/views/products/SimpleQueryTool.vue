@@ -15,8 +15,17 @@
         <p>
              Don't forget to check the <router-link to="/data-format">schema documentation,</router-link> which includes definitions that will help you interpret the the result files.
         </p>
-
-
+        <p>
+            The result files will include one row per normalized DOI. DOI normalization includes conversion to lowercase and removal of whitespace and other extra characters. The report for
+        </p>
+        <pre>
+            doi:10.1038/nature21360
+            10.1038/nature21360
+            10.1038/Nature21360
+        </pre>
+        <p>
+            will have a single row with the DOI 10.1038/nature21360. If you have fewer result rows than input rows, check the DOI list for duplicates.
+        </p>
 
 
         <!-- READY STATE -->
