@@ -114,7 +114,7 @@
             <td class="v">
               Provides the full <code><a href="#get-doi">GET /v2/:doi</a></code> responses for articles whose
               titles match your query. 50 results are returned per request and the <code>page</code> argument
-              pages after the first.
+              requests pages after the first.
             </td>
           </tr>
           <tr>
