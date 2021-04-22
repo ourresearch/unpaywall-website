@@ -99,7 +99,7 @@
         </div>
 
       <div class="endpoint" id="title-search">
-        <code class="endpoint">GET /v2/search?query=:your_query[&is_oa=boolean]</code>
+        <code class="endpoint">GET /v2/search?query=:your_query[&amp;is_oa=boolean][&amp;page=integer]</code>
         <p>Usage notes and additional examples are available in the <a
             href="https://support.unpaywall.org/a/solutions/articles/44001977396">Unpaywall FAQ</a>.</p>
         <p>This endpoint can be accessed through our
@@ -112,8 +112,9 @@
               Description
             </td>
             <td class="v">
-              Provides the full <code><a href="#get-doi">GET /v2/:doi</a></code> responses for up to 50 articles whose
-              titles match your query.
+              Provides the full <code><a href="#get-doi">GET /v2/:doi</a></code> responses for articles whose
+              titles match your query. 50 results are returned per request and the <code>page</code> argument
+              pages after the first.
             </td>
           </tr>
           <tr>
@@ -143,6 +144,15 @@
                     <li>null/unspecified: return the most relevant results regardless of OA status</li>
                   </ul>
                 </li>
+                <li>
+                  <code>page</code>: (Optional) An integer indicating which page of results should be returned.
+                  <ul>
+                    <li>1/unspecified: return results 1 to 50</li>
+                    <li>2: return results 51 to 100</li>
+                    <li>etc.</li>
+                  </ul>
+                </li>
+
               </ul>
             </td>
           </tr>
