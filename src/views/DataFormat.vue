@@ -239,7 +239,7 @@
 
 
             <!--oa_locations_embargoed-->
-            <tr>
+            <tr id="oa_locations_embargoed">
                 <td class="key">
                     <span class="name">oa_locations_embargoed</span>
                     <span class="type">List</span>
