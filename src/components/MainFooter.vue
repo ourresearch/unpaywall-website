@@ -44,7 +44,7 @@
                 </a>
             </div>
             <div class="made-with-love">
-                Made with <i class="far fa-heart"></i> at <a href="https://ourresearch.org">Our Research.</a>
+                Made with <i class="far fa-heart"></i> at <a href="https://ourresearch.org">OurResearch.</a>
 
             </div>
 

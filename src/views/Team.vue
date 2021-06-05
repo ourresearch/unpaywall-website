@@ -9,7 +9,7 @@
             </div>
             <div class="text mt-12">
                 <p>
-                    Unpaywall is a project of <a href="https://ourresearch.org">Our Research,</a> a nonprofit building tools to help make scholarly research more open, connected, and reusable. That's us in the picture (clockwise from top): <strong>Richard Orr</strong> (<a href="https://twitter.com/unpaywall_dev">Twitter</a>), <strong>Heather Piwowar</strong> (<a href="https://docs.google.com/document/d/1S7aKmG_l3wJxAc4lb5gJYMwNVDnAT7HlQWcaXADwA1s/edit?usp=sharing">bio, </a>
+                    Unpaywall is a project of <a href="https://ourresearch.org">OurResearch,</a> a nonprofit building tools to help make scholarly research more open, connected, and reusable. That's us in the picture (clockwise from top): <strong>Richard Orr</strong> (<a href="https://twitter.com/unpaywall_dev">Twitter</a>), <strong>Heather Piwowar</strong> (<a href="https://docs.google.com/document/d/1S7aKmG_l3wJxAc4lb5gJYMwNVDnAT7HlQWcaXADwA1s/edit?usp=sharing">bio, </a>
                     <a href="https://scholar.google.com/citations?user=1YLq0XMAAAAJ&hl=en">publications, </a>
                     <a href="https://twitter.com/researchremix">Twitter</a>), and
 
