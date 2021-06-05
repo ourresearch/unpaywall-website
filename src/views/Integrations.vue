@@ -8,6 +8,7 @@
         <h2 id="search">Citation indices</h2>
         <ul>
             <li><a href="https://app.dimensions.ai/discover/publication?and_facet_open_access=True">Dimensions</a></li>
+            <li><a href="https://www.litmaps.co/">Litmaps</a></li>
             <li><a href="https://www.lens.org/lens/search/scholar/list">Lens</a></li>
             <li><a href="https://www.qeios.com/discover">Qeios</a></li>
             <li><a href="https://scite.ai/">scite</a></li>

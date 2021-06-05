@@ -17,8 +17,13 @@
             Regardless of the source, each record returned consists of one <router-link to="#doi-object">DOI Object, </router-link> containing resource metadata. Each DOI Object in turn contains a list of zero or more <router-link to="#oa-location-object">OA Location Objects.</router-link>
         </p>
 
+        <p>
+            New fields may be added at any time. This won't be a problem for existing code in most cases since they will simply go unused, but you shouldn't rely on the number of fields being fixed.
+        </p>
 
-
+        <p>
+            Fields marked (beta) may have their behavior changed without warning. Changes to other fields will be announced on the <a href="https://groups.google.com/forum/#!forum/unpaywall">Unpaywall mailing list</a>.
+        </p>
 
 
 
@@ -239,9 +244,9 @@
 
 
             <!--oa_locations_embargoed-->
-            <tr>
+            <tr id="oa_locations_embargoed">
                 <td class="key">
-                    <span class="name">oa_locations_embargoed</span>
+                    <span class="name">oa_locations_embargoed (beta)</span>
                     <span class="type">List</span>
                 </td>
                 <td class="contents">

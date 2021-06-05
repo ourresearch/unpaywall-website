@@ -55,8 +55,8 @@
             </ul>
             <p>You can use the snapshot and changefiles together to keep your copy up to date by following these steps:</p>
             <ol>
-                <li>Download and import the current snapshot.</li>
-                <li>Download all changefiles, starting with the first file with an update timestamp before that of the snapshot.</li>
+                <li>Download and import the <a href="http://api.unpaywall.org/feed/snapshot?api_key=YOUR_API_KEY">current daily snapshot</a>.</li>
+                <li>Download all changefiles, starting with the last file with an update timestamp before that of the snapshot.</li>
                 <li>Import each changefile by reading it line by line, overwriting or updating the previous record for that row's DOI.</li>
                 <li>Continue to import changefiles as above, as they are released.</li>
             </ol>
