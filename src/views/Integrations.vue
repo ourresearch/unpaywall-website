@@ -1,7 +1,11 @@
 <template>
     <div class="page integrations">
         <h1>Integrations</h1>
-        <p>The best part about Open Data is all the awesome uses it can support downstream. We're thrilled that there are lots of ways to access and use the Unpaywall dataset, thanks to our partners and integrations:</p>
+        <p>
+            The best part about Open Data is all the awesome uses it can support downstream.
+            And people have found <em>lots</em> of uses, making Unpaywall a trusted, world-leading authority on Open Access.
+            Here’s a list of organizations who are currently using Unpaywall data:
+        </p>
 
 
 
