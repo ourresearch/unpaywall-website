@@ -18,7 +18,7 @@
 
 
             Files use the same <router-link to="/data-format">schema</router-link> as the <router-link to="/products/api">REST API</router-link> and <router-link to="/products/snapshot">database snapshot.</router-link>
-            This list is also available via a <a href="https://api.unpaywall.org/feed/changefiles?api_key=YOUR_API_KEY">JSON endpoint</a> for programmatic access.
+            This list is also available via a <a href="changefiles#get-changefiles">JSON endpoint</a> for programmatic access.
         </p>
 
 
@@ -43,7 +43,7 @@
                     <md-radio class="md-primary" v-model="newApiInterval" value="week">Week</md-radio>
                     <md-radio class="md-primary" v-model="newApiInterval" value="day">Day</md-radio>
                     </p>
-                    <md-button class="md-raised md-primary" :href="'changefiles?api_key=' + newApiKey + '&api_interval=' + newApiInterval">Access changefiles</md-button>
+                    <md-button class="md-raised md-primary" :href="'changefiles?api_key=' + newApiKey + '&interval=' + newApiInterval">Access changefiles</md-button>
                 </md-card-content>
             </md-card>
 
@@ -243,7 +243,7 @@
         },
         mounted(){
             this.apiKey = this.$route.query.api_key
-            this.apiInterval = this.$route.query.api_interval
+            this.apiInterval = this.$route.query.interval
             if (this.apiKey){
                 this.getList()
             }
