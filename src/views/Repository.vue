@@ -118,7 +118,51 @@
         </md-button>
     </div>
 
+    <div class="io input" v-show="readyState=='ready'">
+        <h2>Request OA Location Details</h2>
+        <p>
+            Get the details on all <a href="https://unpaywall.org/data-format#oa-location-object">OA Locations</a> from this repository.
+        </p>
+        <md-field>
+            <label for="email-input">Your email</label>
+            <md-input v-model="email" id="email-input"></md-input>
+        </md-field>
 
+        <div>
+            <md-button @click="request_report"
+                :disabled="!email"
+                class="md-primary md-raised">
+                Request Report
+            </md-button>
+        </div>
+    </div>
+
+    <!-- WORKING.... -->
+    <div class="io working" v-show="readyState=='working'">
+        <h2>Submitting request...</h2>
+        <md-progress-bar md-mode="indeterminate"></md-progress-bar>
+    </div>
+
+
+    <!-- SUCCESS! -->
+    <div class="io success" v-show="readyState=='success'">
+        <h2>Success!</h2>
+        <p>
+            Your request has been submitted. In a few minutes, you'll get an email
+            from us with an attached spreadsheet showing the results.
+            Keep an eye on your spam folder, since automated emails can often be flagged as spam.
+        </p>
+    </div>
+
+
+    <!-- ERROR! -->
+    <div class="io error" v-show="readyState=='error'">
+        <h2>Sorry, there was a problem!</h2>
+        <p>
+            Looks like we're having trouble processing your request. Please try again, or email us at
+            <a href="mailto:support@unpaywall.org">support@unpaywall.org</a> and we'll work to get the problem fixed.
+        </p>
+    </div>
 
 
     </div>
@@ -137,7 +181,9 @@
                 pmhUrl: "",
                 endpointId: "",
                 status: {},
-                versions: {}
+                versions: {},
+                readyState: "ready",
+                email: "",
             }
         },
         components: {
@@ -168,6 +214,25 @@
                         this.versions = resp.data.results.by_version_distinct_pmh_records_matching_dois
                     })
 
+            },
+            request_report(){
+                let url = "https://unpaywall.org/repo_pulse/endpoint/" + this.endpointId + "/request_oa_locations"
+                let that = this
+                let postData = {
+                    email: this.email,
+                }
+                console.log("sending this to server:", postData)
+
+                this.readyState = "working"
+                axios.post(url, postData)
+                    .then(function(resp){
+                        console.log("success!", resp)
+                        that.readyState = "success"
+                    })
+                    .catch(function(error){
+                        console.log("error :(", error)
+                        that.readyState = "error"
+                    })
             },
         },
         mounted(){
