@@ -216,7 +216,7 @@
 
             },
             request_report(){
-                let url = "https://unpaywall.org/repo_pulse/endpoint/" + this.endpointId + "/request_oa_locations"
+                let url = "https://api.unpaywall.org/repo_pulse/endpoint/" + this.endpointId + "/request_oa_locations"
                 let that = this
                 let postData = {
                     email: this.email,
