@@ -342,7 +342,7 @@
             </tr>
 
             <!--updated-->
-            <tr>
+            <tr id="doi-updated">
                 <td class="key">
                     <span class="name">updated</span>
                     <span class="type">String</span>

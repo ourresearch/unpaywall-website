@@ -55,8 +55,38 @@
             </ul>
             <p>You can use the snapshot and changefiles together to keep your copy up to date by following these steps:</p>
             <ol>
-                <li>Download and import the <a href="http://api.unpaywall.org/feed/snapshot?api_key=YOUR_API_KEY">current daily snapshot</a>.</li>
-                <li>Download all changefiles, starting with the last file with an update timestamp before that of the snapshot.</li>
+                <li>
+                    Download and import the
+                    <a href="https://api.unpaywall.org/feed/snapshot?api_key=YOUR_API_KEY">current daily snapshot</a>.
+                </li>
+                <li>
+                    Determine the last update timestamp in the snapshot.
+                    <ul>
+                        <li>
+                            If you've already imported the snapshot, this is the maximum value of the
+                            <router-link to="/data-format#doi-updated">updated</router-link> field among all rows.
+                        </li>
+                        <li>
+                            The timestamp in the snapshot file name is an upper bound on the max-updated value:
+                            unpaywall_snapshot_<strong>2021-08-04T083001</strong>.jsonl.gz
+                        </li>
+                        <li>
+                            The file name is provided in the <code>Content-Disposition</code> header if you download it with a utility like <code>curl</code>:
+                            <code>Content-Disposition: attachment; filename="unpaywall_snapshot_2021-08-04T083001.jsonl.gz"</code>
+                        </li>
+                    </ul>
+                <li>
+                    Download all changefiles, starting with the most recent file with an update timestamp before that of the snapshot.
+                    If the available changefiles are:
+                    <ul>
+                        <ol>
+                            <li>changed_dois_with_versions_2021-05-01T080001.jsonl.gz</li>
+                            <li>changed_dois_with_versions_2021-05-02T080001.jsonl.gz</li>
+                            <li>changed_dois_with_versions_2021-05-03T080001.jsonl.gz</li>
+                        </ol>
+                    </ul>
+                    and the snapshot timestamp is 2021-05-02T120000, get changefiles 2 and 3 in that order.
+                </li>
                 <li>Import each changefile by reading it line by line, overwriting or updating the previous record for that row's DOI.</li>
                 <li>Continue to import changefiles as above, as they are released.</li>
             </ol>

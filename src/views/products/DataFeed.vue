@@ -21,7 +21,7 @@
             <a href="https://api.unpaywall.org/feed/changefiles?api_key=YOUR_API_KEY">JSON endpoint</a> for accessing changefiles.
         </p>
         <p>
-        A Data Feed subscription also provides access to a <a href="http://api.unpaywall.org/feed/snapshot?api_key=YOUR_API_KEY">current snapshot</a>, updated daily.
+        A Data Feed subscription also provides access to a <a href="https://api.unpaywall.org/feed/snapshot?api_key=YOUR_API_KEY">current snapshot</a>, updated daily.
         This means that, with your subscription, at any time you can download a complete and current image of our database, all 120M rows.
         </p>
         <p>You can use the snapshot and changefiles together to keep your copy up to date by following these steps:</p>
