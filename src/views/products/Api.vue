@@ -92,7 +92,7 @@
                         Example
                     </td>
                     <td class="v">
-                        <a href="https://api.unpaywall.org/v2/10.1038/nature12373?email=unpaywall_00@example.com">https://api.unpaywall.org/v2/10.1038/nature12373?email=YOUR_EMAIL</a>
+                        <a href="https://api.unpaywall.org/v2/10.1038/nature12373?email=unpaywall_01@example.com">https://api.unpaywall.org/v2/10.1038/nature12373?email=YOUR_EMAIL</a>
                     </td>
                 </tr>
             </table>
@@ -181,7 +181,7 @@
               Example
             </td>
             <td class="v">
-              <a href="https://api.unpaywall.org/v2/search?query=cell%20thermometry&is_oa=true&email=unpaywall_00@example.com">https://api.unpaywall.org/v2/search?query=cell%20thermometry&is_oa=true&email=YOUR_EMAIL</a>
+              <a href="https://api.unpaywall.org/v2/search?query=cell%20thermometry&is_oa=true&email=unpaywall_01@example.com">https://api.unpaywall.org/v2/search?query=cell%20thermometry&is_oa=true&email=YOUR_EMAIL</a>
             </td>
           </tr>
         </table>

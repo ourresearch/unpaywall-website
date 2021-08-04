@@ -76,7 +76,7 @@
                         </li>
                     </ul>
                 <li>
-                    Download all changefiles, starting with the most recent file with an update timestamp before that of the snapshot.
+                    Download all changefiles, starting with the most recent file wiith a last-updated timestamp before that of the snapshot.
                     If the available changefiles are:
                     <ul>
                         <ol>
