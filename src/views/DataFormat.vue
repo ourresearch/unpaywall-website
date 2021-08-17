@@ -380,6 +380,9 @@
                 </td>
                 <td class="notes">
                     These are formatted as a list of Crossref <code>Contributor</code> objects, which are <a href="https://github.com/CrossRef/rest-api-doc/blob/master/api_format.md#contributor"> described in the Crossref API docs here.</a>
+                    <br>
+                    <code>Contributor</code> objects may also contain <a href="https://www.crossref.org/documentation/content-registration/descriptive-metadata/contributors/#00009">sequence</a> elements,
+                    which at the time of writing are not included in the Crossref API docs.
                 </td>
             </tr>
 
