@@ -122,8 +122,6 @@
         <h2>Request OA Location Details</h2>
         <p>
             Get the details on all <a href="https://unpaywall.org/data-format#oa-location-object">OA Locations</a> from this repository.
-            This report shows all OA locations, whether or not they are the highest-ranked,
-            so debugging may be easier than with the <a href="https://unpaywall.org/products/simple-query-tool">Simple Query Tool</a>.
         </p>
         <md-field>
             <label for="email-input">Your email</label>
@@ -150,7 +148,7 @@
     <div class="io success" v-show="readyState=='success'">
         <h2>Success!</h2>
         <p>
-            Your request has been submitted. In about 15 minutes, you'll get an email
+            Your request has been submitted. In a few minutes, you'll get an email
             from us with an attached spreadsheet showing the results.
             Keep an eye on your spam folder, since automated emails can often be flagged as spam.
         </p>
