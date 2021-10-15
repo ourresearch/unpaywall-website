@@ -127,16 +127,24 @@
 
         <h2 id="other">Other integrations</h2>
         <ul>
-            <li><a href="https://zenodo.org/record/1441072#.XTPinZNKjUI">OpenAIRE DOIBoost</a></li>
-
+            <li>
+                <a href="https://thirdiron.com/academic/">Browzine</a>
+            </li>
+            <li>
+                <a href="https://blog.openaccessbutton.org/new-powerfully-simple-library-tool-to-deliver-articles-no-subscription-needed-1c8b7def604f">InstantILL</a> (Interlibrary loan software from Open Access Button)
+            </li>
+            <li>
+                <a href="https://nxref.com/">nXr reference manager</a>
+            </li>
+            <li>
+                <a href="https://zenodo.org/record/1441072#.XTPinZNKjUI">OpenAIRE DOIBoost</a>
+            </li>
             <li>
                 <a href="https://cran.r-project.org/web/packages/roadoi/vignettes/intro.html">R client for our API</a>
             </li>
-            <li><a href="https://thirdiron.com/academic/">Browzine</a></li>
-            <li><a href="https://www.zotero.org/blog/improved-pdf-retrieval-with-unpaywall-integration/">Zotero</a></li>
             <li>
-                <a href="https://blog.openaccessbutton.org/new-powerfully-simple-library-tool-to-deliver-articles-no-subscription-needed-1c8b7def604f">InstantILL</a> (Interlibrary loan software from Open Access Button)</li>
-
+                <a href="https://www.zotero.org/blog/improved-pdf-retrieval-with-unpaywall-integration/">Zotero</a>
+            </li>
         </ul>
 
 
