@@ -128,7 +128,7 @@
         <h2 id="other">Other integrations</h2>
         <ul>
             <li>
-                <a href="https://thirdiron.com/academic/">Browzine</a>
+                <a href="https://thirdiron.com/products/browzine/">Browzine</a>
             </li>
             <li>
                 <a href="https://blog.openaccessbutton.org/new-powerfully-simple-library-tool-to-deliver-articles-no-subscription-needed-1c8b7def604f">InstantILL</a> (Interlibrary loan software from Open Access Button)
