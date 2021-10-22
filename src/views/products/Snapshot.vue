@@ -22,7 +22,7 @@
             Size
         </h2>
         <p>
-            The latest version of the snapshot file is about 16GB (85G unzipped), and contains over 100 million lines.
+            The latest version of the snapshot file is about 25GB (130G unzipped), and contains over 120 million lines.
         </p>
 
         <h2>
@@ -34,7 +34,7 @@
 
 
     </div>
-    
+
 </template>
 <script>
     export default {
