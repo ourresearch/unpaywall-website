@@ -17,9 +17,7 @@
             <li><a href="https://www.qeios.com/discover">Qeios</a></li>
             <li><a href="https://scite.ai/">scite</a></li>
             <li><a href="https://blog.impactstory.org/elsevier-data-feed/">Scopus</a></li>
-            <li>
-                <a href="https://clarivate.com/wp-content/uploads/2017/10/Clarivate-OA-Impact-Story_Intro-sheet.pdf?elqTrackId=c5abee7048934a3da317e296a3e2a9c8&elqaid=5350&elqat=2">Web
-                    of Science</a></li>
+            <li><a href="https://images.webofknowledge.com/images/help/WOS/hp_whatsnew_wos.html#ts_whatsnew_overview">Web of Science</a></li>
         </ul>
 
 
