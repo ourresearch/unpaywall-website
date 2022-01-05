@@ -297,6 +297,20 @@
                 </td>
             </tr>
 
+            <!--has_repository_copy-->
+            <tr>
+                <td class="key">
+                    <span class="name">has_repository_copy</span>
+                    <span class="type">Boolean</span>
+                </td>
+                <td class="contents">
+                    Whether there is a copy of this resource in a repository.
+                </td>
+                <td class="notes">
+                    <code>True</code> if this resource has at least one <a href="#oa-location-object">OA Location</a> with <a href="oa-location-host-type">host_type</a> = "repository".
+                    <code>False</code> otherwise.
+                </td>
+            </tr>
 
             <!--published_date-->
             <tr>
