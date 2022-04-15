@@ -32,6 +32,7 @@
                 <a href="https://ideas.exlibrisgroup.com/forums/564566-summon/suggestions/36261826-add-unpaywall-database-to-the-summon-index">Summon (launching soon)</a>
             </li>
             <li><a href="https://help.oclc.org/Discovery_and_Reference/WorldCat_Discovery/Search_results/Open_content_in_WorldCat_Discovery_search_results#Open_Access_DOI_links_enhanced_by_Unpaywall">OCLC WorldCat Discovery</a></li>
+            <li><a href="https://pubhive.com/home">PubHive Navigator</a></li>
             <li><a href="https://blog.scienceopen.com/category/aggregation/">ScienceOpen</a></li>
 
 
@@ -94,6 +95,7 @@
             <li><a href="https://www.leanlibrary.com/">Lean Library</a></li>
             <li><a href="https://thirdiron.com/products/libkey-nomad/">LibKey Nomad</a></li>
             <li><a href="https://openaccessbutton.org/">Open Access Button</a></li>
+            <li><a href="https://pubhive.com/browser-plug-ins">PubHive Navigator</a></li>
             <li>
                 <a href="https://chrome.google.com/webstore/detail/unpaywall/iplffkdpngmdjhlpjmppncnlhomiipha?hl=en">Unpaywall browser extension</a></li>
             <li>
@@ -113,6 +115,7 @@
             <li><a href="https://www.nature.com/articles/d41586-019-02142-1">Jawaharlal Nehru University Data Depot</a></li>
             <li><a href="http://machineintelligence.se/">Machine Intelligence Sweden</a></li>
             <li><a href="https://mitpress.mit.edu/kfg">MIT Knowledge Futures Group</a></li>
+            <li><a href="https://pubhive.com/home">PubHive Navigator</a></li>
             <li><a href="https://researchably.com/">Researchably</a></li>
             <li><a href="https://www.scholarcy.com/">Scholarcy</a></li>
             <li><a href="https://www.semanticscholar.org/">Semantic Scholar</a></li>
