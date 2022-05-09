@@ -91,7 +91,7 @@
 
         <h2>Browser extensions</h2>
         <ul>
-            <li><a href="https://kopernio.com/">Kopernio</a></li>
+            <li><a href="https://click.endnote.com/">EndNote Click (formerly Kopernio)</a></li>
             <li><a href="https://www.leanlibrary.com/">Lean Library</a></li>
             <li><a href="https://thirdiron.com/products/libkey-nomad/">LibKey Nomad</a></li>
             <li><a href="https://openaccessbutton.org/">Open Access Button</a></li>
@@ -141,6 +141,9 @@
             </li>
             <li>
                 <a href="https://cran.r-project.org/web/packages/roadoi/vignettes/intro.html">R client for our API</a>
+            </li>
+            <li>
+                <a href="https://skepticalscience.com/">Skeptical Science</a>
             </li>
             <li>
                 <a href="https://www.zotero.org/blog/improved-pdf-retrieval-with-unpaywall-integration/">Zotero</a>
