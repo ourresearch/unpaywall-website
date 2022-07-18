@@ -7,8 +7,6 @@
             Here’s a list of organizations who are currently using Unpaywall data:
         </p>
 
-
-
         <h2 id="search">Citation indices</h2>
         <ul>
             <li><a href="https://app.dimensions.ai/discover/publication?and_facet_open_access=True">Dimensions</a></li>
@@ -23,11 +21,12 @@
 
         <h2 id="discover">Discovery tools</h2>
         <ul>
+            <li><a href="https://www.cloudsourceoa.com/">CloudSource OA</a></li>
             <li><a href="https://cloud.ebsco.com/apps/unpaywall">EBSCO Discovery System (EDS)</a></li>
             <li><a href="http://blog.europepmc.org/2018/04/unlocking-open-europe-pmc-integrates.html">Europe PubMed Central</a></li>
             <li><a href="https://gettheresearch.org">Get The Research</a></li>
             <li>
-                ProQuest <a href="https://knowledge.exlibrisgroup.com/Primo/Community_Knowledge/How_to_%E2%80%93_Add_an_Unpaywall_General_Electronic_Service_to_Alma%2C_for_Open_Access_links_in_Primo">Alma, </a>
+                ProQuest <a href="https://knowledge.exlibrisgroup.com/Alma/Knowledge_Articles/How_to_Enable_the_Unpaywall_API_Integration">Alma, </a>
                 <a href="https://developers.exlibrisgroup.com/appcenter/unpaywall/">Primo, </a> and
                 <a href="https://ideas.exlibrisgroup.com/forums/564566-summon/suggestions/36261826-add-unpaywall-database-to-the-summon-index">Summon (launching soon)</a>
             </li>
@@ -38,10 +37,7 @@
 
             <li><a href="https://tdnet.io/services/discovery">TDNet</a></li>
             <li><a href="https://www.tripdatabase.com/">Trip Database</a></li>
-
-
         </ul>
-
 
 
         <h2 id="link-resolvers">Library link resolvers</h2>
@@ -62,9 +58,6 @@
 
         </ul>
 
-
-
-
         <h2>Usage in Funding Analysis</h2>
         <p>These funders have are all using Unpaywall to help track the openness of the research they fund, and improve their efforts to promote Open Access:</p>
         <ul>
@@ -77,9 +70,6 @@
             <li>The Wellcome Trust</li>
         </ul>
 
-
-
-
         <h2>Online OA Dashboards</h2>
         <ul>
             <li><a href="https://najkoja.shinyapps.io/hybridoa/">Hybrid OA Monitor</a></li>
@@ -88,11 +78,10 @@
             <li><a href="https://open-access-monitor.de/#/publications">German Open Access Monitor</a></li>
         </ul>
 
-
         <h2>Browser extensions</h2>
         <ul>
             <li><a href="https://click.endnote.com/">EndNote Click (formerly Kopernio)</a></li>
-            <li><a href="https://www.leanlibrary.com/">Lean Library</a></li>
+            <li><a href="https://www.leanlibrary.com/">Lean Library</a> (<a href="/case-studies/lean-library.pdf">read the case study</a>)</li>
             <li><a href="https://thirdiron.com/products/libkey-nomad/">LibKey Nomad</a></li>
             <li><a href="https://openaccessbutton.org/">Open Access Button</a></li>
             <li><a href="https://pubhive.com/browser-plug-ins">PubHive Navigator</a></li>
@@ -102,12 +91,6 @@
                 <a href="https://www.oahelper.org/">Open Access Helper</a>
             </li>
         </ul>
-
-
-
-
-
-
 
         <h2>Machine learning and AI</h2>
         <ul>
@@ -121,9 +104,6 @@
             <li><a href="https://www.semanticscholar.org/">Semantic Scholar</a></li>
             <li><a href="https://www.wizdom.ai/">Wizdom.ai</a></li>
         </ul>
-
-
-
 
         <h2 id="other">Other integrations</h2>
         <ul>
@@ -149,7 +129,6 @@
                 <a href="https://www.zotero.org/blog/improved-pdf-retrieval-with-unpaywall-integration/">Zotero</a>
             </li>
         </ul>
-
 
     </div>
 </template>
