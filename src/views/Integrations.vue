@@ -28,7 +28,7 @@
             <li>
                 ProQuest <a href="https://knowledge.exlibrisgroup.com/Alma/Knowledge_Articles/How_to_Enable_the_Unpaywall_API_Integration">Alma, </a>
                 <a href="https://developers.exlibrisgroup.com/appcenter/unpaywall/">Primo, </a> and
-                <a href="https://ideas.exlibrisgroup.com/forums/564566-summon/suggestions/36261826-add-unpaywall-database-to-the-summon-index">Summon (launching soon)</a>
+                <a href="https://ideas.exlibrisgroup.com/forums/564566-summon/suggestions/36261826-add-unpaywall-database-to-the-summon-index">Summon</a>
             </li>
             <li><a href="https://help.oclc.org/Discovery_and_Reference/WorldCat_Discovery/Search_results/Open_content_in_WorldCat_Discovery_search_results#Open_Access_DOI_links_enhanced_by_Unpaywall">OCLC WorldCat Discovery</a></li>
             <li><a href="https://pubhive.com/home">PubHive Navigator</a></li>
@@ -80,8 +80,8 @@
 
         <h2>Browser extensions</h2>
         <ul>
-            <li><a href="https://click.endnote.com/">EndNote Click (formerly Kopernio)</a></li>
-            <li><a href="https://www.leanlibrary.com/">Lean Library</a> (<a href="/case-studies/lean-library.pdf">read the case study</a>)</li>
+            <li><a href="https://click.endnote.com/">EndNote Click</a></li>
+          <li><a href="https://www.leanlibrary.com/">Lean Library</a> (<a href="/case-studies/lean-library.pdf"><strong>read the case study</strong></a>)</li>
             <li><a href="https://thirdiron.com/products/libkey-nomad/">LibKey Nomad</a></li>
             <li><a href="https://openaccessbutton.org/">Open Access Button</a></li>
             <li><a href="https://pubhive.com/browser-plug-ins">PubHive Navigator</a></li>
