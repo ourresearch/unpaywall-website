@@ -102,6 +102,7 @@
             <li><a href="https://researchably.com/">Researchably</a></li>
             <li><a href="https://www.scholarcy.com/">Scholarcy</a></li>
             <li><a href="https://www.semanticscholar.org/">Semantic Scholar</a></li>
+            <li><a href="https://sorcero.com">Sorcero</a></li>
             <li><a href="https://www.wizdom.ai/">Wizdom.ai</a></li>
         </ul>
 
