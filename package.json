@@ -12,7 +12,7 @@
   "dependencies": {
     "@babel/polyfill": "^7.4.4",
     "axios": "^0.18.1",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "lodash": "^4.17.20",
     "vue": "^2.6.11",
     "vue-analytics": "^5.22.1",
