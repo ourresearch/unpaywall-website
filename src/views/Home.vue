@@ -155,7 +155,7 @@ export default {
   computed: {
       numOa(){
           let BenchmarkTs = 1549144226029
-          let numOaAtBenchmarkTs = 22404020
+          let numOaAtBenchmarkTs = 34707710
           let rateOfNewOaAdded = 10800 // ms it takes a new article to be added
 
 
