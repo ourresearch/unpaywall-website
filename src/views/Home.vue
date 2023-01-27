@@ -17,14 +17,9 @@
 
       <div class="cta">
         <div>
-        <div>
-          <md-button class="md-raised md-accent main" href="https://unsub.org">
-            Cancel Journal Subscriptions
-          </md-button>
-        </div>
-          <router-link class="secondary" to="/products/extension">
+          <md-button class="md-raised md-accent main" to="/products/extension">
             Get the extension
-          </router-link>
+          </md-button>
         </div>
       </div>
     </div>
@@ -51,7 +46,6 @@
         <h2>Used and trusted by top organizations</h2>
         <p>
           We're integrated into thousands of library systems, search platforms, and other information products worldwide. In fact, if you're involved in scholarly communication, there's a good chance you've already used Unpaywall data.
-
         </p>
       </div>
       <div class="img logos">

@@ -46,19 +46,9 @@
                 </div>
 
                 <div class="about-users">
-                    <div class="rating">
-                        <span class="stars">
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star-half"></i>
-                        </span>
-                        <span class="light">4.5 star rating on Chrome Web Store</span>
-                    </div>
                     <div class="num-users">
                         <span class="num">
-                            {{(204896).toLocaleString()}}
+                            {{(600000).toLocaleString()}}+
                         </span>
                         <span class="light">users on Chrome and Firefox.</span>
                     </div>
