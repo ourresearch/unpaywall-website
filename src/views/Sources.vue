@@ -7,10 +7,8 @@
         </p>
 
         <p>
-            If you'd like to add your repository or journal to our list of sources, that's great! You can submit your repository for indexing via
-            <a href="https://goo.gl/forms/HBOMqdSFOHEeFOwj1">
-                this form,
-            </a> and submit your journal <a href="mailto:support@unpaywall.org">via email.</a>
+            If you'd like to add your repository or to our list of sources, that's great! You can submit your repository for indexing via
+            <a href="https://goo.gl/forms/HBOMqdSFOHEeFOwj1"> this form</a>.
         </p>
 
         <p>
