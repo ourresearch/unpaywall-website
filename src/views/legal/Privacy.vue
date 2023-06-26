@@ -117,8 +117,7 @@
         <h2>Location Information</h2>
 
         We may, from time to time, track use location through IP logging for security and fraud prevention purposes. Use
-        location may also be tracked in connection with our use of automatic data collection technologies, such as
-        Google Analytics.<br>
+        location may also be tracked in connection with our use of automatic data collection technologies.<br>
 
         <h2>Do Not Track Disclosure</h2>
 
