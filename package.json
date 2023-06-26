@@ -13,6 +13,7 @@
     "@babel/polyfill": "^7.4.4",
     "axios": "^0.18.1",
     "express": "^4.17.1",
+    "heroku-ssl-redirect": "^0.0.4",
     "lodash": "^4.17.20",
     "vue": "^2.6.11",
     "vue-analytics": "^5.22.1",
