@@ -196,14 +196,12 @@
                 // install for firefox.
                 else if (this.browserName === 'firefox') {
                     console.log("Install for Firefox")
-                    this.$ga.event("Clicked Install", "firefox")
                     window.location = "https://addons.mozilla.org/en-US/firefox/addon/unpaywall/"
                 }
 
                 // install for chrome
                 else if (this.browserName === 'chrome') {
                     console.log("Install for Chrome")
-                    this.$ga.event("Clicked Install", "chrome")
                     window.location = "https://chrome.google.com/webstore/detail/unpaywall/iplffkdpngmdjhlpjmppncnlhomiipha"
 
                 }
