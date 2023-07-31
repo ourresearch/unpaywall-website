@@ -48,9 +48,7 @@
 
                 <dt id="legal">Is Unpaywall legal?</dt>
                 <dd>
-                    Yes! We harvest content from <strong>legal</strong> sources including repositories run by universities, governments, and scholarly societies, as well as open content hosted by publishers themselves. We do <em>not</em> harvest from sources of dubious legality like
-                    <a href="https://link.springer.com/article/10.1007/s11192-017-2291-4">ResearchGate</a>
-                    or <a href="https://answers.library.curtin.edu.au/faq/204046">Sci-Hub.</a> If you ever encounter content indexed by Unpaywall that is posted in violation of copyright, let us know and we'll remove it immediately.
+                    Yes! We harvest content from <strong>legal</strong> sources including repositories run by universities, governments, and scholarly societies, as well as open content hosted by publishers themselves. If you ever encounter content indexed by Unpaywall that is posted in violation of copyright, let us know and we'll remove it immediately.
                 </dd>
 
 
@@ -117,6 +115,7 @@
 
                     <p>
                         Unpaywall does not send your name, email address, or any other content of the pages you browse to our server (except the DOI). Unpaywall does not know or have access to your name or email address.
+                    </p>
                     <p>
                         Records of individual requests are not shared with third parties. They are stored as part of our server logs, which we use for debugging and load analysis. Our server logging system vendor is <a href="https://www.papertrail.com/">Papertrail</a>.
                         Aggregated data, stripped of all personal information, may be shared with third parties or published as part of statistical research on Open Access trends and usage.
