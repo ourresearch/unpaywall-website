@@ -52,20 +52,19 @@
     }
 </script>
 
-<style scoped lang="scss">
+<style scoped>
     .page {
         margin-top: 100px;
     }
 
     .eg {
         padding: 20px;
-
-        .md-button {
-            margin-left: 185px;
-            font-size: 20px;
-            height: auto;
-            padding: 15px 20px;
-        }
     }
-
+    
+    .eg .md-button {
+        margin-left: 185px;
+        font-size: 20px;
+        height: auto;
+        padding: 15px 20px;
+    }
 </style>

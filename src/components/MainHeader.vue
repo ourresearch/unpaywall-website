@@ -149,52 +149,50 @@
 
 </script>
 
-<style scoped lang="scss">
-    body.home {
-        .container {
-            background: none;
-        }
+<style scoped>
+    body.home .container {
+        background: none;
     }
 
-
     .upw-header {
-        background: #4caf50; // green 500
+        background: #4caf50; /* green 500 */
         height: 88px;
         display: flex;
         align-items: center;
         justify-content: space-between;
         padding: 0 30px;
-
-
-        div.logo a img {
-            max-height: 35px;
-        }
-        div.site-nav {
-            color: #fff;
-            .md-button {
-                text-transform: capitalize;
-                margin: 0 20px;
-                font-size: 16px;
-                color: #fff;
-            }
-            .desktop {
-                @media (max-width: 960px) {
-                    display:none;
-                }
-            }
-            .phone {
-                .md-button {
-                    font-size: 24px;
-                    margin: 0;
-                    min-width: auto;
-                }
-                @media (min-width: 960px) {
-                    display:none;
-                }
-            }
-        }
-
     }
 
+    .upw-header div.logo a img {
+        max-height: 35px;
+    }
 
+    .upw-header div.site-nav {
+        color: #fff;
+    }
+
+    .upw-header div.site-nav .md-button {
+        text-transform: capitalize;
+        margin: 0 20px;
+        font-size: 16px;
+        color: #fff;
+    }
+
+    @media (max-width: 960px) {
+        .upw-header div.site-nav .desktop {
+            display: none;
+        }
+    }
+
+    .upw-header div.site-nav .phone .md-button {
+        font-size: 24px;
+        margin: 0;
+        min-width: auto;
+    }
+
+    @media (min-width: 960px) {
+        .upw-header div.site-nav .phone {
+            display: none;
+        }
+    }
 </style>

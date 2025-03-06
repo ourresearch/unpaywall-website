@@ -36,35 +36,35 @@
     }
 </script>
 
-<style scoped lang="scss">
+<style scoped>
     div.search-box {
         width: 100%;
         max-width: 500px;
         padding: 20px 0;
         border: none !important;
-        display:flex;
-        input {
-            height: inherit;
-            outline:none; // clear browser styles
-            width: 500px;
-            font-size: 18px;
-            padding: 10px 20px;
-            border: 1px solid #aaa;
-            border-radius: 2px;
-            box-shadow: 0px 2px 2px rgba(0,0,0,.2);
-            transition: box-shadow 0.3s;
-            &:hover {
-                box-shadow: 0px 2px 6px rgba(0,0,0,.4);
-
-            }
-        }
-        div.icon {
-            display: flex;
-            margin-left: -40px;
-            cursor:pointer;
-            color: #2196F3;
-        }
-        div.md-field {
-        }
+        display: flex;
+    }
+    
+    div.search-box input {
+        height: inherit;
+        outline: none; /* clear browser styles */
+        width: 500px;
+        font-size: 18px;
+        padding: 10px 20px;
+        border: 1px solid #aaa;
+        border-radius: 2px;
+        box-shadow: 0px 2px 2px rgba(0,0,0,.2);
+        transition: box-shadow 0.3s;
+    }
+    
+    div.search-box input:hover {
+        box-shadow: 0px 2px 6px rgba(0,0,0,.4);
+    }
+    
+    div.search-box div.icon {
+        display: flex;
+        margin-left: -40px;
+        cursor: pointer;
+        color: #2196F3;
     }
 </style>

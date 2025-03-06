@@ -165,18 +165,13 @@ export default {
 </script>
 
 
-<style scoped lang="scss">
+<style scoped>
   .home {
     margin-top: -88px;
     line-height: 1.5;
     letter-spacing: 0.05em;
     font-size: 16px;
-
   }
-
-
-
-
 
   div.banner {
     background: url("../assets/stars.jpg") no-repeat;
@@ -190,178 +185,193 @@ export default {
     justify-content: center;
     align-items: left;
     text-align: left;
+  }
 
-    div.headline {
-      font-size: 40px;
-      @media (max-width: 600px) {
-        font-size: 30px;
-      }
-      color: #fff;
-      font-weight: bold;
-      line-height: 1.3;
-      padding: 30px;
-      max-width: 800px;
-      text-shadow: 1px 1px 50px #000;
-
-
+  div.banner div.headline {
+    font-size: 40px;
+    color: #fff;
+    font-weight: bold;
+    line-height: 1.3;
+    padding: 30px;
+    max-width: 800px;
+    text-shadow: 1px 1px 50px #000;
+  }
+  
+  @media (max-width: 600px) {
+    div.banner div.headline {
+      font-size: 30px;
     }
-    div.subheadline {
-      font-size: 20px;
-      /*@media (max-width: 600px) {*/
-        /*font-size: 30px;*/
-      /*}      */
-      color: #fff;
-      max-width: 655px;
-      padding: 0 30px;
-      text-shadow: 0 0 30px #000, 1px 1px 50px #000;
-    }
+  }
+  
+  div.banner div.subheadline {
+    font-size: 20px;
+    /*@media (max-width: 600px) {*/
+      /*font-size: 30px;*/
+    /*}      */
+    color: #fff;
+    max-width: 655px;
+    padding: 0 30px;
+    text-shadow: 0 0 30px #000, 1px 1px 50px #000;
+  }
 
-    div.cta {
-      padding: 30px;
-      div {
-        display:inline;
-        @media (max-width: 600px) {
-          display:block;
-        }
-      }
-      .md-button {
-        /*background: rgba(255,255,255, .2);*/
-        /*background: rgba(0,0,0, .4);*/
-        color: #fff;
-        margin:10px 20px 0 0;
-        min-width: 150px;
-      }
-      a.secondary {
-        text-shadow: 0 0 30px #000, 1px 1px 50px #000;
-        color: #fff;
-        text-transform: uppercase;
-        padding: 18px 0;
-        display: inline-block;
-        font-size: 15px;
-      }
+  div.banner div.cta {
+    padding: 30px;
+  }
+  
+  div.banner div.cta div {
+    display: inline;
+  }
+  
+  @media (max-width: 600px) {
+    div.banner div.cta div {
+      display: block;
     }
+  }
+  
+  div.banner div.cta .md-button {
+    /*background: rgba(255,255,255, .2);*/
+    /*background: rgba(0,0,0, .4);*/
+    color: #fff;
+    margin: 10px 20px 0 0;
+    min-width: 150px;
+  }
+  
+  div.banner div.cta a.secondary {
+    text-shadow: 0 0 30px #000, 1px 1px 50px #000;
+    color: #fff;
+    text-transform: uppercase;
+    padding: 18px 0;
+    display: inline-block;
+    font-size: 15px;
   }
 
   .pullquote {
-      font-size: 40px;
-      background: #FF706B;
-      background: #181F22;
-      padding: 70px 20px 30px;
-      color: #fff;
-      line-height: 1.3;
-      .text {
-          max-width: 800px;
-          margin: 0 auto;
-          .attr {
-              text-align: right;
-              margin-right: 30px;
-              margin-top: 10px;
-              font-size: 18px;
-              font-weight: 300;
-              span.journal {
-                  font-style: italic;
-                  font-weight: bold;
-              }
-              a {
-                color: #fff;
-
-              }
-          }
-
-      }
+    font-size: 40px;
+    background: #FF706B;
+    background: #181F22;
+    padding: 70px 20px 30px;
+    color: #fff;
+    line-height: 1.3;
   }
-
+  
+  .pullquote .text {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .pullquote .text .attr {
+    text-align: right;
+    margin-right: 30px;
+    margin-top: 10px;
+    font-size: 18px;
+    font-weight: 300;
+  }
+  
+  .pullquote .text .attr span.journal {
+    font-style: italic;
+    font-weight: bold;
+  }
+  
+  .pullquote .text .attr a {
+    color: #fff;
+  }
 
   .selling-point {
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 50px 0;
-    h2 {
-      font-weight: 300;
-      margin-top: 0;
-    }
-    .text {
-      padding: 0 30px;
-      max-width: 400px;
-    }
-    .img {
-      max-width: 425px;
-      padding: 30px;
-
-      &.logos {
-        padding: 30px 0;
-        div.img-row {
-          width: 520px;
-          text-align: center;
-          img.logo {
-            max-width: 85px;
-            max-height: 70px;
-            margin: 15px 13px;
-            opacity: .9;
-            filter: grayscale(100%);
-          }
-        }
-      }
-
-    }
-
-
-    @media (max-width: 600px) {
-      flex-wrap: wrap;
-    }
-
-    &.social-proof {
-      background: #fff;
-    }
-    &.open-source {
-      background: #eee;
-    }
-    &.easy-access {
-      background: #fff;
-    }
-
-
+  }
+  
+  .selling-point h2 {
+    font-weight: 300;
+    margin-top: 0;
+  }
+  
+  .selling-point .text {
+    padding: 0 30px;
+    max-width: 400px;
+  }
+  
+  .selling-point .img {
+    max-width: 425px;
+    padding: 30px;
+  }
+  
+  .selling-point .img.logos {
+    padding: 30px 0;
+  }
+  
+  .selling-point .img.logos div.img-row {
+    width: 520px;
+    text-align: center;
+  }
+  
+  .selling-point .img.logos div.img-row img.logo {
+    max-width: 85px;
+    max-height: 70px;
+    margin: 15px 13px;
+    opacity: .9;
+    filter: grayscale(100%);
   }
 
+  @media (max-width: 600px) {
+    .selling-point {
+      flex-wrap: wrap;
+    }
+  }
 
+  .selling-point.social-proof {
+    background: #fff;
+  }
+  
+  .selling-point.open-source {
+    background: #eee;
+  }
+  
+  .selling-point.easy-access {
+    background: #fff;
+  }
 
   .get-started {
     text-align: center;
     background: #eee;
     padding: 50px 0 80px;
-    h2 {
-      margin: 0;
-      font-size: 38px;
-      font-weight: 300;
-    }
-    p {
-      max-width: 600px;
-      margin: 0 auto;
-    }
-    .buttons {
-      margin-top: 20px;
-      a {
-        font-size: 25px;
-        padding: 15px 30px;
-        height: auto;
-        margin: 10px 20px;
-        &.enterprise {
-          background: #E98535 !important;
-        }
-        &.research {
-          background: #499841 !important;
-        }
-        &.libraries {
-          background: #255C9B !important;
-        }
-      }
-    }
   }
-
-
-
-
+  
+  .get-started h2 {
+    margin: 0;
+    font-size: 38px;
+    font-weight: 300;
+  }
+  
+  .get-started p {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .get-started .buttons {
+    margin-top: 20px;
+  }
+  
+  .get-started .buttons a {
+    font-size: 25px;
+    padding: 15px 30px;
+    height: auto;
+    margin: 10px 20px;
+  }
+  
+  .get-started .buttons a.enterprise {
+    background: #E98535 !important;
+  }
+  
+  .get-started .buttons a.research {
+    background: #499841 !important;
+  }
+  
+  .get-started .buttons a.libraries {
+    background: #255C9B !important;
+  }
 </style>
 
 

@@ -46,26 +46,27 @@
     }
 </script>
 
-<style scoped lang="scss">
-
+<style scoped>
     .row {
         display: flex;
         margin: 10px;
-        @media (max-width: 600px) {
+    }
+    
+    @media (max-width: 600px) {
+        .row {
             flex-wrap: wrap;
         }
-        div.img {
-            margin-right: 20px;
-            img {
-                min-width: 400px;
-            }
-        }
-        div.text {
-            p {
-                margin-top: 0;
-            }
-        }
     }
-
-
+    
+    .row div.img {
+        margin-right: 20px;
+    }
+    
+    .row div.img img {
+        min-width: 400px;
+    }
+    
+    .row div.text p {
+        margin-top: 0;
+    }
 </style>

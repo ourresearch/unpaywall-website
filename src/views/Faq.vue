@@ -145,7 +145,7 @@
     }
 </script>
 
-<style scoped lang="scss">
+<style scoped>
     code {
         font-size: 80%;
     }
@@ -159,5 +159,4 @@
         padding: 0;
         margin: 0;
     }
-
 </style>

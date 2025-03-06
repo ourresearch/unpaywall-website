@@ -60,48 +60,50 @@
     }
 </script>
 
-<style scoped lang="scss">
+<style scoped>
     .site-footer {
         background: #333;
         display: flex;
         padding: 0 50px 50px 50px;
         font-size: 14px;
-
-        .col {
-            color: #fff;
-            margin-top: 50px;
-            &.made-by {
-                display: flex;
-                flex-direction: column;
-                justify-content: space-between;
-                a {
-                    display: inline;
-                    padding: 0;
-                }
-                div.social {
-                    font-size: 24px;
-
-                    a {
-                        margin: 0 20px 0 0;
-                    }
-                }
-                div.made-with-love {
-                    font-size: 12px;
-                }
-            }
-            h3 {
-                color: #fff;
-                margin: 0 0 10px 0;
-            }
-            a {
-                display: block;
-                padding: 3px 0;
-                color: #fff;
-            }
-        }
-
-
     }
 
+    .site-footer .col {
+        color: #fff;
+        margin-top: 50px;
+    }
 
+    .site-footer .col.made-by {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .site-footer .col.made-by a {
+        display: inline;
+        padding: 0;
+    }
+
+    .site-footer .col.made-by div.social {
+        font-size: 24px;
+    }
+
+    .site-footer .col.made-by div.social a {
+        margin: 0 20px 0 0;
+    }
+
+    .site-footer .col.made-by div.made-with-love {
+        font-size: 12px;
+    }
+
+    .site-footer .col h3 {
+        color: #fff;
+        margin: 0 0 10px 0;
+    }
+
+    .site-footer .col a {
+        display: block;
+        padding: 3px 0;
+        color: #fff;
+    }
 </style>

@@ -703,39 +703,36 @@
     }
 </script>
 
-<style scoped lang="scss">
-    div.page.data-format {
-        table {
-            margin-bottom: 80px;
-            td {
-                padding:10px 20px;
-                vertical-align: top;
-                p {
-                    margin-top: 0;
-                }
-            }
-
-            td.notes {
-                font-size: 14px;
-            }
-            td.contents {
-                min-width:200px;
-            }
-            td.key {
-                span.name {
-                    display: block;
-                    font-weight: bold;
-                }
-                span.type {
-                    font-size: 12px;
-                }
-            }
-        }
-
+<style scoped>
+    div.page.data-format table {
+        margin-bottom: 80px;
     }
-
-
-
+    
+    div.page.data-format table td {
+        padding: 10px 20px;
+        vertical-align: top;
+    }
+    
+    div.page.data-format table td p {
+        margin-top: 0;
+    }
+    
+    div.page.data-format table td.notes {
+        font-size: 14px;
+    }
+    
+    div.page.data-format table td.contents {
+        min-width: 200px;
+    }
+    
+    div.page.data-format table td.key span.name {
+        display: block;
+        font-weight: bold;
+    }
+    
+    div.page.data-format table td.key span.type {
+        font-size: 12px;
+    }
 </style>
 
 

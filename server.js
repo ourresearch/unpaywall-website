@@ -27,14 +27,14 @@ app.get('*', function (req, res) {
     }
     else {
         // they want the unpaywall webpage
-        res.sendfile('./dist/index.html');
+        res.sendFile(path.join(__dirname, './dist/index.html'));
     }
 
 
 });
 
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 5001;
 app.listen(port, () => {
     console.log('Listening on port ' + port)
 });

@@ -282,20 +282,24 @@
     }
 </script>
 
-<style scoped lang="scss">
+<style scoped>
     .page-header {
-        h1 {
-            margin-bottom: 0;
-        }
         margin-bottom: 30px;
-        .api-key {
-            font-size: 14px;
-            .val {
-                font-family: "Consolas", "Monaco", monospace;
-                font-weight: bold;
-            }
-        }
     }
+
+    .page-header h1 {
+        margin-bottom: 0;
+    }
+
+    .page-header .api-key {
+        font-size: 14px;
+    }
+
+    .page-header .api-key .val {
+        font-family: "Consolas", "Monaco", monospace;
+        font-weight: bold;
+    }
+
     h2 {
         margin: 0;
     }
@@ -312,5 +316,4 @@
         border-bottom: 1px solid #ddd;
         padding: 10px 0;
     }
-
 </style>

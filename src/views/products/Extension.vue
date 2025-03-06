@@ -230,7 +230,7 @@
     }
 </script>
 
-<style scoped lang="scss">
+<style scoped>
     .page {
         width: 100%;
         max-width: 100%;
@@ -240,203 +240,198 @@
     .top-screen {
         display: flex;
         margin: 100px 0 140px;
-        @media (max-width: 600px) {
+    }
+    
+    @media (max-width: 600px) {
+        .top-screen {
             margin-top: 0;
             flex-wrap: wrap;
         }
+    }
 
-        .main-img {
-            display:flex;
-            align-content: center;
-            align-items: center;
-            min-width: 400px;
-            @media (max-width: 600px){
-                min-width: 0;
-            }
-
-            img.screenshot {
-                /*max-width: 438px;*/
-                /*display:block;*/
-                /*width: 100%;*/
-                /*height: 100%;*/
-            }
-        }
-
-        .main-copy {
-            font-size: 24px;
-            margin: -10px 80px 0 80px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-
-            @media (max-width: 600px){
-                margin: 0;
-            }
-
-            div.tagline h2 {
-                font-weight: bold;
-                font-size: 180%;
-                color: #333;
-                margin: 0;
-                padding: 0;
-                /*@media @xs {*/
-                /*font-size: 30px;*/
-                /*line-height: 1.3;*/
-                /*font-weight: bold;*/
-                /*}*/
-            }
-
-            div.about p {
-                margin: 5px 0 35px;
-                font-size: 85%;
-                line-height: 1.5;
-                max-width: 666px;
-                .button-info {
-                    color: darkred;
-                    border-left: 3px solid darkred;
-                    padding-left: 20px;
-                    max-width:400px;
-                    font-size: 16px;
-                }
-            }
-
-            .cta {
-                .install {
-                    line-height: 1.5;
-                    height: auto;
-                    padding: 10px;
-                    font-size: 18px;
-                    .small {
-                        display:none;
-                        font-size: 80%;
-                        text-transform: lowercase;
-                    }
-                }
-            }
-
-            .about-users {
-                font-size: 16px;
-                color: #999;
-                margin-top: 30px;
-                line-height: 1.9;
-                font-weight: 300;
-                .rating {
-                    .stars {
-                        margin-right: 3px;
-                        font-size: 90%;
-                        color: #e5c100;
-                        color: gold;
-                    }
-                }
-                .num-users {
-                    .num {
-                        font-weight: bold;
-                        color: #333;
-                    }
-                }
-            }
+    .top-screen .main-img {
+        display: flex;
+        align-content: center;
+        align-items: center;
+        min-width: 400px;
+    }
+    
+    @media (max-width: 600px) {
+        .top-screen .main-img {
+            min-width: 0;
         }
     }
 
+    .top-screen .main-copy {
+        font-size: 24px;
+        margin: -10px 80px 0 80px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    
+    @media (max-width: 600px) {
+        .top-screen .main-copy {
+            margin: 0;
+        }
+    }
 
+    .top-screen .main-copy div.tagline h2 {
+        font-weight: bold;
+        font-size: 180%;
+        color: #333;
+        margin: 0;
+        padding: 0;
+    }
 
+    .top-screen .main-copy div.about p {
+        margin: 5px 0 35px;
+        font-size: 85%;
+        line-height: 1.5;
+        max-width: 666px;
+    }
+    
+    .top-screen .main-copy div.about p .button-info {
+        color: darkred;
+        border-left: 3px solid darkred;
+        padding-left: 20px;
+        max-width: 400px;
+        font-size: 16px;
+    }
 
+    .top-screen .main-copy .cta .install {
+        line-height: 1.5;
+        height: auto;
+        padding: 10px;
+        font-size: 18px;
+    }
+    
+    .top-screen .main-copy .cta .install .small {
+        display: none;
+        font-size: 80%;
+        text-transform: lowercase;
+    }
 
-
+    .top-screen .main-copy .about-users {
+        font-size: 16px;
+        color: #999;
+        margin-top: 30px;
+        line-height: 1.9;
+        font-weight: 300;
+    }
+    
+    .top-screen .main-copy .about-users .rating .stars {
+        margin-right: 3px;
+        font-size: 90%;
+        color: gold;
+    }
+    
+    .top-screen .main-copy .about-users .num-users .num {
+        font-weight: bold;
+        color: #333;
+    }
 
     div.social-proof {
         margin-top: 50px;
         background: #fafafa;
         text-align: center;
         padding: 70px 0;
-        .quote {
-            padding: 20px;
-            .content {
-                font-weight: bold;
-                font-size: 20px;
-            }
-            .attribution {
-                font-size: 14px;
-                color: #999;
-                margin-top: 10px;
-            }
-        }
-        .logos {
-            margin-top: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-wrap: wrap;
-
-            img {
-                height: 23px;
-                margin: 50px 50px;
-                opacity: .2;
-                &.boingboing {
-                    height: 25px;
-                }
-                &.science {
-                    height: 27px;
-                }
-                &.chronicle {
-                    height: 30px;
-                }
-            }
-        }
+    }
+    
+    div.social-proof .quote {
+        padding: 20px;
+    }
+    
+    div.social-proof .quote .content {
+        font-weight: bold;
+        font-size: 20px;
+    }
+    
+    div.social-proof .quote .attribution {
+        font-size: 14px;
+        color: #999;
+        margin-top: 10px;
+    }
+    
+    div.social-proof .logos {
+        margin-top: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
     }
 
+    div.social-proof .logos img {
+        height: 23px;
+        margin: 50px 50px;
+        opacity: 0.2;
+    }
+    
+    div.social-proof .logos img.boingboing {
+        height: 25px;
+    }
+    
+    div.social-proof .logos img.science {
+        height: 27px;
+    }
+    
+    div.social-proof .logos img.chronicle {
+        height: 30px;
+    }
 
     .selling-point {
         display: flex;
         align-items: center;
         justify-content: center;
         padding: 50px 0;
-        h2 {
-            font-weight: bold;
-            margin-top: 0;
-            letter-spacing: 0;
-        }
-        .text {
-            padding: 0 30px;
-            max-width: 600px;
-        }
-        .img {
-            max-width: 300px;
-            padding: 30px;
-        }
-
-
-        @media (max-width: 600px) {
-            flex-wrap: wrap;
-        }
-
-        &.legal {
-            background: #fafafa;
-        }
-
+    }
+    
+    .selling-point h2 {
+        font-weight: bold;
+        margin-top: 0;
+        letter-spacing: 0;
+    }
+    
+    .selling-point .text {
+        padding: 0 30px;
+        max-width: 600px;
+    }
+    
+    .selling-point .img {
+        max-width: 300px;
+        padding: 30px;
     }
 
+    @media (max-width: 600px) {
+        .selling-point {
+            flex-wrap: wrap;
+        }
+    }
+
+    .selling-point.legal {
+        background: #fafafa;
+    }
 
     .testimonials {
         text-align: center;
         margin-top: 50px;
         padding: 20px 0 70px 0;
-        /*background: #fafafa;*/
-        h2 {
-            font-size: 34px;
-        }
-
-        .md-card {
-            max-width: 320px;
-            margin: 20px 10px;
-            text-align: left;
-            display: inline-block;
-            vertical-align: top;
-            min-height: 220px;
-            * {
-                font-size: 16px !important;
-            }
-          }
+    }
+    
+    .testimonials h2 {
+        font-size: 34px;
     }
 
+    .testimonials .md-card {
+        max-width: 320px;
+        margin: 20px 10px;
+        text-align: left;
+        display: inline-block;
+        vertical-align: top;
+        min-height: 220px;
+    }
+    
+    .testimonials .md-card * {
+        font-size: 16px !important;
+    }
 </style>

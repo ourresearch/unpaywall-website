@@ -182,38 +182,25 @@
     }
 </script>
 
-<style scoped lang="scss">
-    div.header {
-        div.name {
-            h1{
-                margin-bottom: 0;
-            }
-            h2{
-                margin:0;
-                font-weight: normal;
-
-            }
-        }
-
-        .actions {
-            a {
-                margin-left: 0px;
-            }
-        }
+<style scoped>
+    div.header div.name h1 {
+        margin-bottom: 0;
     }
-
-
-
-    table {
-        td {
-            max-width: 300px;
-        }
-        tr.sub {
-            font-size: 66%;
-            td.sub-label {
-                padding-left: 30px;
-            }
-        }
+    div.header div.name h2 {
+        margin: 0;
+        font-weight: normal;
     }
-
+    div.header .actions a {
+        margin-left: 0px;
+    }
+    
+    table td {
+        max-width: 300px;
+    }
+    table tr.sub {
+        font-size: 66%;
+    }
+    table tr.sub td.sub-label {
+        padding-left: 30px;
+    }
 </style>

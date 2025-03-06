@@ -120,33 +120,26 @@
     }
 </script>
 
-<style scoped lang="scss">
-
-    .md-card {
-        .md-card-header {
-            h2 {
-                margin: 0;
-            }
-        }
+<style scoped>
+    .md-card .md-card-header h2 {
+        margin: 0;
     }
 
-    .md-field {
-        .md-input {
-            font-size: 22px;
-            height: 40px;
-        }
+    .md-field .md-input {
+        font-size: 22px;
+        height: 40px;
     }
 
     .result {
         margin: 15px 0;
-        .host {
-            font-size: 12px;
-        }
+    }
+    
+    .result .host {
+        font-size: 12px;
     }
 
     .not-shown {
         font-weight: bold;
         padding-top: 30px;
     }
-
 </style>

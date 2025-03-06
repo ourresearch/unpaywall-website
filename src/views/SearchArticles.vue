@@ -169,10 +169,8 @@
     }
 </script>
 
-<style scoped lang="scss">
+<style scoped>
     div.page {
         max-width: 100% !important;
     }
-
-
 </style>
