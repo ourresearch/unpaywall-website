@@ -1,874 +1,844 @@
 <template>
-  <v-container style="max-width: 800px; min-height: 60vh;" class="mb-10">
-    <h1>Submit a Correction to Unpaywall</h1>
-    
-    <!-- Step 1: DOI Input -->
-    <v-card class="mt-1 pa-8">
-      <v-row>
-        <v-text-field
-          v-model="doiInput"
-          label="Enter a DOI"
-          outlined
-          dense
-          hide-details
-          class="mr-2"
-          @keyup.enter="submitDoi"
-        />
-        <v-btn color="primary" @click="submitDoi" :disabled="loading">Submit</v-btn>
-      </v-row>
-      <v-row class="mt-6">
-        <v-btn color="primary" @click="fetchRandomDoi" :disabled="loading">Random DOI</v-btn>
+  <div class="page corrections">
+    <h1>Unpaywall Corrections</h1>
+
+    <!-- Test Controls Card (positioned absolutely) -->
+    <v-card v-if="!documentData" class="test-controls-card pa-4 light-grey">
+      <div class="text-body-2 mb-2">Test Controls</div>
+      <v-card-text class="pa-0">
+        <v-btn
+          block
+          small
+          color="primary"
+          class="mb-4"
+          @click="getRandomDOI"
+          :loading="loading"
+          :disabled="loading"
+        >Random DOI</v-btn>
+        
         <v-select
-          :items="testDois"
+          v-model="selectedTestDOI"
           label="Test DOIs"
-          v-model="selectedTestDoi"
-          @change="submitDoiFromTest"
+          class="mb-4"
+          :items="testDOIs"
           outlined
           dense
-          x-small
-          class="ml-2"
-          style="width: 100px;"
           hide-details
-        />
-      </v-row>
-      <v-progress-linear indeterminate v-if="loading" class="mt-8"/>
-      <v-alert type="error" v-if="error" class="mt-4">{{ error }}</v-alert>
+          @change="loadTestDOI"
+          :disabled="loading"
+          style="background-color: white;"
+        ></v-select>
+        
+        <v-btn
+          block
+          small
+          color="primary"
+          @click="getRandomJournal"
+          :loading="loading"
+          :disabled="loading"
+          class="mb-4"
+        >Random ISSN</v-btn>
+        
+        <v-select
+          v-model="selectedTestISSN"
+          label="Test ISSNs"
+          :items="testISSNs"
+          outlined
+          dense
+          hide-details
+          @change="loadTestISSN"
+          :disabled="loading"
+          style="background-color: white;"
+        ></v-select>
+      </v-card-text>
     </v-card>
-    
-    <!-- Step 2: Display Metadata & Edit Fields -->
-    <v-card v-if="metadata" class="mt-4 pa-4">
-      <!-- Title -->
-      <v-list-item two-line class="align-start">
-        <v-list-item-content>
-          <v-list-item-title class="text-h5 wrap-text">{{ displayTitle }}</v-list-item-title>
-          <v-list-item-subtitle>
-            <a :href="displayDoiUrl" target="_blank">{{ displayDoi }}</a>
-          </v-list-item-subtitle>
-        </v-list-item-content>
-        <v-list-item-action class="d-flex align-start">
-          <v-btn text :href="apiUrl" target="_blank">
-            API <i class="fa fa-external-link" aria-hidden="true"></i>
-          </v-btn>
-        </v-list-item-action>
-      </v-list-item>
-      
-      <v-divider class="my-2"></v-divider>
-      
-      <!-- Other Fields -->
-      <v-list dense>
-        <!-- Best OA Location URL -->
-        <v-list-item class="doi-field">
-          <v-list-item-content>
-            <v-list-item-title>
-              <strong>Best OA Location URL: </strong>
-              <span class="wrap-text">
-                <a
-                v-if="getProp(metadata, 'best_oa_location.url')"
-                :href="getProp(metadata, 'best_oa_location.url')"
+
+    <!-- Step 1: Retrieve Document Metadata -->
+    <v-card v-if="!documentData" class="pa-6 light-grey">
+      <v-row v-if="!documentData">
+        <v-col cols="6">
+          <!-- DOI Section -->
+          <v-card outlined class="pa-8 main-card">
+            <v-row><div class="correct-label">Correct a DOI</div></v-row>
+            <v-row>
+              <v-text-field
+                v-model="doiInput"
+                label="Enter DOI"
+                placeholder="10.1234/example"
+                outlined
+                hide-details
+                dense
+              ></v-text-field>
+              <v-btn
+                color="primary"
+                @click="submitDOI"
+                :loading="loading"
+                :disabled="loading"
+                class="ml-1 submit-btn"
+              >Submit</v-btn>
+            </v-row>
+          </v-card>
+        </v-col>
+
+        <v-col cols="6">
+          <!-- Journal Section -->
+          <v-card outlined class="pa-8 main-card">
+            <v-row><div class="correct-label">Correct a Journal</div></v-row>
+            <v-row>
+              <v-text-field
+                v-model="issnInput"
+                label="Enter ISSN"
+                placeholder="1234-5678"
+                outlined
+                hide-details
+                dense
+              ></v-text-field>
+              <v-btn
+                color="primary"
+                @click="submitISSN"
+                :loading="loading"
+                :disabled="loading"
+                class="ml-1 submit-btn"
+              >Submit</v-btn>
+            </v-row>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-card>
+
+    <!-- Error Alert -->
+    <v-alert
+      v-if="error"
+      type="error"
+      dismissible
+      @input="error = null"
+    >
+      {{ error }}
+    </v-alert>
+
+    <!-- Step 2+ Main Card with Fixed Header and Subcards -->
+    <div v-if="documentData">      
+      <!-- Main Card for Step 2+ -->
+      <v-card class="pa-4 mb-4 light-grey">
+        <!-- Fixed Header Area -->
+        <div class="mb-4">
+          <!-- DOI Display Header -->
+          <div v-if="documentType === 'doi'">
+            <div class="d-flex justify-space-between">
+              <h2>{{ documentData.title }}</h2>
+              <v-btn
+                small
+                icon
+                color="primary"
+                :href="getApiUrl()"
                 target="_blank"
+              >API
+              </v-btn>
+            </div>
+            
+            <div class="subtitle-2 mb-3">
+              <a :href="documentData.doi_url" target="_blank">{{ documentData.doi }}</a>
+              
+              <v-chip
+                :color="documentData.is_oa ? 'green' : 'red'"
+                text-color="white"
+                small
+                class="ml-2"
+              >
+                {{ documentData.is_oa ? 'Open Access' : 'Closed Access' }}
+              </v-chip>  
+            </div>
+          </div>
+
+          <!-- Journal Display Header -->
+          <div v-if="documentType === 'journal'">
+            <div class="d-flex justify-space-between">
+              <h2>{{ documentData.display_name }}</h2>
+              <v-btn
+                small
+                icon
+                color="primary"
+                :href="getApiUrl()"
+                target="_blank"
+              >API
+              </v-btn>
+            </div>
+            
+            <div class="subtitle-1 mb-3">
+              {{ documentData.issn_l }}
+              
+              <v-chip
+                :color="documentData.is_oa ? 'green' : 'red'"
+                text-color="white"
+                small
+                class="ml-2"
+              >
+                {{ documentData.is_oa ? 'Open Access' : 'Closed Access' }}
+              </v-chip>
+            </div>
+          </div>
+          
+        </div>
+        
+        <!-- Subcard for Step 2 (Edit Fields) -->
+        <v-card v-if="!showAdditionalForm && !showReviewSection && !showSubmissionPreview" flat outlined class="pa-4 mb-4">
+          <!-- DOI Edit Options -->
+          <div v-if="documentType === 'doi'">
+            <div class="subtitle-1 d-flex align-center">
+              <span>Open Access Link:</span>
+              <v-btn
+                v-if="!getBestOALocationUrl()"
+                small
+                color="green"
+                dark
+                class="ml-2"
+                @click="handleCorrection('Add', 'best_oa_location.url')"
+              >
+                Add URL
+              </v-btn>
+              <v-icon v-if="corrections.action === 'Add' && corrections.field === 'best_oa_location.url'" color="green" class="ml-2">mdi-check</v-icon>
+            </div>
+            
+            <div v-if="getBestOALocationUrl()" class="mb-2">
+              <a :href="getBestOALocationUrl()" target="_blank">{{ getBestOALocationUrl() }}</a>
+            </div>
+            
+            <div v-if="getBestOALocationUrl()" class="mt-2">
+              <v-btn
+                small
+                color="red"
+                dark
+                class="mr-2"
+                @click="handleCorrection('Remove', 'best_oa_location.url')"
+              >
+                Report Bad URL
+              </v-btn>
+              <v-icon v-if="corrections.action === 'Remove' && corrections.field === 'best_oa_location.url'" color="red" class="ml-1">mdi-check</v-icon>
+
+              <v-btn
+                small
+                color="orange"
+                dark
+                @click="handleCorrection('Correct', 'best_oa_location.url')"
+              >
+                Correct URL
+              </v-btn>
+              <v-icon v-if="corrections.action === 'Correct' && corrections.field === 'best_oa_location.url'" color="orange" class="ml-1 mr-2">mdi-check</v-icon>
+            </div>
+          </div>
+
+          <!-- Journal Edit Options -->
+          <div v-if="documentType === 'journal'">
+            <div class="d-flex align-center">
+              <v-btn
+                small
+                :color="documentData.is_oa ? 'red' : 'green'"
+                dark
+                @click="handleCorrection(documentData.is_oa ? 'Close' : 'Open', 'is_oa')"
+              >
+                {{ documentData.is_oa ? 'Report Closed' : 'Report Open Access' }}
+              </v-btn>
+              <v-icon v-if="corrections.action && corrections.field === 'is_oa'" :color="documentData.is_oa ? 'red' : 'green'" class="ml-2">mdi-check</v-icon>
+            </div>
+          </div>
+        </v-card>
+        
+        <!-- Subcard for Step 3 (Additional Information) -->
+        <v-card v-if="showAdditionalForm" flat outlined class="pa-4 mb-4">
+          <!-- DOI Location Form -->
+          <div v-if="documentType === 'doi' && (corrections.action === 'Add' || corrections.action === 'Correct') && corrections.field === 'best_oa_location.url'">
+            <div class="inner-header">{{ corrections.action === 'Add' ? 'New Open Access Link' : 'Correct Open Access Link' }}</div>
+            <p v-if="corrections.action === 'Add'" class="subtitle-1">Please provide details for location where this article can be freely found online.</p>
+            
+            <v-form ref="locationForm" v-model="locationFormValid">
+              <v-text-field
+                v-model="locationForm.url"
+                label="URL"
+                :rules="[v => !!v || 'URL is required', urlRule]"
+                outlined
+                dense
+                hide-details
+                required
+              ></v-text-field>
+              
+              <div class="d-flex justify-space-between align-center mt-2">
+                <v-radio-group v-model="locationForm.host_type" row dense hide-details class="radio-group">
+                  <v-radio label="Publisher" value="publisher"></v-radio>
+                  <v-radio label="Repository" value="repository"></v-radio>
+                </v-radio-group>
+                
+                <v-btn
+                  color="primary"
+                  @click="moveToReviewStep"
+                  :disabled="!locationFormValid"
                 >
-                {{ getProp(metadata, 'best_oa_location.url') }}
-              </a>
-              <span v-else>None</span>
-            </span>
-          </v-list-item-title>
-        </v-list-item-content>
-        <v-list-item-action style="flex-direction: column; align-items: flex-end;">
-          <span v-if="!getProp(metadata, 'best_oa_location.url')" class="d-flex align-center">
-            <v-btn x-small color="green" @click="addUrl" class="white--text">Add URL</v-btn>
-            <span v-if="activeCorrectionAction === 'addUrl'" class="ml-1" style="font-size: large; color: green;">✔️</span>
-          </span>
-          <template v-else>
-            <span class="d-flex align-center mb-1">
-              <v-btn x-small color="orange" @click="correctUrl" class="white--text">Correct URL</v-btn>
-              <span v-if="activeCorrectionAction === 'correctUrl'" class="ml-1" style="font-size: large; color: green;">✔️</span>
-            </span>
-            <span class="d-flex align-center">
-              <v-btn x-small color="red" @click="removeUrl" class="white--text">Remove Broken URL</v-btn>
-              <span v-if="activeCorrectionAction === 'removeUrl'" class="ml-1" style="font-size: large; color: green;">✔️</span>
-            </span>
-          </template>
-        </v-list-item-action>
-      </v-list-item>
-      
-      <!-- Is OA -->
-      <v-list-item class="doi-field">
-        <v-list-item-content>
-          <v-list-item-title>
-            <strong>Is OA: </strong>
-            <v-chip x-small :color="displayIsOa ? 'success' : 'error'">{{ displayIsOa }}</v-chip>
-          </v-list-item-title>
-        </v-list-item-content>
-        <v-list-item-action>
-          <span class="d-flex align-center">
-            <v-btn x-small color="orange" @click="correctIsOa(!displayIsOa)" class="white--text">
-              {{ displayIsOa ? 'Change to False' : 'Change to True' }}
-            </v-btn>
-            <span v-if="activeCorrectionAction === (displayIsOa ? 'correctIsOaFalse' : 'correctIsOaTrue')" class="ml-1" style="font-size: large; color: green;">✔️</span>
-          </span>
-        </v-list-item-action>
-      </v-list-item>
-      
-      <!-- Journal Is OA -->
-      <v-list-item class="doi-field">
-        <v-list-item-content>
-          <v-list-item-title>
-            <strong>Journal Is OA: </strong>
-            <v-chip x-small :color="displayJournalIsOa ? 'success' : 'error'">{{ displayJournalIsOa }}</v-chip>
-          </v-list-item-title>
-        </v-list-item-content>
-        <v-list-item-action>
-          <span class="d-flex align-center">
-            <v-btn x-small color="orange" @click="correctJournalIsOa(!displayJournalIsOa)" class="white--text">
-              {{ displayJournalIsOa ? 'Change to False' : 'Change to True' }}
-            </v-btn>
-            <span v-if="activeCorrectionAction === (displayJournalIsOa ? 'correctJournalIsOaFalse' : 'correctJournalIsOaTrue')" class="ml-1" style="font-size: large; color: green;">✔️</span>
-          </span>
-        </v-list-item-action>
-      </v-list-item>
-    </v-list>
-    
-  </v-card>
-  
-  <!-- Step 3: Gather Additional Information -->
-  <v-card v-if="shouldShowLocationForm" class="mt-4 pa-4 transition-swing" key="step3">
-    <v-card-title>{{ locationFormTitle }}</v-card-title>
-    <v-card-subtitle v-if="locationFormSubtitle">{{ locationFormSubtitle }}</v-card-subtitle>
-    <v-card-text>
-      <v-form ref="locationForm">
-        <v-text-field
-          v-model="locationFormData.url"
-          label="URL"
-          :rules="[v => !!v || 'URL is required', v => /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i.test(v) || 'URL must be valid']"
-          required
-        />
-        <v-select
-          v-model="locationFormData.host_type"
-          :items="hostTypes"
-          label="Host Type"
-          :rules="[v => !!v || 'Host type is required']"
-          required
-        />
-        <v-select
-          v-model="locationFormData.version"
-          :items="versions"
-          label="Version"
-          :rules="[v => !!v || 'Version is required']"
-          required
-        />
-        <v-select
-          v-model="locationFormData.license"
-          :items="licenseTypes"
-          label="License"
-          :rules="[v => !!v || 'License is required']"
-          required  
-        />
-      </v-form>
-    </v-card-text>
-    <v-card-actions>
-      <v-spacer></v-spacer>
-      <v-btn text @click="cancelLocationForm">Cancel</v-btn>
-      <v-btn color="primary" @click="submitLocationForm">Submit</v-btn>
-    </v-card-actions>
-  </v-card>
-  
-  <!-- Step 4: Review Changes -->
-  <v-card v-if="allChanges.length > 0" class="mt-4 pa-4 transition-swing" key="step4">
-    <v-card-title>Review Proposed Changes</v-card-title>
-    <v-card-text>
-      <v-simple-table dense class="review-table mb-2">
-        <thead>
-          <tr>
-            <th>Type</th>
-            <th>Field</th>
-            <th>New Value</th>
-            <th>Old Value</th>
-          </tr>
-        </thead>
-        <tbody>
-          <template v-for="(change, idx) in userChanges">
-            <tr :key="`user-change-${idx}`">
-              <td>{{ change.type }}</td>
-              <td><code>{{ change.field }}</code></td>
-              <td v-html="formatValueForTable(change.newValue, change.field)"></td>
-              <td v-html="formatValueForTable(change.oldValue, change.field)"></td>
-            </tr>
-          </template>
-          <template v-if="derivedChanges.length > 0">
-            <tr>
-              <td :colspan="4" class="font-weight-bold text-left pt-6 pb-2">Derived Changes</td>
-            </tr>
-            <template v-for="(change, idx) in derivedChanges">
-              <tr :key="`derived-change-${idx}`">
-                <td>{{ change.type }}</td>
-                <td><code>{{ change.field }}</code></td>
-                <td v-html="formatValueForTable(change.oldValue, change.field)"></td>
-                <td v-html="formatValueForTable(change.newValue, change.field)"></td>
-              </tr>
-            </template>
-          </template>
-        </tbody>
-      </v-simple-table>
-    </v-card-text>
-  </v-card>
-  
-  <!-- Step 5: Submit Corrections (PATCH Preview) -->
-  <v-card v-if="allChanges.length > 0" class="mt-4 pa-4 transition-swing" key="step5">
-    <v-card-title>Correction Preview</v-card-title>
-    <v-card-text>
-      <pre class="pa-3 grey lighten-3 rounded"><code>{{ formattedPatchObject }}</code></pre>
-    </v-card-text>
-    <v-card-actions>
-      <v-spacer></v-spacer>
-      <v-btn color="success" disabled>Submit to API (Not Implemented)</v-btn>
-    </v-card-actions>
-  </v-card>
-  
-</v-container>
+                  Save
+                </v-btn>
+              </div>
+            </v-form>
+          </div>
+
+          <!-- Journal Open Access Status Form -->
+          <div v-if="documentType === 'journal' && corrections.action === 'Open' && corrections.field === 'is_oa'">
+            <div class="inner-header">In what year did this journal become open access?</div>
+            
+            <v-form ref="journalForm" v-model="journalFormValid">
+              <v-radio-group v-model="journalForm.alwaysOA" class="mt-3">
+                <v-radio :value="false">
+                  <template v-slot:label>
+                    <div class="d-flex align-center">
+                      <v-text-field
+                        v-model="journalForm.oa_date"
+                        type="number"
+                        :rules="[v => journalForm.alwaysOA || !!v || 'Year is required', 
+                                v => journalForm.alwaysOA || /^\d{4}$/.test(v) || 'Year must be 4 digits']"
+                        outlined
+                        dense
+                        hide-details
+                        :disabled="journalForm.alwaysOA"
+                        style="max-width: 80px;"
+                      ></v-text-field>
+                    </div>
+                  </template>
+                </v-radio>
+                <v-radio :value="true" label="This journal has always been open access."></v-radio>
+              </v-radio-group>
+              
+              <div class="text-right">
+                <v-btn
+                  color="primary"
+                  @click="moveToReviewStep"
+                  :disabled="!journalFormValid"
+                >
+                  Save
+                </v-btn>
+              </div>
+            </v-form>
+          </div>
+        </v-card>
+
+        <!-- Subcard for Step 4 (Review Changes) -->
+        <v-card v-if="showReviewSection" flat outlined class="pa-4 mb-4">
+          <div class="inner-header">Review Changes</div>
+          
+          <ul class="changes-list">
+            <li v-if="documentType === 'doi' && corrections.action === 'Add' && corrections.field === 'best_oa_location.url'">
+              <span class="emoji-icon">✅</span> Added an <a :href="locationForm.url" target="_blank">open access link</a> ({{ locationForm.host_type }}).
+            </li>
+            
+            <li v-if="documentType === 'doi' && corrections.action === 'Remove' && corrections.field === 'best_oa_location.url'">
+              <span class="emoji-icon">❌</span> Reported a <a :href="getOldValue()" target="_blank">broken open access link</a>.
+            </li>
+            
+            <li v-if="documentType === 'doi' && corrections.action === 'Correct' && corrections.field === 'best_oa_location.url'">
+              <span class="emoji-icon">✴️</span> Corrected an open access link to <a :href="locationForm.url" target="_blank">{{ locationForm.url }}</a>.
+            </li>
+            
+            <li v-if="documentType === 'journal' && corrections.action === 'Open' && corrections.field === 'is_oa'">
+              <span class="emoji-icon">🟢</span> Reported {{ documentData.display_name }} as open access {{ journalForm.alwaysOA ? 'since its inception' : 'since ' + journalForm.oa_date }}.
+            </li>
+            
+            <li v-if="documentType === 'journal' && corrections.action === 'Close' && corrections.field === 'is_oa'">
+              <span class="emoji-icon">🛑</span> Reported {{ documentData.display_name }} as closed access.
+            </li>
+          </ul>
+          
+          <div class="email-label mt-6">Add your email in case we need to follow up (optional:)</div>
+
+          <v-row no-gutters class="mt-1 justify-space-between">
+            <v-text-field
+              v-model="email"
+              placeholder="email@example.com"
+              outlined
+              hide-details
+              dense
+              class="mr-2"
+              style="max-width: 260px;"
+            ></v-text-field>
+          </v-row>
+        </v-card>
+
+        <div v-if="showReviewSection" class="text-right">
+          <v-btn
+            color="primary"
+            @click="submitCorrection"
+            :disabled="!canSubmit"
+            class="submit-btn"
+          >Submit Correction</v-btn>
+        </div>
+
+        <!-- Subcard for Step 5 (Submission Preview) -->
+        <v-card v-if="showSubmissionPreview" flat outlined class="pa-4 mb-4">
+          <h3>Correction Submission Preview</h3>
+          <div class="subtitle-2 mt-2">The following JSON POST would be sent to the API:</div>
+          
+          <div class="pa-4 mt-2 grey lighten-4">
+            <pre>{{ generatePatchJSON() }}</pre>
+          </div>
+        </v-card>
+      </v-card>
+      <!-- Back Button -->
+      <v-btn color="primary" small text class="" @click="resetForm">
+        ← Start Over
+      </v-btn>
+    </div>
+  </div>
 </template>
 
 <script>
-import axios from 'axios';
-import testDoiData from '../test-doi-data.json'; // Import the test data
-
-function cloneDeep(obj) {
-  try {
-    return JSON.parse(JSON.stringify(obj));
-  } catch (e) {
-    return null;
-  }
-}
-
-function isEqual(obj1, obj2) {
-  try {
-    return JSON.stringify(obj1) === JSON.stringify(obj2);
-  } catch (e) {
-    return false;
-  }
-}
+import axios from 'axios'
+import testDoiData from '../test-doi-data.json'
 
 export default {
   name: 'Corrections',
   data() {
     return {
+      // Input fields
       doiInput: '',
-      selectedTestDoi: null,
-      testDois: [
-        { text: 'Gold: 10.2221/jcsj.9.70', value: '10.2221/jcsj.9.70' },
-        { text: 'Green: 10.1016/j.cell.2007.11.019', value: '10.1016/j.cell.2007.11.019' },
-        { text: 'Hybrid: 10.1080/03057925.2025.2483691', value: '10.1080/03057925.2025.2483691' },
-        { text: 'Bronze: 10.2207/qjjws1943.22.275', value: '10.2207/qjjws1943.22.275' },
-        { text: 'Closed: 10.1109/pvsc.1996.564405', value: '10.1109/pvsc.1996.564405' },
-      ],
-      metadata: null,
+      issnInput: '',
+      selectedTestDOI: null,
+      email: '',
+      // Data states
       loading: false,
       error: null,
-      userChanges: [], // Stores user-initiated changes { field, oldValue, newValue, locationData? }
-      shouldShowLocationForm: false, // Step 3 visibility
-      currentChangeContext: null, // Track which button press triggered the form
-      locationFormData: { // Step 3 Form Data
-        url: '',
-        host_type: null,
-        version: null,
-        license: null,
-      },
-      hostTypes: ['publisher', 'repository'], // Make constants available in template via data
-      versions: ['publishedVersion', 'acceptedVersion', 'submittedVersion'],
-      licenseTypes: [
-      'unknown', 'cc-by', 'cc-by-nc-nd', 'cc-by-nc', 'cc-by-nc-sa',
-      'publisher-specific-oa', 'public-domain', 'cc-by-sa', 'mit',
-      'cc-by-nd', 'gpl-v3', 'apache-2-0', 'isc', 'other-oa'
+      documentData: null,
+      documentType: null, // 'doi' or 'journal'
+      rawApiResponse: null,
+      // Test data
+      testDOIs: [
+        { text: 'Gold', value: '10.2221/jcsj.9.70' },
+        { text: 'Green', value: '10.1016/j.cell.2007.11.019' },
+        { text: 'Hybrid', value: '10.1080/03057925.2025.2483691' },
+        { text: 'Bronze', value: '10.2207/qjjws1943.22.275' },
+        { text: 'Closed', value: '10.1109/pvsc.1996.564405' }
       ],
-      activeCorrectionAction: null, // Dev: Track which button is active
-    };
+      testISSNs: [
+        { text: 'Open', value: 'open_issn' },
+        { text: 'Closed', value: 'closed_issn' }
+      ],
+      selectedTestISSN: null,
+      // Correction tracking
+      corrections: {
+        action: null,
+        field: null,
+        newValue: null
+      },
+      // Forms
+      locationForm: {
+        url: '',
+        host_type: 'publisher'
+      },
+      locationFormValid: false,
+      journalForm: {
+        oa_date: new Date().getFullYear().toString(),
+        alwaysOA: false
+      },
+      journalFormValid: false,
+      // Flow control
+      currentStep: 1,
+      showSubmissionPreview: false,
+      forceShowReviewSection: false
+    }
   },
   computed: {
-    displayTitle() {
-      return this.metadata && this.metadata.title ? this.metadata.title : 'No Title Found';
-    },
-    displayDoi() {
-      return this.metadata && this.metadata.doi ? this.metadata.doi : 'No DOI Found';
-    },
-    displayDoiUrl() {
-      return this.metadata && this.metadata.doi_url ? this.metadata.doi_url : '#';
-    },
-    displayBestOaUrl() {
-      return this.metadata && this.metadata.best_oa_location && this.metadata.best_oa_location.url
-      ? this.metadata.best_oa_location.url
-      : null;
-    },
-    displayIsOa() {
-      return this.metadata && typeof this.metadata.is_oa === 'boolean' ? this.metadata.is_oa : null;
-    },
-    displayJournalIsOa() {
-      return this.metadata && typeof this.metadata.journal_is_oa === 'boolean' ? this.metadata.journal_is_oa : null;
-    },
-    apiUrl() {
-      const doi = this.displayDoi;
-      return doi !== 'No DOI Found' ? `https://api.openalex.org/unpaywall/${doi}` : '#';
-    },
-    locationFormTitle() {
-      if (this.activeCorrectionAction === 'correctUrl') {
-        return 'Correct Location Details';
-      } else if (this.activeCorrectionAction === 'addUrl' || this.activeCorrectionAction === 'correctIsOaTrue') {
-        return 'Add Location Details';
+    showAdditionalForm() {
+      // Never show the additional form if we're forcing the review section
+      if (this.forceShowReviewSection) return false
+      
+      // Show additional form if we have a correction that requires more info
+      if (!this.corrections.action || !this.corrections.field) return false
+      
+      if (this.documentType === 'doi') {
+        return (this.corrections.action === 'Add' || this.corrections.action === 'Correct') && 
+               this.corrections.field === 'best_oa_location.url'
+      } else if (this.documentType === 'journal') {
+        return this.corrections.action === 'Open' && this.corrections.field === 'is_oa'
       }
-      return 'Location Details'; // Default fallback
+      
+      return false
     },
-    locationFormSubtitle() {
-      if (this.activeCorrectionAction === 'correctUrl') {
-        return null; // No subtitle for correcting
-      } else if (this.activeCorrectionAction === 'addUrl' || this.activeCorrectionAction === 'correctIsOaTrue') {
-        return 'Please provide details for location where this article can be freely found online.';
-      }
-      return null; // Default fallback
+    showReviewSection() {
+      // Never show review section if additional form is showing
+      if (this.showAdditionalForm) return false
+      
+      // If the force flag is set, show the review section
+      if (this.forceShowReviewSection) return true
+      
+      // Show review section if we have a correction and any required additional info
+      if (!this.corrections.action || !this.corrections.field) return false
+      
+      // If no additional form is needed, show review immediately
+      return true
     },
-    derivedChanges() {
-      if (!this.metadata) return [];
-      const derived = [];
-      const originalMetadata = this.metadata;
-      const originalBestOa = this.getProp(originalMetadata, 'best_oa_location');
-      const originalOaLocations = this.getProp(originalMetadata, 'oa_locations', []);
-
-      this.userChanges.forEach(change => {
-        // Remove URL
-        if (change.type === 'Remove' && change.field === 'best_oa_location.url') {
-          if (originalBestOa && originalBestOa.url === change.oldValue) {
-            derived.push({
-              type: 'Remove Location',
-              field: 'best_oa_location',
-              oldValue: originalBestOa,
-              newValue: null
-            });
-          }
-          if (originalOaLocations && originalOaLocations.length > 0) {
-            const removedLoc = originalOaLocations.find(loc => loc && loc.url === change.oldValue);
-            if (removedLoc) {
-              derived.push({
-                type: 'Remove Location',
-                field: 'oa_locations',
-                oldValue: removedLoc,
-                newValue: null
-              });
-            }
-          }
-        }
-        // is_oa set to false
-        if (change.type === 'Update' && change.field === 'is_oa' && change.newValue === false) {
-          if (originalBestOa) {
-            derived.push({
-              type: 'Remove Location',
-              field: 'best_oa_location',
-              oldValue: originalBestOa,
-              newValue: null
-            });
-          }
-          if (originalOaLocations && originalOaLocations.length > 0) {
-            originalOaLocations.forEach(loc => {
-              derived.push({
-                type: 'Remove Location',
-                field: 'oa_locations',
-                oldValue: loc,
-                newValue: null
-              });
-            });
-          }
-        }
-      });
-      // No deduplication needed for new table format
-      return derived;
-    },
-    allChanges() {
-      return [...this.userChanges, ...this.derivedChanges];
-    },
-    formattedPatchObject() {
-      if (!this.metadata || this.allChanges.length === 0) {
-        return null;
-      }
-
-      const originalDoc = this.metadata;
-      const newDoc = cloneDeep(originalDoc);
-
-      const { finalOaLocations, finalBestOaLocation, finalIsOa } = this.calculateNewLocationState(
-        originalDoc,
-        this.userChanges,
-        this.derivedChanges
-      );
-
-      this.setProp(newDoc, 'oa_locations', finalOaLocations);
-      this.setProp(newDoc, 'best_oa_location', finalBestOaLocation);
-      this.setProp(newDoc, 'is_oa', finalIsOa);
-
-      this.applyDirectFieldChanges(newDoc, this.allChanges);
-
-      return this.buildPatchObject(originalDoc, newDoc);
-    },
+    showHostTypeRow() {
+      return this.documentType === 'doi' && 
+             (this.corrections.action === 'Add' || this.corrections.action === 'Correct') && 
+             this.corrections.field === 'best_oa_location.url'
+    },    
+    showOADateRow() {
+      return this.documentType === 'journal' && 
+             this.corrections.action === 'Open' && 
+             this.corrections.field === 'is_oa'
+    },    
+    canSubmit() {
+      // Can submit if we have a correction and all required additional info
+      return this.corrections.action && this.corrections.field
+    }
   },
+  
   methods: {
-    normalizeDoi(doi) {
-      if (!doi) return null;
-      let normalized = doi.replace(/^https?:\/\/doi\.org\//, '');
-      return normalized.startsWith('10.') ? normalized : null;
+    normalizeDOI(doi) {
+      // Remove any https://doi.org/ prefix
+      return doi.replace(/^https?:\/\/doi\.org\//i, '')
     },
-    submitDoi() {
-      const normalized = this.normalizeDoi(this.doiInput);
-      if (normalized) {
-        this.fetchMetadata(normalized);
-      } else {
-        this.error = 'Invalid DOI format. Please enter a valid DOI (e.g., 10.1234/example).';
-        this.metadata = null;
+    submitDOI() {
+      if (!this.doiInput) {
+        this.error = 'Please enter a DOI'
+        return
       }
-    },
-    submitDoiFromTest() {
-      if (this.selectedTestDoi) {
-        this.doiInput = this.selectedTestDoi;
-        this.fetchMetadata(this.selectedTestDoi);
+      
+      this.loading = true
+      this.error = null
+      
+      const normalizedDOI = this.normalizeDOI(this.doiInput)
+      axios.get(`https://api.openalex.org/unpaywall/${normalizedDOI}`)
+        .then(response => {
+          this.documentData = response.data
+          this.documentType = 'doi'
+          this.rawApiResponse = response.data
+          this.resetCorrections()
+        })
+        .catch(err => {
+          this.error = `Error fetching DOI: ${err.message}`
+        })
+        .finally(() => {
+          this.loading = false
+        })
+    },    
+    submitISSN() {
+      if (!this.issnInput) {
+        this.error = 'Please enter an ISSN'
+        return
       }
+      
+      this.loading = true
+      this.error = null
+      
+      axios.get(`https://api.openalex.org/sources/issn:${this.issnInput}`)
+        .then(response => {
+          this.documentData = response.data
+          this.documentType = 'journal'
+          this.rawApiResponse = response.data
+          this.resetCorrections()
+        })
+        .catch(err => {
+          this.error = `Error fetching Journal: ${err.message}`
+        })
+        .finally(() => {
+          this.loading = false
+        })
     },
-    fetchRandomDoi() {
-      this.loading = true;
-      this.error = null;
-      this.metadata = null;
+    getRandomDOI() {
+      this.loading = true
+      this.error = null
+      
       axios.get('https://api.openalex.org/works?filter=indexed_in:crossref&sample=1')
-      .then(response => {
-        if (response.data && response.data.results && response.data.results.length > 0) {
-          const randomDoi = this.normalizeDoi(response.data.results[0].doi);
-          if (randomDoi) {
-            this.doiInput = randomDoi;
-            this.fetchMetadata(randomDoi);
-          } else {
-            this.error = 'Failed to get a valid random DOI from OpenAlex.';
-            this.loading = false;
-          }
+        .then(response => {
+          const doi = response.data.results[0].doi
+          this.doiInput = doi
+          
+          // Get the normalized DOI
+          const normalizedDOI = this.normalizeDOI(doi)
+          
+          // Fetch the DOI data directly instead of calling submitDOI
+          return axios.get(`https://api.openalex.org/unpaywall/${normalizedDOI}`)
+        })
+        .then(response => {
+          // Set the document data to move to step 2
+          this.documentData = response.data
+          this.documentType = 'doi'
+          this.rawApiResponse = response.data
+          this.resetCorrections()
+        })
+        .catch(err => {
+          this.error = `Error fetching random DOI: ${err.message}`
+        })
+        .finally(() => {
+          this.loading = false
+        })
+    },
+  
+    getRandomJournal() {
+      this.loading = true
+      this.error = null
+      
+      axios.get('https://api.openalex.org/sources?filter=has_issn:true&sample=1')
+        .then(response => {
+          const issn = response.data.results[0].issn_l
+          this.issnInput = issn
+          
+          // Fetch the ISSN data directly instead of calling submitISSN
+          return axios.get(`https://api.openalex.org/sources/issn:${issn}`)
+        })
+        .then(response => {
+          // Set the document data to move to step 2
+          this.documentData = response.data
+          this.documentType = 'journal'
+          this.rawApiResponse = response.data
+          this.resetCorrections()
+        })
+        .catch(err => {
+          this.error = `Error fetching random journal: ${err.message}`
+        })
+        .finally(() => {
+          this.loading = false
+        })
+    },
+    loadTestDOI() {
+      if (!this.selectedTestDOI) return
+      
+      // For development purposes, load from test data
+      this.loading = true
+      
+      try {
+        const testData = testDoiData[this.selectedTestDOI]
+        if (testData) {
+          this.documentData = testData
+          this.documentType = 'doi'
+          this.rawApiResponse = testData
+          this.resetCorrections()
         } else {
-          this.error = 'Failed to fetch random DOI from OpenAlex.';
-          this.loading = false;
+          this.error = 'Test DOI data not found'
         }
-      })
-      .catch(err => {
-        this.error = `Error fetching random DOI: ${err.message}`;
-        this.loading = false;
-      });
-    },
-    fetchMetadata(doi) {
-      const normalizedDoi = this.normalizeDoi(doi);
-
-      if (testDoiData[normalizedDoi]) {
-        this.loading = true;
-        this.error = null;
-        this.metadata = null;
-        this.userChanges = [];
-
-        setTimeout(() => {
-          this.metadata = cloneDeep(testDoiData[normalizedDoi]);
-          this.resetCorrections();
-          this.loading = false;
-        }, 100);
-        return;
+      } catch (err) {
+        this.error = `Error loading test DOI: ${err.message}`
+      } finally {
+        this.loading = false
       }
-
-      this.loading = true;
-      this.error = null;
-      this.metadata = null;
-      this.userChanges = [];
-      const apiUrl = `https://api.openalex.org/unpaywall/${normalizedDoi}`;
-
-      axios.get(apiUrl)
-      .then(response => {
-        this.metadata = response.data;
-        this.loading = false;
-      })
-      .catch(err => {
-        if (err.response && err.response.status === 404) {
-          this.error = `DOI not found: ${doi}`;
+    },
+    
+    loadTestISSN() {
+      if (!this.selectedTestISSN) return
+      
+      // For development purposes, load from test data
+      this.loading = true
+      
+      try {
+        const testData = testDoiData[this.selectedTestISSN]
+        if (testData) {
+          this.documentData = testData
+          this.documentType = 'journal'
+          this.rawApiResponse = testData
+          this.resetCorrections()
         } else {
-          this.error = `Error fetching metadata for ${doi}: ${err.message}`;
+          this.error = 'Test ISSN data not found'
         }
-        this.metadata = null;
-        this.loading = false;
-      });
-    },
-    addUrl() {
-      this.resetCorrections();
-      this.currentChangeContext = { action: 'add', field: 'best_oa_location.url' };
-      this.shouldShowLocationForm = true;
-      this.activeCorrectionAction = 'addUrl';
-    },
-    correctUrl() {
-      this.resetCorrections();
-      const bestLocation = this.getProp(this.metadata, 'best_oa_location');
-      if (bestLocation) {
-        this.locationFormData = {
-          url: bestLocation.url || '',
-          host_type: bestLocation.host_type || null,
-          version: bestLocation.version || null,
-          license: bestLocation.license || null,
-        };
-      } else {
-        this.resetLocationForm();
+      } catch (err) {
+        this.error = `Error loading test ISSN: ${err.message}`
+      } finally {
+        this.loading = false
       }
-      this.currentChangeContext = {
-        action: 'correct',
-        field: 'best_oa_location.url',
-        oldValue: bestLocation ? bestLocation.url : null
-      };
-      this.shouldShowLocationForm = true;
-      this.activeCorrectionAction = 'correctUrl';
-    },
-    removeUrl() {
-      this.resetCorrections();
-      const urlToRemove = this.getProp(this.metadata, 'best_oa_location.url');
-      if (urlToRemove) {
-        this.userChanges.push({
-          type: 'Remove',
-          field: 'best_oa_location.url',
-          oldValue: urlToRemove,
-          newValue: null
-        });
+    },    
+    getApiUrl() {
+      if (this.documentType === 'doi') {
+        return `https://api.openalex.org/unpaywall/${this.documentData.doi}`
+      } else if (this.documentType === 'journal') {
+        return `https://api.openalex.org/sources/issn:${this.documentData.issn_l}`
       }
-      this.activeCorrectionAction = 'removeUrl';
+      return '#'
+    },    
+    getBestOALocationUrl() {
+      if (!this.documentData) return null
+      if (!this.documentData.best_oa_location) return null
+      return this.documentData.best_oa_location.url
     },
-    correctIsOa(newValue) {
-      this.resetCorrections();
-      const oldValue = this.getProp(this.metadata, 'is_oa');
-      this.userChanges.push({
-        type: (oldValue === null || oldValue === undefined) ? 'Add' : 'Update',
-        field: 'is_oa',
-        oldValue: oldValue,
-        newValue: newValue
-      });
-      this.activeCorrectionAction = newValue ? 'correctIsOaTrue' : 'correctIsOaFalse';
-
-      if (newValue && !this.getProp(this.metadata, 'best_oa_location.url')) {
-        this.currentChangeContext = { action: 'add', field: 'is_oa' };
-        this.resetLocationForm();
-        this.shouldShowLocationForm = true;
-      } else {
-        this.shouldShowLocationForm = false;
+    handleCorrection(action, field) {
+      // Reset any previous corrections
+      this.resetCorrections()
+      
+      // Set the new correction
+      this.corrections.action = action
+      this.corrections.field = field
+      
+      // Pre-fill form data if needed
+      if (action === 'Correct' && field === 'best_oa_location.url' && this.documentData.best_oa_location) {
+        this.locationForm.url = this.documentData.best_oa_location.url
+        this.locationForm.host_type = this.documentData.best_oa_location.host_type || 'publisher'
+      } else if (action === 'Add' && field === 'best_oa_location.url') {
+        this.locationForm.url = ''
+        this.locationForm.host_type = 'publisher'
       }
-    },
-    correctJournalIsOa(newValue) {
-      this.resetCorrections();
-      const oldValue = this.getProp(this.metadata, 'journal_is_oa');
-      this.userChanges.push({
-        type: (oldValue === null || oldValue === undefined) ? 'Add' : 'Update',
-        field: 'journal_is_oa',
-        oldValue: oldValue,
-        newValue: newValue
-      });
-      this.activeCorrectionAction = newValue ? 'correctJournalIsOaTrue' : 'correctJournalIsOaFalse';
     },
     resetCorrections() {
-      this.userChanges = [];
-      this.shouldShowLocationForm = false;
-      this.locationFormData = {
-        url: '',
-        host_type: null,
-        version: null,
-        license: null,
-      };
-      this.activeCorrectionAction = null;
+      this.corrections = {
+        action: null,
+        field: null,
+        newValue: null
+      }
+      this.showSubmissionPreview = false
     },
-    submitLocationForm() {
-      if (this.$refs.locationForm.validate() && this.currentChangeContext) {
-        // For add/correct location, treat as Add Location or Update Location
-        let type = 'Add Location';
-        let field = 'oa_locations';
-        let oldValue = null;
-        let newValue = { ...this.locationFormData };
-        if (this.currentChangeContext.action === 'correct') {
-          type = 'Update Location';
-          // Find the old value from metadata
-          const existingLocs = this.getProp(this.metadata, 'oa_locations', []);
-          oldValue = existingLocs.find(loc => loc && loc.url === newValue.url) || null;
+    getOldValue() {
+      if (this.documentType === 'doi') {
+        if (this.corrections.field === 'best_oa_location.url') {
+          return this.getBestOALocationUrl() || 'None'
         }
-        this.userChanges.push({
-          type,
-          field,
-          oldValue,
-          newValue
-        });
-        this.shouldShowLocationForm = false;
-        this.currentChangeContext = null;
-        this.resetLocationForm();
-      } else {
-        // Keep error log
-      }
-    },
-    cancelLocationForm() {
-      this.shouldShowLocationForm = false;
-      this.currentChangeContext = null;
-      this.resetLocationForm();
-    },
-    resetLocationForm() {
-      if (this.$refs.locationForm) {
-        this.$refs.locationForm.reset();
-        this.$refs.locationForm.resetValidation();
-      }
-      this.locationFormData = {
-        url: '',
-        host_type: null,
-        version: null,
-        license: null,
-      };
-    },
-    getDisplayValue(field) {
-      const value = this.getProp(this.metadata, field);
-      if (value === null || value === undefined) return 'None';
-      if (typeof value === 'boolean') return value ? 'True' : 'False';
-      return value;
-    },
-    getProp(obj, path, defaultValue = null) {
-      const keys = path.split('.');
-      let current = obj;
-      for (const key of keys) {
-        if (current === null || current === undefined || typeof current !== 'object') {
-          return defaultValue;
-        }
-        current = current[key];
-      }
-      return (current === null || current === undefined) ? defaultValue : current;
-    },
-    setProp(obj, path, value) {
-      const keys = path.split('.');
-      let current = obj;
-      for (let i = 0; i < keys.length - 1; i++) {
-        const key = keys[i];
-        // Create nested objects if they don't exist
-        if (current[key] === undefined || current[key] === null || typeof current[key] !== 'object') {
-          current[key] = {};
-        }
-        current = current[key];
-      }
-      // Set the value on the final nested object
-      if (current && typeof current === 'object') {
-          current[keys[keys.length - 1]] = value;
-      } else {
-          // Handle cases where the path is invalid or leads to a non-object before the final key
-      }
-    },
-    formatLocationObject(location) {
-      if (!location) return '';
-      const details = [
-        `URL: ${location.url}`,
-        `Host: ${location.host_type}`,
-        `Version: ${location.version}`,
-        `License: ${location.license}`
-      ].join(', ');
-      return `<pre style="margin-left: 20px; background-color: #f5f5f5; padding: 5px; border-radius: 4px;">${details}</pre>`;
-    },
-    // Not used anymore: replaced by table format
-    formatChangeForDisplay(change) {
-      return '';
-    },
-
-    formatValueForTable(value, field) {
-      // If this is a location object, format as a location block
-      if (field === 'best_oa_location' || field === 'oa_locations' || (value && typeof value === 'object' && value.url && value.host_type)) {
-        return this.formatLocationBlock(value);
-      }
-      // For booleans, show True/False
-      if (typeof value === 'boolean') {
-        return value ? 'True' : 'False';
-      }
-      // For null/undefined
-      if (value === null || value === undefined) {
-        return '<span class="grey--text">None</span>';
-      }
-      // For other types, show as code
-      return `<code>${this.escapeHtml(String(value))}</code>`;
-    },
-
-    // Format a location block with only the location form fields and 150px width
-    formatLocationBlock(location) {
-      if (!location || typeof location !== 'object') return '';
-      const fields = ['url', 'host_type', 'version', 'license'];
-      let html = '<div class="location-block">';
-      fields.forEach(field => {
-        if (location[field]) {
-          html += `<div><strong>${field.replace('_', ' ')}:</strong> ${this.escapeHtml(location[field])}</div>`;
-        }
-      });
-      html += '</div>';
-      return html;
-    },
-
-    escapeHtml(str) {
-      return String(str).replace(/[&<>"]/g, function(s) {
-        return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[s]);
-      });
-    },
-    applyRemoveUrlRule(change, originalBestOa, derived) {
-      if (change.action === 'remove' && change.field === 'best_oa_location.url') {
-        if (originalBestOa && originalBestOa.url === change.oldValue) {
-          derived.push({
-            field: 'best_oa_location',
-            oldValue: cloneDeep(originalBestOa),
-            newValue: null,
-            derived: true
-          });
+      } else if (this.documentType === 'journal') {
+        if (this.corrections.field === 'is_oa') {
+          return this.documentData.is_oa ? 'True' : 'False'
         }
       }
-    },
-    applySetIsOaFalseRule(change, originalBestOa, originalOaLocations, derived) {
-      if (change.action === 'correct' && change.field === 'is_oa' && change.newValue === false) {
-        if (originalBestOa) {
-          derived.push({
-            field: 'best_oa_location',
-            oldValue: cloneDeep(originalBestOa),
-            newValue: null,
-            derived: true
-          });
-        }
-        if (originalOaLocations && originalOaLocations.length > 0) {
-          derived.push({
-            field: 'oa_locations',
-            oldValue: cloneDeep(originalOaLocations),
-            newValue: [],
-            derived: true
-          });
-        }
-      }
-    },
-    calculateNewLocationState(originalDoc, userChanges, derivedChanges) {
-      let currentOaLocations = cloneDeep(this.getProp(originalDoc, 'oa_locations', []));
-      let bestOaLocationCandidate = cloneDeep(this.getProp(originalDoc, 'best_oa_location'));
-      const originalBestOaUrl = bestOaLocationCandidate ? bestOaLocationCandidate.url : null;
-
-      userChanges.forEach(change => {
-        if (change.locationData) {
-          const newLocationDetails = {
-            url: change.locationData.url,
-            host_type: change.locationData.host_type,
-            version: change.locationData.version,
-            license: change.locationData.license,
-            is_oa: true,
-          };
-
-          if (change.action === 'add' || (change.action === 'correct' && change.field === 'is_oa' && change.newValue === true)) {
-            if (!currentOaLocations.some(loc => loc && loc.url === newLocationDetails.url)) {
-              currentOaLocations.push(newLocationDetails);
-            }
-            bestOaLocationCandidate = newLocationDetails;
-          } else if (change.action === 'correct' && change.field === 'best_oa_location.url') {
-            const oldUrl = change.oldValue;
-            currentOaLocations = currentOaLocations.map(loc => {
-              if (loc && loc.url === oldUrl) {
-                return { ...loc, ...newLocationDetails };
-              }
-              return loc;
-            });
-            if (originalBestOaUrl === oldUrl) {
-              bestOaLocationCandidate = currentOaLocations.find(loc => loc && loc.url === newLocationDetails.url) || null;
-            }
-          }
-        } else if (change.action === 'remove' && change.field === 'best_oa_location.url') {
-          const urlToRemove = change.oldValue;
-          currentOaLocations = currentOaLocations.filter(loc => !(loc && loc.url === urlToRemove));
-          if (originalBestOaUrl === urlToRemove) {
-            bestOaLocationCandidate = null;
+      return 'N/A'
+    },    
+    getNewValue() {
+      if (this.documentType === 'doi') {
+        if (this.corrections.field === 'best_oa_location.url') {
+          if (this.corrections.action === 'Add' || this.corrections.action === 'Correct') {
+            return this.locationForm.url
+          } else if (this.corrections.action === 'Remove') {
+            return 'None'
           }
         }
-      });
-
-      derivedChanges.forEach(change => {
-        if (change.field === 'oa_locations' && Array.isArray(change.newValue) && change.newValue.length === 0) {
-          currentOaLocations = [];
-          bestOaLocationCandidate = null;
+      } else if (this.documentType === 'journal') {
+        if (this.corrections.field === 'is_oa') {
+          return this.corrections.action === 'Open' ? 'True' : 'False'
         }
-        if (change.field === 'best_oa_location' && change.newValue === null) {
-          bestOaLocationCandidate = null;
-        }
-      });
-
-      if (currentOaLocations.length === 0) {
-        bestOaLocationCandidate = null;
-      } else if (bestOaLocationCandidate && !currentOaLocations.some(loc => loc && loc.url === bestOaLocationCandidate.url)) {
-        bestOaLocationCandidate = currentOaLocations.length > 0 ? currentOaLocations[0] : null;
       }
-
-      return {
-        finalOaLocations: currentOaLocations,
-        finalBestOaLocation: bestOaLocationCandidate,
-        finalIsOa: currentOaLocations.length > 0
-      };
+      return 'N/A'
     },
-    applyDirectFieldChanges(newDoc, allChanges) {
-      allChanges.forEach(change => {
-        if (change.field === 'journal_is_oa') {
-          this.setProp(newDoc, change.field, change.newValue);
-        }
-      });
+    getOldHostType() {
+      if (!this.documentData) return 'None'
+      if (!this.documentData.best_oa_location) return 'None'
+      if (!this.documentData.best_oa_location.host_type) return 'None'
+      return this.documentData.best_oa_location.host_type
+    },    
+    urlRule(value) {
+      const pattern = /^(https?:\/\/)(www\.)?[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)+([/?#].*)?$/
+      return pattern.test(value) || 'Enter a valid URL'
     },
-    buildPatchObject(originalDoc, newDoc) {
+    submitCorrection() {
+      // In a real implementation, this would send data to the API
+      // For now, just show the preview
+      this.showSubmissionPreview = true
+    },    
+    generatePatchJSON() {
       const patch = {
-        doi: originalDoc.doi,
-        new: {},
-        old: {}
-      };
-
-      const originalKeys = Object.keys(originalDoc);
-      const newKeys = Object.keys(newDoc);
-      const allKeys = new Set([...originalKeys, ...newKeys]);
-
-      allKeys.forEach(key => {
-        if (key === 'doi') return;
-
-        const originalValue = this.getProp(originalDoc, key);
-        const newValue = this.getProp(newDoc, key);
-
-        if (!isEqual(originalValue, newValue)) {
-          patch.new[key] = newValue;
-          patch.old[key] = originalValue;
-        }
-      });
-
-      if (Object.keys(patch.new).length === 0) {
-        return null;
+        type: this.documentType,
+        email: this.email || null
       }
-
-      return patch;
+      
+      if (this.documentType === 'doi') {
+        // Add the DOI as the id
+        patch.id = this.documentData.doi
+        
+        if (this.corrections.field === 'best_oa_location.url') {
+          if (this.corrections.action === 'Add' || this.corrections.action === 'Correct') {
+            patch.best_oa_location = {
+              url: this.locationForm.url,
+              host_type: this.locationForm.host_type
+            }
+          } else if (this.corrections.action === 'Remove') {
+            patch.best_oa_location = null
+          }
+        }
+      } else if (this.documentType === 'journal') {
+        // Add the ISSN_L as the id
+        patch.id = this.documentData.issn_l
+        
+        if (this.corrections.field === 'is_oa') {
+          patch.is_oa = this.corrections.action === 'Open'
+          
+          if (this.corrections.action === 'Open') {
+            // If the journal has always been open access, set oa_date to null
+            // Otherwise, use the specified year
+            patch.oa_date = this.journalForm.alwaysOA ? null : this.journalForm.oa_date
+          }
+        }
+      }
+      
+      return JSON.stringify(patch, null, 2)
+    },    
+    moveToReviewStep() {
+      // This method is called when the user clicks the Save button in step 3
+      // Simply set a flag to show the review section instead of the form
+      this.forceShowReviewSection = true
     },
+    resetForm() {
+      this.documentData = null
+      this.documentType = null
+      this.rawApiResponse = null
+      this.resetCorrections()
+      this.doiInput = ''
+      this.issnInput = ''
+      this.selectedTestDOI = null
+      this.email = ''
+      this.forceShowReviewSection = false
+    }
   }
-};
+}
 </script>
 
 <style scoped>
-.doi-field {
-  border-bottom: 1px solid #eee;
-  padding: 6px 16px;
+.correct-label {
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 10px;
 }
-.v-list-item__content > .v-list-item__title.wrap-text {
-  white-space: normal !important;
-  overflow: visible !important;
-  text-overflow: clip !important;
-  line-height: 1.3em !important;
-  height: auto !important;
+.submit-btn {
+  height: 40px !important;
 }
-.v-list-item__content > .v-list-item__subtitle.wrap-text {
-  white-space: normal !important;
-  word-break: break-all;
-  overflow: visible !important;
-  text-overflow: clip !important;
+.corrections {
+  max-width: 800px;
+  margin: 0 auto;
 }
-.v-list-item {
-  padding: 0 !important;
+.v-card.light-grey {
+  background-color: #edf0ed;
 }
-.change-item {
-  line-height: 1.3 !important;
+.changes-list {
+  padding-left: 10px !important;
+  margin: 10px 0px 20px 10px;
+  list-style-type: none;
 }
-.change-item code {
-  line-height: 1.3 !important;
+.changes-list li {
+  font-size: 14px;
+}
+.emoji-icon {
+  margin-right: 5px;
+  font-size: 16px;
+}
+.inner-header {
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 10px;
+  color: #333;
+}
+.radio-group .v-label {
+  font-size: 14px !important;
+} 
+.radio-group.v-input--selection-controls {
+  margin-top: 0px !important;
+}
+.email-label {
+  font-size: 12px;
+}
+.test-controls-card {
+  position: absolute;
+  left: -220px;
+  top: 0px;
+  width: 170px;
+  z-index: 1;
+}
+h1 {
+  text-align: left;
+  margin-bottom: 20px;
+}
+.page.corrections {
+  position: relative;
+}
+h2 {
+  margin: 5px 0;
 }
 pre {
   white-space: pre-wrap;
-  word-break: break-all;
-  max-height: 400px;
-  overflow-y: auto;
-}
-.button-stack {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  word-wrap: break-word;
 }
 </style>
