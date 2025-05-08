@@ -1,396 +1,437 @@
 <template>
   <div class="page corrections">
-    <h1>Unpaywall Corrections</h1>
+    <h1>Fix Unpaywall Errors</h1>
 
-    <!-- Test Controls Card (positioned absolutely) -->
-    <v-card v-if="!documentData" class="test-controls-card pa-4 light-grey">
-      <div class="text-body-2 mb-2">Test Controls</div>
-      <v-card-text class="pa-0">
-        <v-btn
-          block
-          small
+    <div class="page-subtitle">
+      <div v-if="!documentData">Sometimes, Unpaywall makes errors. You can fix them here. Corrections will show up in a few days.</div>
+    </div> 
+
+    <!-- Loading Card -->
+    <v-card v-if="(loading || initialLoading) && !documentData" class="pa-6 light-grey text-center">
+      <v-card-text>
+        <v-progress-linear
+          indeterminate
           color="primary"
-          class="mb-4"
-          @click="getRandomDOI"
-          :loading="loading"
-          :disabled="loading"
-        >Random DOI</v-btn>
-        
-        <v-select
-          v-model="selectedTestDOI"
-          label="Test DOIs"
-          class="mb-4"
-          :items="testDOIs"
-          outlined
-          dense
-          hide-details
-          @change="loadTestDOI"
-          :disabled="loading"
-          style="background-color: white;"
-        ></v-select>
-        
-        <v-btn
-          block
-          small
-          color="primary"
-          @click="getRandomJournal"
-          :loading="loading"
-          :disabled="loading"
-          class="mb-4"
-        >Random ISSN</v-btn>
-        
-        <v-select
-          v-model="selectedTestISSN"
-          label="Test ISSNs"
-          :items="testISSNs"
-          outlined
-          dense
-          hide-details
-          @change="loadTestISSN"
-          :disabled="loading"
-          style="background-color: white;"
-        ></v-select>
+        ></v-progress-linear>
       </v-card-text>
     </v-card>
 
-    <!-- Step 1: Retrieve Document Metadata -->
-    <v-card v-if="!documentData" class="pa-6 light-grey">
-      <v-row v-if="!documentData">
-        <v-col cols="6">
-          <!-- DOI Section -->
-          <v-card outlined class="pa-8 main-card">
-            <v-row><div class="correct-label">Correct a DOI</div></v-row>
-            <v-row>
-              <v-text-field
-                v-model="doiInput"
-                label="Enter DOI"
-                placeholder="10.1234/example"
-                outlined
-                hide-details
-                dense
-              ></v-text-field>
+    <!-- Cards with Data -->
+    <template v-else>
+      <!-- Test Controls Card (positioned absolutely) -->
+      <v-card v-if="!documentData" class="test-controls-card pa-4">
+        <div class="text-body-2 mb-2">Test DOIs</div>
+        <v-card-text class="pa-0">
+          <v-btn
+            block
+            small
+            color="primary"
+            class="mb-2"
+            @click="getRandomDOI"
+          >Random DOI</v-btn>
+          
+          <div>
+            <div class="d-flex flex-column">
               <v-btn
-                color="primary"
-                @click="submitDOI"
-                :loading="loading"
-                :disabled="loading"
-                class="ml-1 submit-btn"
-              >Submit</v-btn>
-            </v-row>
-          </v-card>
-        </v-col>
-
-        <v-col cols="6">
-          <!-- Journal Section -->
-          <v-card outlined class="pa-8 main-card">
-            <v-row><div class="correct-label">Correct a Journal</div></v-row>
-            <v-row>
-              <v-text-field
-                v-model="issnInput"
-                label="Enter ISSN"
-                placeholder="1234-5678"
-                outlined
-                hide-details
-                dense
-              ></v-text-field>
-              <v-btn
-                color="primary"
-                @click="submitISSN"
-                :loading="loading"
-                :disabled="loading"
-                class="ml-1 submit-btn"
-              >Submit</v-btn>
-            </v-row>
-          </v-card>
-        </v-col>
-      </v-row>
-    </v-card>
-
-    <!-- Error Alert -->
-    <v-alert
-      v-if="error"
-      type="error"
-      dismissible
-      @input="error = null"
-    >
-      {{ error }}
-    </v-alert>
-
-    <!-- Step 2+ Main Card with Fixed Header and Subcards -->
-    <div v-if="documentData">      
-      <!-- Main Card for Step 2+ -->
-      <v-card class="pa-4 mb-4 light-grey">
-        <!-- Fixed Header Area -->
-        <div class="mb-4">
-          <!-- DOI Display Header -->
-          <div v-if="documentType === 'doi'">
-            <div class="d-flex justify-space-between">
-              <h2>{{ documentData.title }}</h2>
-              <v-btn
+                v-for="doi in testDOIs"
+                :key="doi.value"
+                block
                 small
-                icon
                 color="primary"
-                :href="getApiUrl()"
-                target="_blank"
-              >API
-              </v-btn>
-            </div>
-            
-            <div class="subtitle-2 mb-3">
-              <a :href="documentData.doi_url" target="_blank">{{ documentData.doi }}</a>
-              
-              <v-chip
-                :color="documentData.is_oa ? 'green' : 'red'"
-                text-color="white"
-                small
-                class="ml-2"
+                class="mb-2 text-none"
+                @click="loadTestDOI(doi.value)"
               >
-                {{ documentData.is_oa ? 'Open Access' : 'Closed Access' }}
-              </v-chip>  
+                {{ doi.text }} DOI
+              </v-btn>
             </div>
           </div>
 
-          <!-- Journal Display Header -->
-          <div v-if="documentType === 'journal'">
-            <div class="d-flex justify-space-between">
-              <h2>{{ documentData.display_name }}</h2>
+          <div class="text-body-2 my-2">Test ISSNs</div>
+          <v-btn
+            block
+            small
+            color="primary"
+            @click="getRandomJournal"
+            class="mb-2"
+          >Random ISSN</v-btn>
+
+          <div>
+            <div class="d-flex flex-column">
               <v-btn
+                v-for="issn in testISSNs"
+                :key="issn.value"
+                block
                 small
-                icon
                 color="primary"
-                :href="getApiUrl()"
-                target="_blank"
-              >API
+                class="mb-2 text-none"
+                @click="loadTestISSN(issn.value)"
+              >
+                {{ issn.text }} ISSN
               </v-btn>
             </div>
-            
-            <div class="subtitle-1 mb-3">
-              {{ documentData.issn_l }}
-              
-              <v-chip
-                :color="documentData.is_oa ? 'green' : 'red'"
-                text-color="white"
-                small
-                class="ml-2"
-              >
-                {{ documentData.is_oa ? 'Open Access' : 'Closed Access' }}
-              </v-chip>
+          </div>
+        </v-card-text>
+      </v-card>
+
+      <!-- Step 1: Retrieve Document Metadata -->
+      <v-card v-if="loadError" class="pa-6 light-grey error text-center">
+        <div>{{ loadError }}</div>
+        <v-btn color="primary" @click="retryLoad">Retry</v-btn>
+        <v-btn text @click="resetForm">Start Over</v-btn>
+      </v-card>
+
+      <v-card v-else-if="!documentData" class="pa-6 light-grey">
+        <v-row>
+          <v-col v-if="!showJournalOnly" :cols="showDoiOnly ? 12 : 6">
+            <!-- DOI Section -->
+            <v-card outlined class="pa-8 main-card">
+              <v-row><div class="correct-label">Fix a DOI</div></v-row>
+              <v-row>
+                <v-text-field
+                  v-model="doiInput"
+                  label="Enter DOI"
+                  placeholder="10.1016/j.cell.2007.11.019"
+                  outlined
+                  dense
+                  hide-details
+                  class="mr-2"
+                ></v-text-field>
+                <v-btn
+                  color="primary"
+                  @click="submitDOI"
+                >Submit</v-btn>
+              </v-row>
+            </v-card>
+          </v-col>
+        
+          <v-col v-if="!showDoiOnly" :cols="showJournalOnly ? 12 : 6">
+            <!-- Journal Section -->
+            <v-card outlined class="pa-8 main-card">
+              <v-row><div class="correct-label">Fix a Journal</div></v-row>
+              <v-row>
+                <v-text-field
+                  v-model="issnInput"
+                  label="Enter ISSN"
+                  placeholder="1234-5678"
+                  outlined
+                  dense
+                  hide-details
+                  class="mr-2"
+                ></v-text-field>
+                <v-btn
+                  color="primary"
+                  @click="submitISSN"
+                >Submit</v-btn>
+              </v-row>
+            </v-card>
+          </v-col>
+        </v-row>
+        <v-progress-linear
+          v-if="loading"
+          indeterminate
+          color="primary"
+          class="mt-8"
+        ></v-progress-linear>
+      </v-card>
+      <!-- Step 2+ Main Card with Fixed Header and Subcards -->
+      <template v-if="documentData">      
+        <!-- Main Card for Step 2+ -->
+        <v-card class="pa-4 mb-4 light-grey">
+
+          <div class="mb-4">
+            <!-- DOI Display Header -->
+            <div v-if="documentType === 'doi'">
+              <div class="d-flex justify-space-between align-center">
+                <div class="document-title">{{ documentData.title }}</div>
+              </div>
+              <div class="subtitle-2 mb-2">
+                <a :href="documentData.doi_url" target="_blank">{{ documentData.doi }}</a>
+                <span class="mx-1" style="color: #999;">|</span>
+                <a :href="getApiUrl()" target="_blank">API</a>
+              </div>
             </div>
+
+            <!-- Journal Display Header -->
+            <div v-if="documentType === 'journal'">
+              <div class="d-flex justify-space-between align-center">
+                <div class="document-title">{{ documentData.display_name }}</div>
+              </div>
+              <div class="subtitle-2">
+                {{ documentData.issn_l }}
+                <span class="mx-1" style="color: #999;">|</span>
+                <a :href="getApiUrl()" target="_blank">API</a>
+              </div>
+
+            </div>
+            
           </div>
           
-        </div>
-        
-        <!-- Subcard for Step 2 (Edit Fields) -->
-        <v-card v-if="!showAdditionalForm && !showReviewSection && !showSubmissionPreview" flat outlined class="pa-4 mb-4">
-          <!-- DOI Edit Options -->
-          <div v-if="documentType === 'doi'">
-            <div class="subtitle-1 d-flex align-center">
-              <span>Open Access Link:</span>
-              <v-btn
-                v-if="!getBestOALocationUrl()"
-                small
-                color="green"
-                dark
-                class="ml-2"
-                @click="handleCorrection('Add', 'best_oa_location.url')"
-              >
-                Add URL
-              </v-btn>
-              <v-icon v-if="corrections.action === 'Add' && corrections.field === 'best_oa_location.url'" color="green" class="ml-2">mdi-check</v-icon>
+          <!-- Subcard for Step 2 (Edit Fields) -->
+          <v-card v-if="!showAdditionalForm && !showReviewSection && !showSubmissionPreview" flat outlined class="pa-4 mb-4">
+            <!-- DOI Subcard -->
+            <div v-if="documentType === 'doi'">
+              <template v-if="documentData.is_oa">
+                <div class="mb-1">
+                  Unpaywall thinks this work is <span class="status open">free to read</span>
+                  <template v-if="getBestOALocationUrl() && documentData.best_oa_location && documentData.best_oa_location.host_type">
+                    at {{ documentData.best_oa_location.host_type === 'publisher' ? 'the publisher' : 'a repository' }}:
+                  </template>
+                </div>
+                <div v-if="getBestOALocationUrl()" class="url mb-3">
+                  <a :href="getBestOALocationUrl()" target="_blank">{{ getBestOALocationUrl() }}</a>
+                </div>
+              </template>
+              <template v-else>
+                <div class="mb-2">
+                  Unpaywall thinks this work is <span class="status closed">paywalled</span>.
+                </div>
+              </template>
             </div>
-            
-            <div v-if="getBestOALocationUrl()" class="mb-2">
-              <a :href="getBestOALocationUrl()" target="_blank">{{ getBestOALocationUrl() }}</a>
-            </div>
-            
-            <div v-if="getBestOALocationUrl()" class="mt-2">
-              <v-btn
-                small
-                color="red"
-                dark
-                class="mr-2"
-                @click="handleCorrection('Remove', 'best_oa_location.url')"
-              >
-                Report Bad URL
-              </v-btn>
-              <v-icon v-if="corrections.action === 'Remove' && corrections.field === 'best_oa_location.url'" color="red" class="ml-1">mdi-check</v-icon>
 
-              <v-btn
-                small
-                color="orange"
-                dark
-                @click="handleCorrection('Correct', 'best_oa_location.url')"
-              >
-                Correct URL
-              </v-btn>
-              <v-icon v-if="corrections.action === 'Correct' && corrections.field === 'best_oa_location.url'" color="orange" class="ml-1 mr-2">mdi-check</v-icon>
+            <!-- Journal Subcard -->
+            <div v-if="documentType === 'journal'">
+              <template v-if="documentData.is_oa">
+                <div class="mb-2">
+                  Unpaywall thinks this journal is <span class="status open">open access</span>.
+                </div>
+              </template>
+              <template v-else>
+                <div class="mb-2">
+                  Unpaywall thinks this journal is <span class="status closed">closed access</span>.
+                </div>
+              </template>
             </div>
-          </div>
+          </v-card>
 
-          <!-- Journal Edit Options -->
-          <div v-if="documentType === 'journal'">
-            <div class="d-flex align-center">
-              <v-btn
-                small
-                :color="documentData.is_oa ? 'red' : 'green'"
-                dark
-                @click="handleCorrection(documentData.is_oa ? 'Close' : 'Open', 'is_oa')"
-              >
-                {{ documentData.is_oa ? 'Report Closed' : 'Report Open Access' }}
-              </v-btn>
-              <v-icon v-if="corrections.action && corrections.field === 'is_oa'" :color="documentData.is_oa ? 'red' : 'green'" class="ml-2">mdi-check</v-icon>
-            </div>
+          <!-- Subcard Action Buttons -->
+          <div v-if="!showAdditionalForm && !showReviewSection && !showSubmissionPreview" class="subcard-actions d-flex flex-column align-end">
+            <!-- DOI Actions -->
+            <template v-if="documentType === 'doi'">
+              <template v-if="documentData.is_oa">
+                <v-btn
+                  small
+                  color="red lighten-2"
+                  dark
+                  class="mr-2 text-none"
+                  @click="handleCorrection('Remove', 'best_oa_location.url')"
+                >
+                  No, this link is paywalled
+                </v-btn>
+                <v-btn
+                  small
+                  plain
+                  class="text-none mt-1"
+                  @click="handleCorrection('Correct', 'best_oa_location.url')"
+                >
+                  Yes, but this link is wrong
+                </v-btn>
+              </template>
+              <template v-else>
+                <v-btn
+                  small
+                  color="green lighten-2"
+                  dark
+                  class="text-none"
+                  @click="handleCorrection('Add', 'best_oa_location.url')"
+                >
+                  No, it's free to read
+                </v-btn>
+              </template>
+            </template>
+            <!-- Journal Actions -->
+            <template v-if="documentType === 'journal'">
+              <template v-if="documentData.is_oa">
+                <v-btn
+                  small
+                  color="red lighten-2"
+                  dark
+                  class="text-none"
+                  @click="handleCorrection('Close', 'is_oa')"
+                >
+                  No, this journal is closed access
+                </v-btn>
+              </template>
+              <template v-else>
+                <v-btn
+                  small
+                  color="green lighten-2"
+                  dark
+                  class="text-none"
+                  @click="handleCorrection('Open', 'is_oa')"
+                >
+                  No, this journal is open access
+                </v-btn>
+              </template>
+            </template>
           </div>
-        </v-card>
-        
-        <!-- Subcard for Step 3 (Additional Information) -->
-        <v-card v-if="showAdditionalForm" flat outlined class="pa-4 mb-4">
-          <!-- DOI Location Form -->
-          <div v-if="documentType === 'doi' && (corrections.action === 'Add' || corrections.action === 'Correct') && corrections.field === 'best_oa_location.url'">
-            <div class="inner-header">{{ corrections.action === 'Add' ? 'New Open Access Link' : 'Correct Open Access Link' }}</div>
-            <p v-if="corrections.action === 'Add'" class="subtitle-1">Please provide details for location where this article can be freely found online.</p>
-            
-            <v-form ref="locationForm" v-model="locationFormValid">
-              <v-text-field
-                v-model="locationForm.url"
-                label="URL"
-                :rules="[v => !!v || 'URL is required', urlRule]"
-                outlined
-                dense
-                hide-details
-                required
-              ></v-text-field>
+          
+          <!-- Subcard for Step 3 (Additional Information) -->
+          <v-card v-if="showAdditionalForm" flat outlined class="pa-4 mb-4">
+            <!-- DOI Location Form -->
+            <div v-if="documentType === 'doi' && (corrections.action === 'Add' || corrections.action === 'Correct') && corrections.field === 'best_oa_location.url'">
+              <div class="inner-header">{{ corrections.action === 'Add' ? 'What URL gives free access to this work?' : "What's the correct link for this work?" }}</div>
               
-              <div class="d-flex justify-space-between align-center mt-2">
-                <v-radio-group v-model="locationForm.host_type" row dense hide-details class="radio-group">
-                  <v-radio label="Publisher" value="publisher"></v-radio>
-                  <v-radio label="Repository" value="repository"></v-radio>
+              <v-form ref="locationForm" v-model="locationFormValid">
+                <v-text-field
+                  v-model="locationForm.url"
+                  :rules="[v => !!v || 'URL is required', urlRule]"
+                  outlined
+                  dense
+                  autofocus
+                  hide-details
+                  required
+                ></v-text-field>
+                
+                <div class="d-flex justify-space-between align-center mt-2">
+                  <v-radio-group v-model="locationForm.host_type" row dense hide-details class="radio-group">
+                    <v-radio label="Publisher" value="publisher"></v-radio>
+                    <v-radio label="Repository" value="repository"></v-radio>
+                  </v-radio-group>
+                </div>
+              </v-form>
+            </div>
+
+            <!-- Journal Open Access Status Form -->
+            <div v-if="documentType === 'journal' && corrections.action === 'Open' && corrections.field === 'is_oa'">
+              <div class="inner-header">In what year did this journal become open access?</div>
+              
+              <v-form ref="journalForm" v-model="journalFormValid">
+                <v-radio-group v-model="journalForm.alwaysOA" class="mt-3">
+                  <v-radio :value="false">
+                    <template v-slot:label>
+                      <div class="d-flex align-center">
+                        <v-text-field
+                          v-model="journalForm.oa_date"
+                          type="number"
+                          :rules="[v => journalForm.alwaysOA || !!v || 'Year is required', 
+                                  v => journalForm.alwaysOA || /^\d{4}$/.test(v) || 'Year must be 4 digits']"
+                          outlined
+                          dense
+                          hide-details
+                          :disabled="journalForm.alwaysOA"
+                          style="max-width: 80px;"
+                        ></v-text-field>
+                      </div>
+                    </template>
+                  </v-radio>
+                  <v-radio :value="true" label="This journal has always been open access."></v-radio>
                 </v-radio-group>
                 
-                <v-btn
-                  color="primary"
-                  @click="moveToReviewStep"
-                  :disabled="!locationFormValid"
-                >
-                  Save
-                </v-btn>
-              </div>
-            </v-form>
+              </v-form>
+            </div>
+          </v-card>
+          <div v-if="showAdditionalForm" class="text-right">
+            <v-btn
+              v-if="documentType === 'doi' && (corrections.action === 'Add' || corrections.action === 'Correct') && corrections.field === 'best_oa_location.url'"
+              color="primary"
+              @click="moveToReviewStep"
+              :disabled="!locationFormValid"
+            >
+              Save
+            </v-btn>
+            <v-btn
+              v-if="documentType === 'journal' && corrections.action === 'Open' && corrections.field === 'is_oa'"
+              color="primary"
+              @click="moveToReviewStep"
+              :disabled="!journalFormValid"
+            >
+              Save
+            </v-btn>
           </div>
 
-          <!-- Journal Open Access Status Form -->
-          <div v-if="documentType === 'journal' && corrections.action === 'Open' && corrections.field === 'is_oa'">
-            <div class="inner-header">In what year did this journal become open access?</div>
+          <!-- Subcard for Step 4 (Review Changes) -->
+          <v-card v-if="showReviewSection" flat outlined class="pa-4 mb-4">
+            <!-- Review changes left of for now
+            <div class="inner-header">Review Changes</div>
             
-            <v-form ref="journalForm" v-model="journalFormValid">
-              <v-radio-group v-model="journalForm.alwaysOA" class="mt-3">
-                <v-radio :value="false">
-                  <template v-slot:label>
-                    <div class="d-flex align-center">
-                      <v-text-field
-                        v-model="journalForm.oa_date"
-                        type="number"
-                        :rules="[v => journalForm.alwaysOA || !!v || 'Year is required', 
-                                v => journalForm.alwaysOA || /^\d{4}$/.test(v) || 'Year must be 4 digits']"
-                        outlined
-                        dense
-                        hide-details
-                        :disabled="journalForm.alwaysOA"
-                        style="max-width: 80px;"
-                      ></v-text-field>
-                    </div>
-                  </template>
-                </v-radio>
-                <v-radio :value="true" label="This journal has always been open access."></v-radio>
-              </v-radio-group>
+            <ul class="changes-list">
+              <li v-if="documentType === 'doi' && corrections.action === 'Add' && corrections.field === 'best_oa_location.url'">
+                <span class="emoji-icon">✅</span> Added an <a :href="locationForm.url" target="_blank">open access link</a> ({{ locationForm.host_type }}).
+              </li>
               
-              <div class="text-right">
-                <v-btn
-                  color="primary"
-                  @click="moveToReviewStep"
-                  :disabled="!journalFormValid"
-                >
-                  Save
-                </v-btn>
-              </div>
-            </v-form>
+              <li v-if="documentType === 'doi' && corrections.action === 'Remove' && corrections.field === 'best_oa_location.url'">
+                <span class="emoji-icon">❌</span> Reported a <a :href="getOldValue()" target="_blank">broken open access link</a>.
+              </li>
+              
+              <li v-if="documentType === 'doi' && corrections.action === 'Correct' && corrections.field === 'best_oa_location.url'">
+                <span class="emoji-icon">✴️</span> Corrected an open access link to <a :href="locationForm.url" target="_blank">{{ locationForm.url }}</a>.
+              </li>
+              
+              <li v-if="documentType === 'journal' && corrections.action === 'Open' && corrections.field === 'is_oa'">
+                <span class="emoji-icon">🟢</span> Reported {{ documentData.display_name }} as open access {{ journalForm.alwaysOA ? 'since its inception' : 'since ' + journalForm.oa_date }}.
+              </li>
+              
+              <li v-if="documentType === 'journal' && corrections.action === 'Close' && corrections.field === 'is_oa'">
+                <span class="emoji-icon">🛑</span> Reported {{ documentData.display_name }} as closed access.
+              </li>
+            </ul>
+            -->
+
+            <div class="inner-header">Optionally add your email in case we need to follow up:</div>
+
+            <v-row no-gutters class="mt-1 justify-space-between">
+              <v-text-field
+                v-model="email"
+                placeholder="email@example.com"
+                outlined
+                hide-details
+                dense
+                class="mr-2"
+              ></v-text-field>
+            </v-row>
+          </v-card>
+
+          <div v-if="showReviewSection" class="text-right">
+            <v-btn
+              color="primary"
+              @click="submitCorrection"
+              :disabled="!canSubmit"
+              class="submit-btn"
+            >Submit Correction</v-btn>
           </div>
+
+          <!-- Subcard for Step 5 (Submission Preview) -->
+          <v-card v-if="showSubmissionPreview" flat outlined class="pa-4 mb-4">
+            <h3>POST Preview</h3>          
+            <div class="pa-4 mt-2 grey lighten-4">
+              <pre>{{ generatePatchJSON() }}</pre>
+            </div>
+          </v-card>
         </v-card>
-
-        <!-- Subcard for Step 4 (Review Changes) -->
-        <v-card v-if="showReviewSection" flat outlined class="pa-4 mb-4">
-          <div class="inner-header">Review Changes</div>
-          
-          <ul class="changes-list">
-            <li v-if="documentType === 'doi' && corrections.action === 'Add' && corrections.field === 'best_oa_location.url'">
-              <span class="emoji-icon">✅</span> Added an <a :href="locationForm.url" target="_blank">open access link</a> ({{ locationForm.host_type }}).
-            </li>
-            
-            <li v-if="documentType === 'doi' && corrections.action === 'Remove' && corrections.field === 'best_oa_location.url'">
-              <span class="emoji-icon">❌</span> Reported a <a :href="getOldValue()" target="_blank">broken open access link</a>.
-            </li>
-            
-            <li v-if="documentType === 'doi' && corrections.action === 'Correct' && corrections.field === 'best_oa_location.url'">
-              <span class="emoji-icon">✴️</span> Corrected an open access link to <a :href="locationForm.url" target="_blank">{{ locationForm.url }}</a>.
-            </li>
-            
-            <li v-if="documentType === 'journal' && corrections.action === 'Open' && corrections.field === 'is_oa'">
-              <span class="emoji-icon">🟢</span> Reported {{ documentData.display_name }} as open access {{ journalForm.alwaysOA ? 'since its inception' : 'since ' + journalForm.oa_date }}.
-            </li>
-            
-            <li v-if="documentType === 'journal' && corrections.action === 'Close' && corrections.field === 'is_oa'">
-              <span class="emoji-icon">🛑</span> Reported {{ documentData.display_name }} as closed access.
-            </li>
-          </ul>
-          
-          <div class="email-label mt-6">Add your email in case we need to follow up (optional:)</div>
-
-          <v-row no-gutters class="mt-1 justify-space-between">
-            <v-text-field
-              v-model="email"
-              placeholder="email@example.com"
-              outlined
-              hide-details
-              dense
-              class="mr-2"
-              style="max-width: 260px;"
-            ></v-text-field>
-          </v-row>
-        </v-card>
-
-        <div v-if="showReviewSection" class="text-right">
-          <v-btn
-            color="primary"
-            @click="submitCorrection"
-            :disabled="!canSubmit"
-            class="submit-btn"
-          >Submit Correction</v-btn>
-        </div>
-
-        <!-- Subcard for Step 5 (Submission Preview) -->
-        <v-card v-if="showSubmissionPreview" flat outlined class="pa-4 mb-4">
-          <h3>Correction Submission Preview</h3>
-          <div class="subtitle-2 mt-2">The following JSON POST would be sent to the API:</div>
-          
-          <div class="pa-4 mt-2 grey lighten-4">
-            <pre>{{ generatePatchJSON() }}</pre>
-          </div>
-        </v-card>
-      </v-card>
-      <!-- Back Button -->
-      <v-btn color="primary" small text class="" @click="resetForm">
-        ← Start Over
-      </v-btn>
-    </div>
-  </div>
+        <!-- Back Button -->
+        <v-btn color="primary" small text class="" @click="resetForm">
+          ← Start Over
+        </v-btn>
+      </template>
+    </template>
+  </div>    
 </template>
 
-<script>
-import axios from 'axios'
-import testDoiData from '../test-doi-data.json'
 
-export default {
-  name: 'Corrections',
+<script>
+  import axios from 'axios'
+  import testDoiData from '../test-doi-data.json'
+
+  export default {
+    name: 'Corrections',
+    props: {
+      showDoiOnly: {
+        type: Boolean,
+        default: false
+      },
+      showJournalOnly: {
+        type: Boolean,
+        default: false
+      },
+      initialDoi: {
+        type: String,
+        default: null
+      },
+      initialIssn: {
+        type: String,
+        default: null
+      }
+  },
   data() {
     return {
       // Input fields
@@ -400,7 +441,9 @@ export default {
       email: '',
       // Data states
       loading: false,
+      initialLoading: false,
       error: null,
+      loadError: null,
       documentData: null,
       documentType: null, // 'doi' or 'journal'
       rawApiResponse: null,
@@ -485,8 +528,31 @@ export default {
       return this.corrections.action && this.corrections.field
     }
   },
-  
   methods: {
+    updateUrlState() {
+      if (!this.documentData) return;
+      
+      let path;
+      if (this.documentType === 'doi') {
+        let doi = this.documentData.doi;
+        let doiPrefix = doi;
+        let doiSuffix = '';
+        const slashIndex = doi.indexOf('/');
+        if (slashIndex !== -1) {
+          doiPrefix = doi.substring(0, slashIndex);
+          doiSuffix = doi.substring(slashIndex + 1);
+        }
+        path = `/fix/work/${doiPrefix}`;
+        if (doiSuffix) path += `/${doiSuffix}`;
+      } else if (this.documentType === 'journal') {
+        path = `/fix/journal/${this.documentData.issn_l}`;
+      }
+      
+      // Only update if the path is different from current
+      if (path && this.$route.path !== path) {
+        this.$router.push(path);
+      }
+    },
     normalizeDOI(doi) {
       // Remove any https://doi.org/ prefix
       return doi.replace(/^https?:\/\/doi\.org\//i, '')
@@ -499,20 +565,21 @@ export default {
       
       this.loading = true
       this.error = null
+      this.loadError = null
       
       const normalizedDOI = this.normalizeDOI(this.doiInput)
-      axios.get(`https://api.openalex.org/unpaywall/${normalizedDOI}`)
-        .then(response => {
-          this.documentData = response.data
-          this.documentType = 'doi'
-          this.rawApiResponse = response.data
-          this.resetCorrections()
-        })
-        .catch(err => {
-          this.error = `Error fetching DOI: ${err.message}`
-        })
-        .finally(() => {
+      const apiUrl = `https://api.openalex.org/unpaywall/${normalizedDOI}`
+      axios.get(apiUrl)
+        .then(resp => {
+          if (!resp.data || Object.keys(resp.data).length === 0) {
+            this.loadError = 'No data found for this DOI.';
+            this.documentData = null;
+          } else {
+            this.documentData = resp.data
+            this.documentType = 'doi'
+          }
           this.loading = false
+          this.initialLoading = false
         })
     },    
     submitISSN() {
@@ -530,12 +597,15 @@ export default {
           this.documentType = 'journal'
           this.rawApiResponse = response.data
           this.resetCorrections()
+          // Update URL to reflect current state
+          this.updateUrlState()
         })
         .catch(err => {
           this.error = `Error fetching Journal: ${err.message}`
         })
         .finally(() => {
           this.loading = false
+          this.initialLoading = false
         })
     },
     getRandomDOI() {
@@ -559,6 +629,8 @@ export default {
           this.documentType = 'doi'
           this.rawApiResponse = response.data
           this.resetCorrections()
+          // Update URL to reflect current state
+          this.updateUrlState()
         })
         .catch(err => {
           this.error = `Error fetching random DOI: ${err.message}`
@@ -567,7 +639,6 @@ export default {
           this.loading = false
         })
     },
-  
     getRandomJournal() {
       this.loading = true
       this.error = null
@@ -586,6 +657,8 @@ export default {
           this.documentType = 'journal'
           this.rawApiResponse = response.data
           this.resetCorrections()
+          // Update URL to reflect current state
+          this.updateUrlState()
         })
         .catch(err => {
           this.error = `Error fetching random journal: ${err.message}`
@@ -594,51 +667,50 @@ export default {
           this.loading = false
         })
     },
-    loadTestDOI() {
-      if (!this.selectedTestDOI) return
-      
-      // For development purposes, load from test data
-      this.loading = true
-      
+    loadTestDOI(value) {
+      const doiValue = value || this.selectedTestDOI;
+      if (!doiValue) return;
+      this.loading = true;
       try {
-        const testData = testDoiData[this.selectedTestDOI]
+        const testData = testDoiData[doiValue];
         if (testData) {
-          this.documentData = testData
-          this.documentType = 'doi'
-          this.rawApiResponse = testData
-          this.resetCorrections()
+          this.documentData = testData;
+          this.documentType = 'doi';
+          this.rawApiResponse = testData;
+          this.resetCorrections();
+          // Update URL to reflect current state
+          this.updateUrlState();
         } else {
-          this.error = 'Test DOI data not found'
+          this.error = 'Test DOI data not found';
         }
       } catch (err) {
-        this.error = `Error loading test DOI: ${err.message}`
+        this.error = `Error loading test DOI: ${err.message}`;
       } finally {
-        this.loading = false
+        this.loading = false;
       }
     },
-    
-    loadTestISSN() {
-      if (!this.selectedTestISSN) return
-      
-      // For development purposes, load from test data
-      this.loading = true
-      
+    loadTestISSN(value) {
+      const issnValue = value || this.selectedTestISSN;
+      if (!issnValue) return;
+      this.loading = true;
       try {
-        const testData = testDoiData[this.selectedTestISSN]
+        const testData = testDoiData[issnValue];
         if (testData) {
-          this.documentData = testData
-          this.documentType = 'journal'
-          this.rawApiResponse = testData
-          this.resetCorrections()
+          this.documentData = testData;
+          this.documentType = 'journal';
+          this.rawApiResponse = testData;
+          this.resetCorrections();
+          // Update URL to reflect current state
+          this.updateUrlState();
         } else {
-          this.error = 'Test ISSN data not found'
+          this.error = 'Test ISSN data not found';
         }
       } catch (err) {
-        this.error = `Error loading test ISSN: ${err.message}`
+        this.error = `Error loading test ISSN: ${err.message}`;
       } finally {
-        this.loading = false
+        this.loading = false;
       }
-    },    
+    },
     getApiUrl() {
       if (this.documentType === 'doi') {
         return `https://api.openalex.org/unpaywall/${this.documentData.doi}`
@@ -763,19 +835,82 @@ export default {
       this.forceShowReviewSection = true
     },
     resetForm() {
-      this.documentData = null
-      this.documentType = null
-      this.rawApiResponse = null
-      this.resetCorrections()
-      this.doiInput = ''
-      this.issnInput = ''
-      this.selectedTestDOI = null
-      this.email = ''
-      this.forceShowReviewSection = false
+      this.documentData = null;
+      this.documentType = null;
+      this.rawApiResponse = null;
+      this.resetCorrections();
+      this.doiInput = '';
+      this.issnInput = '';
+      this.selectedTestDOI = null;
+      this.email = '';
+      this.forceShowReviewSection = false;
+      this.loading = false;
+      this.initialLoading = false;
+      if (this.$route.path !== '/fix') {
+        this.$router.push('/fix');
+      }
     }
-  }
+  },
+  watch: {
+    // Watch for browser navigation (forward/back)
+    $route(to, from) {
+      // Only react if the path actually changes
+      if (to.path !== from.path) {
+        // Example: /fix/work/:prefix/:suffix or /fix/journal/:issn
+        const doiWorkMatch = to.path.match(/^\/fix\/work\/([^\/]+)(?:\/([^\/]+))?/);
+        const journalMatch = to.path.match(/^\/fix\/journal\/([^\/]+)/);
+        if (doiWorkMatch) {
+          // Compose DOI from prefix/suffix
+          let doi = doiWorkMatch[1];
+          if (doiWorkMatch[2]) doi += '/' + doiWorkMatch[2];
+          if (doi !== this.doiInput) {
+            this.doiInput = doi;
+            this.issnInput = '';
+            this.initialLoading = true;
+            this.loadError = null;
+            this.submitDOI();
+          }
+        } else if (journalMatch) {
+          const issn = journalMatch[1];
+          if (issn !== this.issnInput) {
+            this.issnInput = issn;
+            this.doiInput = '';
+            this.initialLoading = true;
+            this.loadError = null;
+            this.submitISSN();
+          }
+        } else if (to.path === '/fix') {
+          // Reset form if navigated to /fix root
+          this.resetForm();
+        }
+      }
+    },
+    initialDoi: {
+      handler(newVal, oldVal) {
+        if (newVal && newVal !== oldVal) {
+          this.doiInput = newVal;
+          this.initialLoading = true;
+          this.loadError = null;
+          this.submitDOI();
+        }
+      },
+      immediate: true
+    },
+    initialIssn: {
+      handler(newVal, oldVal) {
+        if (newVal && newVal !== oldVal) {
+          this.issnInput = newVal;
+          this.initialLoading = true;
+          this.loadError = null;
+          this.submitISSN();
+        }
+      },
+      immediate: true
+    }
+  },
 }
 </script>
+
 
 <style scoped>
 .correct-label {
@@ -792,6 +927,23 @@ export default {
 }
 .v-card.light-grey {
   background-color: #edf0ed;
+}
+.document-title {
+  font-size: 18px;
+  font-weight: 500;
+}
+.status {
+  font-weight: bold;
+  font-size: 20px;
+}
+.status.open {
+  color: green;
+}
+.status.closed {
+  color: red;
+} 
+.url {
+  font-size: 16px;
 }
 .changes-list {
   padding-left: 10px !important;
@@ -823,13 +975,18 @@ export default {
 .test-controls-card {
   position: absolute;
   left: -220px;
-  top: 0px;
-  width: 170px;
+  top: -30px;
+  width: 150px;
   z-index: 1;
 }
 h1 {
   text-align: left;
-  margin-bottom: 20px;
+  margin-bottom: 0px;
+}
+.page-subtitle {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 25px;
 }
 .page.corrections {
   position: relative;

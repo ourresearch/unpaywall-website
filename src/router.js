@@ -101,9 +101,30 @@ export default new Router({
       path: '/faq',
       component: Faq
     },
+    // Fix/Corrections routes
     {
-      path: '/corrections',
+      path: '/fix',
       component: Corrections
+    },
+    {
+      path: '/fix/work',
+      component: Corrections,
+      props: { showDoiOnly: true }
+    },
+    {
+      path: '/fix/journal',
+      component: Corrections,
+      props: { showJournalOnly: true }
+    },
+    {
+      path: '/fix/work/:doiPrefix/:doiSuffix',
+      component: Corrections,
+      props: route => ({ initialDoi: `${route.params.doiPrefix}/${route.params.doiSuffix}` })
+    },
+    {
+      path: '/fix/journal/:issn',
+      component: Corrections,
+      props: route => ({ initialIssn: route.params.issn })
     },
     {
       path: '/contact',

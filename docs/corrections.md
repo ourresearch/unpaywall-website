@@ -10,9 +10,19 @@ Build a Vue 2 / Vuetify Single-File Component named `Corrections` that guides a 
 
 ## UI Layout
 - **Container**: Centered, 800px wide.
-- **Header**: “Unpaywall Corrections” (left-aligned).
+- **Header**: Fix Unpaywall Errors (left-aligned).
 - Step 1 should appear first in its own card. 
 - Starting with step 2, the top content of step 2 (the title / journal name and DOI link / ISSN) should remain fixed. Subsequent steps should replace the content below top content in a subcard inside the main card.
+
+## URL Behavior
+- `/fix` - the root page this app
+- `/fix/work` - the root page of this app only showing the option to Fix a DOI
+- `/fix/journal` - the root page of this app only showing the option to Fix a Journal
+- `/fix/work/:doi` - the app loading to step 2 after fetching the DOI metadata for :doi
+- `/fix/journal/:issn` - the app loading to step 2 after fetching the Journal metadata for :issn
+
+URLs should work for direct entry in the app state. 
+URLs should update as user steps through app state, allowing back/forward navigation.
 
 ## 1. Retrieve Document Metadata
 
@@ -63,32 +73,44 @@ For development purposes, during step 1 show a card positioned absolutely to the
 
 ## 1.4 Loading State
 
+While any API calls are in progress, indicate looading state only with a v-progress-linear in its own empty card. No other cards should be displayed while the loading card is visible.
+
 ## 2. Display & Edit Fields
 
 ### 2.1 DOI
 
-#### 2.1.1 DOI Render Fields
+#### 2.1.1 DOI Top Section
 - **Card** layout
-- **Title**: Large font, no label; right-aligned “API” link opens raw JSON in new tab.
-- **DOI**: Subtitle under title (smaller font), no label; link out to `doi_url`.
-- **IS OA**: v-chip red with text "Closed Access" if `is_oa` is false, v-chip green with text "Open Access" if `is_oa` is true.
-- **Best OA Location**: `best_oa_location.url` (string url, links out to itself)
+- **Title**: right-aligned “API” link opens raw JSON in new tab.
+- **DOI**:sSubtitle under title (smaller font), no label; link out to `doi_url`.
 
-#### 2.1.2 DOI Field Edit Buttons
-Buttons (x-small, colored as marked, with white text) below the Best OA Location link with margin between.
-- **best_oa_location.url**  If null: **Add URL** (green, action name: "Add") position after the Best OA Location label, inline, else: **Report Broken URL** (red, action name: "Remove") + **Correct URL** (orange, action name: "Correct").
+#### 2.1.2 DOI Subcard 
+- If `is_oa` is true
+-- show text "Unpaywall thinks this work is **free to read** at [the publisher | a repository]:" depending on `host_type`.
+-- show `best_oa_location.url` (string url, links out to itself)
+-- show button "This link is paywalled" (red, action name: "Remove")
+-- show button "This link is wrong" (orange, action name: "Correct")
+
+- If `is_oa` is false 
+-- show text "Unpaywall thinks this work is **paywalled**."
+-- show button "It's free to read" (green, action name: "Add")
 
 ### 2.2 Journal
 
-#### 2.2.1 Journal Render Fields
-- **Card** layout with light horizontal separators.
-- **Name** `display_name`  Large font, no label; right-aligned “API” link opens raw JSON in new tab.
-- **ISSN** `issn_l` Subtitle under title (smaller font), no label.
-- **IS OA**: v-chip red with text "Closed Access" if `is_oa` is false, v-chip green with text "Open Access" if `is_oa` is true.
+#### 2.2.1 Journal Top Section
+- **Card** layout
+- **Name**: Large font, no label; right-aligned “API” link opens raw JSON in new tab.
+- **ISSN**: Subtitle under name (smaller font), no label.
 
-#### 2.2.2 Journal Edit Buttons
-Buttons (x-small, colored as marked, with white text) 
-- **is_oa** if false **Report Open Access** (green, action name: "Open"), else **Report Closed** (red, action name: "Close")
+#### 2.2.2 Journal Subcard
+- If `is_oa` is true  
+  -- show text: "Unpaywall thinks this journal is **open access**."
+  -- show button: "No, this journal is closed access" (red, action name: "Close")
+
+- If `is_oa` is false  
+  -- show text: "Unpaywall thinks this journal is **closed access**."
+  -- show button: "No, this journal is open access" (green, action name: "Open")
+
 
 ### 2.3 Field Edit Buttons Effect
 Field edit buttons create a list of user changes to the original document, but original document state is preserved.
