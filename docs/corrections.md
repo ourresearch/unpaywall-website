@@ -111,7 +111,6 @@ While any API calls are in progress, indicate looading state only with a v-progr
   -- show text: "Unpaywall thinks this journal is **closed access**."
   -- show button: "No, this journal is open access" (green, action name: "Open")
 
-
 ### 2.3 Field Edit Buttons Effect
 Field edit buttons create a list of user changes to the original document, but original document state is preserved.
 

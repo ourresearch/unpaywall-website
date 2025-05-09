@@ -3,7 +3,10 @@
     <h1>Fix Unpaywall Errors</h1>
 
     <div class="page-subtitle">
-      <div v-if="!documentData">Sometimes, Unpaywall makes errors. You can fix them here. Corrections will show up in a few days.</div>
+      <div v-if="successMessage" class="mt-4">
+        <v-alert type="success" dense>{{ successMessage }}</v-alert>
+      </div>
+      <div v-else-if="!documentData">Sometimes, Unpaywall makes errors. You can fix them here. Corrections will show up in a few days.</div>
     </div> 
 
     <!-- Loading Card -->
@@ -377,6 +380,7 @@
                 hide-details
                 dense
                 class="mr-2"
+                style="max-width: 300px;"
               ></v-text-field>
             </v-row>
           </v-card>
@@ -388,15 +392,9 @@
               :disabled="!canSubmit"
               class="submit-btn"
             >Submit Correction</v-btn>
+            <div v-if="submitError" class="error--text mt-2">{{ submitError }}</div>
           </div>
 
-          <!-- Subcard for Step 5 (Submission Preview) -->
-          <v-card v-if="showSubmissionPreview" flat outlined class="pa-4 mb-4">
-            <h3>POST Preview</h3>          
-            <div class="pa-4 mt-2 grey lighten-4">
-              <pre>{{ generatePatchJSON() }}</pre>
-            </div>
-          </v-card>
         </v-card>
         <!-- Back Button -->
         <v-btn color="primary" small text class="" @click="resetForm">
@@ -434,6 +432,8 @@
   },
   data() {
     return {
+      successMessage: null,
+      submitError: null,
       // Input fields
       doiInput: '',
       issnInput: '',
@@ -486,46 +486,46 @@
   computed: {
     showAdditionalForm() {
       // Never show the additional form if we're forcing the review section
-      if (this.forceShowReviewSection) return false
+      if (this.forceShowReviewSection) return false;
       
       // Show additional form if we have a correction that requires more info
-      if (!this.corrections.action || !this.corrections.field) return false
+      if (!this.corrections.action || !this.corrections.field) return false;
       
       if (this.documentType === 'doi') {
         return (this.corrections.action === 'Add' || this.corrections.action === 'Correct') && 
-               this.corrections.field === 'best_oa_location.url'
+               this.corrections.field === 'best_oa_location.url';
       } else if (this.documentType === 'journal') {
-        return this.corrections.action === 'Open' && this.corrections.field === 'is_oa'
+        return this.corrections.action === 'Open' && this.corrections.field === 'is_oa';
       }
       
       return false
     },
     showReviewSection() {
       // Never show review section if additional form is showing
-      if (this.showAdditionalForm) return false
+      if (this.showAdditionalForm) return false;
       
       // If the force flag is set, show the review section
-      if (this.forceShowReviewSection) return true
+      if (this.forceShowReviewSection) return true;
       
       // Show review section if we have a correction and any required additional info
-      if (!this.corrections.action || !this.corrections.field) return false
+      if (!this.corrections.action || !this.corrections.field) return false;
       
       // If no additional form is needed, show review immediately
-      return true
+      return true;
     },
     showHostTypeRow() {
       return this.documentType === 'doi' && 
              (this.corrections.action === 'Add' || this.corrections.action === 'Correct') && 
-             this.corrections.field === 'best_oa_location.url'
+             this.corrections.field === 'best_oa_location.url';
     },    
     showOADateRow() {
       return this.documentType === 'journal' && 
              this.corrections.action === 'Open' && 
-             this.corrections.field === 'is_oa'
+             this.corrections.field === 'is_oa';
     },    
     canSubmit() {
       // Can submit if we have a correction and all required additional info
-      return this.corrections.action && this.corrections.field
+      return this.corrections.action && this.corrections.field;
     }
   },
   methods: {
@@ -575,8 +575,9 @@
             this.loadError = 'No data found for this DOI.';
             this.documentData = null;
           } else {
-            this.documentData = resp.data
-            this.documentType = 'doi'
+            this.documentData = resp.data;
+            this.documentType = 'doi';
+            this.successMessage = null;
           }
           this.loading = false
           this.initialLoading = false
@@ -593,44 +594,40 @@
       
       axios.get(`https://api.openalex.org/sources/issn:${this.issnInput}`)
         .then(response => {
-          this.documentData = response.data
-          this.documentType = 'journal'
-          this.rawApiResponse = response.data
-          this.resetCorrections()
-          // Update URL to reflect current state
-          this.updateUrlState()
+          this.documentData = response.data;
+          this.documentType = 'journal';
+          this.rawApiResponse = response.data;
+          this.successMessage = null;
+          this.resetCorrections();
+          this.updateUrlState();
         })
         .catch(err => {
-          this.error = `Error fetching Journal: ${err.message}`
+          this.error = `Error fetching Journal: ${err.message}`;
         })
         .finally(() => {
-          this.loading = false
-          this.initialLoading = false
+          this.loading = false;
+          this.initialLoading = false;
         })
     },
     getRandomDOI() {
-      this.loading = true
-      this.error = null
+      this.loading = true;
+      this.error = null;
       
       axios.get('https://api.openalex.org/works?filter=indexed_in:crossref&sample=1')
         .then(response => {
-          const doi = response.data.results[0].doi
-          this.doiInput = doi
-          
-          // Get the normalized DOI
-          const normalizedDOI = this.normalizeDOI(doi)
-          
-          // Fetch the DOI data directly instead of calling submitDOI
-          return axios.get(`https://api.openalex.org/unpaywall/${normalizedDOI}`)
+          const doi = response.data.results[0].doi;
+          this.doiInput = doi;
+          const normalizedDOI = this.normalizeDOI(doi);
+          return axios.get(`https://api.openalex.org/unpaywall/${normalizedDOI}`);
         })
         .then(response => {
           // Set the document data to move to step 2
-          this.documentData = response.data
-          this.documentType = 'doi'
-          this.rawApiResponse = response.data
-          this.resetCorrections()
-          // Update URL to reflect current state
-          this.updateUrlState()
+          this.documentData = response.data;
+          this.documentType = 'doi';
+          this.rawApiResponse = response.data;
+          this.successMessage = null;
+          this.resetCorrections();
+          this.updateUrlState();
         })
         .catch(err => {
           this.error = `Error fetching random DOI: ${err.message}`
@@ -653,12 +650,12 @@
         })
         .then(response => {
           // Set the document data to move to step 2
-          this.documentData = response.data
-          this.documentType = 'journal'
-          this.rawApiResponse = response.data
-          this.resetCorrections()
-          // Update URL to reflect current state
-          this.updateUrlState()
+          this.documentData = response.data;
+          this.documentType = 'journal';
+          this.rawApiResponse = response.data;
+          this.successMessage = null;
+          this.resetCorrections();
+          this.updateUrlState();
         })
         .catch(err => {
           this.error = `Error fetching random journal: ${err.message}`
@@ -677,8 +674,8 @@
           this.documentData = testData;
           this.documentType = 'doi';
           this.rawApiResponse = testData;
+          this.successMessage = null;
           this.resetCorrections();
-          // Update URL to reflect current state
           this.updateUrlState();
         } else {
           this.error = 'Test DOI data not found';
@@ -699,8 +696,8 @@
           this.documentData = testData;
           this.documentType = 'journal';
           this.rawApiResponse = testData;
+          this.successMessage = null;
           this.resetCorrections();
-          // Update URL to reflect current state
           this.updateUrlState();
         } else {
           this.error = 'Test ISSN data not found';
@@ -713,24 +710,21 @@
     },
     getApiUrl() {
       if (this.documentType === 'doi') {
-        return `https://api.openalex.org/unpaywall/${this.documentData.doi}`
+        return `https://api.openalex.org/unpaywall/${this.documentData.doi}`;
       } else if (this.documentType === 'journal') {
-        return `https://api.openalex.org/sources/issn:${this.documentData.issn_l}`
+        return `https://api.openalex.org/sources/issn:${this.documentData.issn_l}`;
       }
-      return '#'
+      return '#';
     },    
     getBestOALocationUrl() {
-      if (!this.documentData) return null
-      if (!this.documentData.best_oa_location) return null
-      return this.documentData.best_oa_location.url
+      if (!this.documentData) return null;
+      if (!this.documentData.best_oa_location) return null;
+      return this.documentData.best_oa_location.url;
     },
     handleCorrection(action, field) {
-      // Reset any previous corrections
-      this.resetCorrections()
-      
-      // Set the new correction
-      this.corrections.action = action
-      this.corrections.field = field
+      this.resetCorrections();
+      this.corrections.action = action;
+      this.corrections.field = field;
       
       // Pre-fill form data if needed
       if (action === 'Correct' && field === 'best_oa_location.url' && this.documentData.best_oa_location) {
@@ -784,50 +778,51 @@
       return this.documentData.best_oa_location.host_type
     },    
     urlRule(value) {
-      const pattern = /^(https?:\/\/)(www\.)?[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)+([/?#].*)?$/
-      return pattern.test(value) || 'Enter a valid URL'
+      // Accepts http(s)://, at least one dot, and at least one char after the dot
+      const pattern = /^https?:\/\/[^\s]+\.[^\s]+/;
+      return pattern.test(value) || 'Enter a valid URL';
     },
     submitCorrection() {
-      // In a real implementation, this would send data to the API
-      // For now, just show the preview
-      this.showSubmissionPreview = true
+      // const apiHost = "http://localhost:5006/corrections"
+      const apiHost = "https://corrections.openalex.org/corrections"
+      
+      this.submitError = null;
+      try {
+        const payload = this.generatePostData();
+        axios.post(apiHost, payload);
+        this.successMessage =
+          "Your correction has been received and will be reviewed within a few days. Thank you for your help.";
+        this.resetForm();
+      } catch (e) {
+        // Avoid optional chaining for compatibility
+        const errData = e.response && e.response.data;
+        this.submitError = (errData && errData.error) || e.message;
+      }
     },    
-    generatePatchJSON() {
-      const patch = {
+    generatePostData() {
+      // Build payload to match API expectations
+      const post = {
         type: this.documentType,
+        id: this.documentType === 'doi' ? this.documentData.doi : this.documentData.issn_l,
         email: this.email || null
       }
-      
       if (this.documentType === 'doi') {
-        // Add the DOI as the id
-        patch.id = this.documentData.doi
-        
-        if (this.corrections.field === 'best_oa_location.url') {
-          if (this.corrections.action === 'Add' || this.corrections.action === 'Correct') {
-            patch.best_oa_location = {
-              url: this.locationForm.url,
-              host_type: this.locationForm.host_type
-            }
-          } else if (this.corrections.action === 'Remove') {
-            patch.best_oa_location = null
-          }
-        }
+        const prev = this.documentData.best_oa_location || {}
+        post['New url'] = (this.corrections.action === 'Add' || this.corrections.action === 'Correct')
+          ? this.locationForm.url : null
+        post['New host_type'] = (this.corrections.action === 'Add' || this.corrections.action === 'Correct')
+          ? this.locationForm.host_type : null
+        post['Previous url'] = prev.url || null
+        post['Previous host_type'] = prev.host_type || null
       } else if (this.documentType === 'journal') {
-        // Add the ISSN_L as the id
-        patch.id = this.documentData.issn_l
-        
-        if (this.corrections.field === 'is_oa') {
-          patch.is_oa = this.corrections.action === 'Open'
-          
-          if (this.corrections.action === 'Open') {
-            // If the journal has always been open access, set oa_date to null
-            // Otherwise, use the specified year
-            patch.oa_date = this.journalForm.alwaysOA ? null : this.journalForm.oa_date
-          }
-        }
+        post['New is_oa'] = this.corrections.action === 'Open'
+        post['New oa_date'] = this.corrections.action === 'Open'
+          ? (this.journalForm.alwaysOA ? null : this.journalForm.oa_date)
+          : null
+        post['Previous is_oa'] = this.documentData.is_oa
+        post['Previous oa_date'] = (typeof this.documentData.oa_date !== 'undefined' ? this.documentData.oa_date : null)
       }
-      
-      return JSON.stringify(patch, null, 2)
+      return post;
     },    
     moveToReviewStep() {
       // This method is called when the user clicks the Save button in step 3
@@ -842,7 +837,6 @@
       this.doiInput = '';
       this.issnInput = '';
       this.selectedTestDOI = null;
-      this.email = '';
       this.forceShowReviewSection = false;
       this.loading = false;
       this.initialLoading = false;
