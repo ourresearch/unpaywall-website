@@ -179,10 +179,8 @@ Show a input with the label "Add your email in case we need to follow up (option
 
 ## 5. Submit Corrections.
 
-Sending correctins to the API is not yet implemented. For now, display a JSON PATCH object (with nice indentation and line breaks) that would be sent to the API. Only fields that have changed need to be included. 
+Post the data to the API endpoint `localhost:5006/corrections`.
 
-POST fields include:
-- `type` (string, "doi" or "journal")
-- `id` either `doi` or `issn_l`
-- `email` (string)
-- Each of the fields from the final data gathered
+After a successful POST, return to the entry state of `/fix` with a message about the main card that reads "You're correction has beeen received and will be reviewed within a a few days. Thank you for your help."
+
+If there is an error, show an error message below the submit button.

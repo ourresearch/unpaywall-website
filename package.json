@@ -7,7 +7,9 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "heroku-postbuild": "npm run build",
-    "start": "node server.js"
+    "start": "node server.js",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run"
   },
   "dependencies": {
     "@babel/polyfill": "^7.4.4",
@@ -31,6 +33,7 @@
     "@vue/cli-plugin-babel": "^3.12.1",
     "@vue/cli-plugin-eslint": "^3.12.1",
     "@vue/cli-service": "^3.12.1",
+    "cypress": "^14.3.3",
     "sass": "^1.32.8",
     "sass-loader": "^10.1.1",
     "vue-cli-plugin-vuetify": "^2.0.7",

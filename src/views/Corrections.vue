@@ -783,13 +783,13 @@
       return pattern.test(value) || 'Enter a valid URL';
     },
     submitCorrection() {
-      // const apiHost = "http://localhost:5006/corrections"
-      const apiHost = "https://corrections.openalex.org/corrections"
+      // const apiEndpoint = "http://localhost:5006/corrections"
+      const apiEndpoint = "https://corrections.openalex.org/corrections"
       
       this.submitError = null;
       try {
         const payload = this.generatePostData();
-        axios.post(apiHost, payload);
+        axios.post(apiEndpoint, payload);
         this.successMessage =
           "Your correction has been received and will be reviewed within a few days. Thank you for your help.";
         this.resetForm();
