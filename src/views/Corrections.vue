@@ -1,35 +1,49 @@
 <template>
   <div class="page corrections">
-    <h1>Fix Unpaywall Errors</h1>
+    <h1>{{ pageTitles[0] }}</h1>
 
-    <div class="page-subtitle">
-      <div v-if="successMessage" class="mt-4">
+    <div class="page-subtitle mb-6">
+      <div v-if="successMessage" class="mt-2">
         <v-alert type="success" dense>{{ successMessage }}</v-alert>
       </div>
-      <div v-else-if="!documentData">Sometimes, Unpaywall makes errors. You can fix them here. Corrections will show up in a few days.</div>
+      <div v-else-if="error || loadError" class="mt-2">
+        <v-alert type="error" dense>{{ error || loadError }}</v-alert>
+      </div>
+      <div v-else-if="pageTitles[1]" class="">
+        {{ pageTitles[1] }}
+      </div>
     </div> 
 
+    <div v-if="currentStep !== 'start'" class="breadcrumbs mx-1 mb-1">
+      <span v-for="(item, index) in visibleBreadcrumbs" :key="item.value">
+        <span
+          :class="['breadcrumb-step', { active: currentStep === item.value, clickable: index < currentBreadcrumbIndex }]"
+          @click="index < currentBreadcrumbIndex ? goToStep(item.value) : null"
+        >
+          {{ item.text }}
+        </span>
+        <span v-if="index < currentBreadcrumbIndex"> &gt; </span>
+      </span>
+    </div>
+
     <!-- Loading Card -->
-    <v-card v-if="(loading || initialLoading) && !documentData" class="pa-6 light-grey text-center">
-      <v-card-text>
-        <v-progress-linear
-          indeterminate
-          color="primary"
-        ></v-progress-linear>
-      </v-card-text>
-    </v-card>
+    <div v-if="loading && !documentData" class="py-6 text-center">
+      <v-progress-linear
+        indeterminate
+        color="primary"
+      ></v-progress-linear>
+    </div>
 
     <!-- Cards with Data -->
-    <template v-else>
+    <template v-if="!loading || documentData">
       <!-- Test Controls Card (positioned absolutely) -->
-      <v-card v-if="!documentData" class="test-controls-card pa-4">
+      <v-card v-if="!documentData && isAdminMode" class="test-controls-card pa-4">
         <div class="text-body-2 mb-2">Test DOIs</div>
         <v-card-text class="pa-0">
           <v-btn
             block
             small
-            color="primary"
-            class="mb-2"
+            class="text-none mb-1"
             @click="getRandomDOI"
           >Random DOI</v-btn>
           
@@ -40,8 +54,7 @@
                 :key="doi.value"
                 block
                 small
-                color="primary"
-                class="mb-2 text-none"
+                class="text-none mb-1"
                 @click="loadTestDOI(doi.value)"
               >
                 {{ doi.text }} DOI
@@ -52,21 +65,19 @@
           <div class="text-body-2 my-2">Test ISSNs</div>
           <v-btn
             block
-            small
-            color="primary"
+            small            
+            class="text-none mb-1"
             @click="getRandomJournal"
-            class="mb-2"
-          >Random ISSN</v-btn>
+          >Random Journal</v-btn>
 
           <div>
             <div class="d-flex flex-column">
               <v-btn
                 v-for="issn in testISSNs"
                 :key="issn.value"
-                block
                 small
-                color="primary"
-                class="mb-2 text-none"
+                tonal
+                class="text-none mb-1"
                 @click="loadTestISSN(issn.value)"
               >
                 {{ issn.text }} ISSN
@@ -77,18 +88,13 @@
       </v-card>
 
       <!-- Step 1: Retrieve Document Metadata -->
-      <v-card v-if="loadError" class="pa-6 light-grey error text-center">
-        <div>{{ loadError }}</div>
-        <v-btn color="primary" @click="retryLoad">Retry</v-btn>
-        <v-btn text @click="resetForm">Start Over</v-btn>
-      </v-card>
 
-      <v-card v-else-if="!documentData" class="pa-6 light-grey">
+      <v-card v-if="!documentData" class="pa-6">
         <v-row>
-          <v-col v-if="!showJournalOnly" :cols="showDoiOnly ? 12 : 6">
+          <v-col v-if="!showJournalOnly" :cols="12">
             <!-- DOI Section -->
-            <v-card outlined class="pa-8 main-card">
-              <v-row><div class="correct-label">Fix a DOI</div></v-row>
+            <div class="pa-4 main-card">
+              <v-row><div class="correct-label">Fix a Work</div></v-row>
               <v-row>
                 <v-text-field
                   v-model="doiInput"
@@ -100,16 +106,23 @@
                   class="mr-2"
                 ></v-text-field>
                 <v-btn
+                  class="submit-btn"
                   color="primary"
                   @click="submitDOI"
                 >Submit</v-btn>
               </v-row>
-            </v-card>
+            </div>
+            <!-- Fix a Journal Button -->
+            <div v-if="!showDoiOnly && !showJournalOnly" class="px-1 mt-6">
+              <div class="divider"></div>
+              <v-btn @click="goToJournalStep()">
+                Fix a Journal
+              </v-btn>
+            </div>
           </v-col>
-        
-          <v-col v-if="!showDoiOnly" :cols="showJournalOnly ? 12 : 6">
+          <v-col v-if="currentStep === 'journal' || currentStep === 'add_date'" :cols="12">
             <!-- Journal Section -->
-            <v-card outlined class="pa-8 main-card">
+            <div class="pa-4 main-card">
               <v-row><div class="correct-label">Fix a Journal</div></v-row>
               <v-row>
                 <v-text-field
@@ -122,24 +135,21 @@
                   class="mr-2"
                 ></v-text-field>
                 <v-btn
+                  class="submit-btn"
                   color="primary"
                   @click="submitISSN"
                 >Submit</v-btn>
               </v-row>
-            </v-card>
+            </div>
           </v-col>
         </v-row>
-        <v-progress-linear
-          v-if="loading"
-          indeterminate
-          color="primary"
-          class="mt-8"
-        ></v-progress-linear>
       </v-card>
+
+    
       <!-- Step 2+ Main Card with Fixed Header and Subcards -->
       <template v-if="documentData">      
         <!-- Main Card for Step 2+ -->
-        <v-card class="pa-4 mb-4 light-grey">
+        <v-card class="pa-4 mb-4 mt-2">
 
           <div class="mb-4">
             <!-- DOI Display Header -->
@@ -147,10 +157,10 @@
               <div class="d-flex justify-space-between align-center">
                 <div class="document-title">{{ documentData.title }}</div>
               </div>
-              <div class="subtitle-2 mb-2">
-                <a :href="documentData.doi_url" target="_blank">{{ documentData.doi }}</a>
-                <span class="mx-1" style="color: #999;">|</span>
-                <a :href="getApiUrl()" target="_blank">API</a>
+              <div class="sublinks subtitle-2 mb-2">
+                <a :href="documentData.doi_url" target="_blank">{{ documentData.doi }} <v-icon style="font-size: 11px;">fa-external-link-alt</v-icon></a>
+                <span class="mx-3">-</span>
+                <a :href="getApiUrl()" target="_blank">API <v-icon style="font-size: 11px;">fa-external-link-alt</v-icon></a>
               </div>
             </div>
 
@@ -159,18 +169,17 @@
               <div class="d-flex justify-space-between align-center">
                 <div class="document-title">{{ documentData.display_name }}</div>
               </div>
-              <div class="subtitle-2">
+              <div class="sublinks subtitle-2">
                 {{ documentData.issn_l }}
-                <span class="mx-1" style="color: #999;">|</span>
-                <a :href="getApiUrl()" target="_blank">API</a>
+                <span class="mx-3">-</span>
+                <a :href="getApiUrl()" target="_blank">API <v-icon style="font-size: 11px;">fa-external-link-alt</v-icon></a>
               </div>
-
             </div>
             
           </div>
           
           <!-- Subcard for Step 2 (Edit Fields) -->
-          <v-card v-if="!showAdditionalForm && !showReviewSection && !showSubmissionPreview" flat outlined class="pa-4 mb-4">
+          <div v-if="currentStep === 'edit'" class="pa-4 mb-4 subcard">
             <!-- DOI Subcard -->
             <div v-if="documentType === 'doi'">
               <template v-if="documentData.is_oa">
@@ -180,13 +189,13 @@
                     at {{ documentData.best_oa_location.host_type === 'publisher' ? 'the publisher' : 'a repository' }}:
                   </template>
                 </div>
-                <div v-if="getBestOALocationUrl()" class="url mb-3">
-                  <a :href="getBestOALocationUrl()" target="_blank">{{ getBestOALocationUrl() }}</a>
-                </div>
+                <code v-if="getBestOALocationUrl()" class="url mb-3">
+                  <a :href="getBestOALocationUrl()" target="_blank">{{ getBestOALocationUrl() }} <v-icon x-small>fa-external-link-alt</v-icon></a>
+                </code>
               </template>
               <template v-else>
                 <div class="mb-2">
-                  Unpaywall thinks this work is <span class="status closed">paywalled</span>.
+                  Unpaywall thinks this work is <span class="status closed">paywalled</span>
                 </div>
               </template>
             </div>
@@ -195,44 +204,44 @@
             <div v-if="documentType === 'journal'">
               <template v-if="documentData.is_oa">
                 <div class="mb-2">
-                  Unpaywall thinks this journal is <span class="status open">open access</span>.
+                  Unpaywall thinks this journal is <span class="status open">open access</span>
                 </div>
               </template>
               <template v-else>
                 <div class="mb-2">
-                  Unpaywall thinks this journal is <span class="status closed">closed access</span>.
+                  Unpaywall thinks this journal is <span class="status closed">closed access</span>
                 </div>
               </template>
             </div>
-          </v-card>
+          </div>
 
           <!-- Subcard Action Buttons -->
-          <div v-if="!showAdditionalForm && !showReviewSection && !showSubmissionPreview" class="subcard-actions d-flex flex-column align-end">
+          <div v-if="currentStep === 'edit'" class="subcard-actions d-flex">
             <!-- DOI Actions -->
             <template v-if="documentType === 'doi'">
               <template v-if="documentData.is_oa">
                 <v-btn
-                  small
                   color="red lighten-2"
                   dark
+                  large
                   class="mr-2 text-none"
                   @click="handleCorrection('Remove', 'best_oa_location.url')"
                 >
-                  No, this link is paywalled
+                  No, it's paywalled
                 </v-btn>
                 <v-btn
-                  small
                   plain
+                  large
                   class="text-none mt-1"
                   @click="handleCorrection('Correct', 'best_oa_location.url')"
                 >
-                  Yes, but this link is wrong
+                  This link is wrong
                 </v-btn>
               </template>
               <template v-else>
                 <v-btn
-                  small
-                  color="green lighten-2"
+                  large
+                  color="green"
                   dark
                   class="text-none"
                   @click="handleCorrection('Add', 'best_oa_location.url')"
@@ -245,7 +254,7 @@
             <template v-if="documentType === 'journal'">
               <template v-if="documentData.is_oa">
                 <v-btn
-                  small
+                  large
                   color="red lighten-2"
                   dark
                   class="text-none"
@@ -256,8 +265,8 @@
               </template>
               <template v-else>
                 <v-btn
-                  small
-                  color="green lighten-2"
+                  large
+                  color="green"
                   dark
                   class="text-none"
                   @click="handleCorrection('Open', 'is_oa')"
@@ -269,10 +278,10 @@
           </div>
           
           <!-- Subcard for Step 3 (Additional Information) -->
-          <v-card v-if="showAdditionalForm" flat outlined class="pa-4 mb-4">
+          <v-card v-if="currentStep === 'add_link' || currentStep === 'fix_link' || currentStep === 'add_date'" flat outlined class="pa-4 mb-4">
             <!-- DOI Location Form -->
-            <div v-if="documentType === 'doi' && (corrections.action === 'Add' || corrections.action === 'Correct') && corrections.field === 'best_oa_location.url'">
-              <div class="inner-header">{{ corrections.action === 'Add' ? 'What URL gives free access to this work?' : "What's the correct link for this work?" }}</div>
+            <div v-if="(currentStep === 'add_link' || currentStep === 'fix_link') && documentType === 'doi' && (corrections.action === 'Add' || corrections.action === 'Correct') && corrections.field === 'best_oa_location.url'">
+              <div class="inner-header">{{ currentStep === 'add_link' ? 'What URL gives free access to this work?' : "What's the correct link for this work?" }}</div>
               
               <v-form ref="locationForm" v-model="locationFormValid">
                 <v-text-field
@@ -323,19 +332,19 @@
               </v-form>
             </div>
           </v-card>
-          <div v-if="showAdditionalForm" class="text-right">
+          <div v-if="currentStep === 'add_link' || currentStep === 'fix_link' || currentStep === 'add_date'" class="text-right">
             <v-btn
-              v-if="documentType === 'doi' && (corrections.action === 'Add' || corrections.action === 'Correct') && corrections.field === 'best_oa_location.url'"
+              v-if="(currentStep === 'add_link' || currentStep === 'fix_link') && documentType === 'doi' && (corrections.action === 'Add' || corrections.action === 'Correct') && corrections.field === 'best_oa_location.url'"
               color="primary"
-              @click="moveToReviewStep"
+              @click="goToStep('submit')"
               :disabled="!locationFormValid"
             >
               Save
             </v-btn>
             <v-btn
-              v-if="documentType === 'journal' && corrections.action === 'Open' && corrections.field === 'is_oa'"
+              v-if="currentStep === 'add_date' && documentType === 'journal' && corrections.action === 'Open' && corrections.field === 'is_oa'"
               color="primary"
-              @click="moveToReviewStep"
+              @click="goToStep('submit')"
               :disabled="!journalFormValid"
             >
               Save
@@ -343,7 +352,7 @@
           </div>
 
           <!-- Subcard for Step 4 (Review Changes) -->
-          <v-card v-if="showReviewSection" flat outlined class="pa-4 mb-4">
+          <div v-if="currentStep === 'submit'" class="subcard pa-4 mb-4">
             <!-- Review changes left of for now
             <div class="inner-header">Review Changes</div>
             
@@ -383,9 +392,9 @@
                 style="max-width: 300px;"
               ></v-text-field>
             </v-row>
-          </v-card>
+          </div>
 
-          <div v-if="showReviewSection" class="text-right">
+          <div v-if="currentStep === 'submit'" class="text-right">
             <v-btn
               color="primary"
               @click="submitCorrection"
@@ -394,12 +403,7 @@
             >Submit Correction</v-btn>
             <div v-if="submitError" class="error--text mt-2">{{ submitError }}</div>
           </div>
-
         </v-card>
-        <!-- Back Button -->
-        <v-btn color="primary" small text class="" @click="resetForm">
-          ← Start Over
-        </v-btn>
       </template>
     </template>
   </div>    
@@ -464,7 +468,10 @@
       corrections: {
         action: null,
         field: null,
-        newValue: null
+        oldValue: null,
+        newValue: null,
+        url: '',
+        oa_date: null,
       },
       // Forms
       locationForm: {
@@ -478,45 +485,122 @@
       },
       journalFormValid: false,
       // Flow control
-      currentStep: 1,
-      showSubmissionPreview: false,
-      forceShowReviewSection: false
+      currentStep: "start", // "start", "edit", "additional", "review", "submit",
+      additionalInfoNeeded: false,
     }
   },
   computed: {
-    showAdditionalForm() {
-      // Never show the additional form if we're forcing the review section
-      if (this.forceShowReviewSection) return false;
+    isAdminMode() {
+      return 'admin' in this.$route.query;
+    },
+    breadcrumbs() {
+      return [
+        { text: 'Start', value: 'start' },
+        { text: 'Find Journal', value: 'journal' },
+        { text: 'Fix', value: 'edit' },
+        { text: 'Add Link', value: 'add_link' },
+        { text: 'Fix Link', value: 'fix_link' },
+        { text: 'Add Date', value: 'add_date' },
+        { text: 'Submit', value: 'submit' },
+      ];
+    },
+    visibleBreadcrumbs() {
+      // Filter out steps that aren't needed based on the current state
+      const allBreadcrumbs = this.breadcrumbs;
+      const result = [];
       
-      // Show additional form if we have a correction that requires more info
-      if (!this.corrections.action || !this.corrections.field) return false;
+      // Always include Start as the first breadcrumb
+      result.push(allBreadcrumbs.find(b => b.value === 'start'));
       
-      if (this.documentType === 'doi') {
-        return (this.corrections.action === 'Add' || this.corrections.action === 'Correct') && 
-               this.corrections.field === 'best_oa_location.url';
-      } else if (this.documentType === 'journal') {
-        return this.corrections.action === 'Open' && this.corrections.field === 'is_oa';
+      // For journal page or when documentType is journal, include the journal breadcrumb
+      if (this.currentStep === 'journal' || this.documentType === 'journal') {
+        result.push(allBreadcrumbs.find(b => b.value === 'journal'));
+        
+        // If we're just on the journal search page, return early
+        if (this.currentStep === 'journal') {
+          return result;
+        }
       }
       
-      return false
+      // Always include edit step if we're past start
+      if (this.currentStepIndex > 0 && this.currentStep !== 'journal') {
+        result.push(allBreadcrumbs.find(b => b.value === 'edit'));
+      }
+      
+      // Add explicit additional steps
+      if (this.currentStep === 'add_link') {
+        result.push(allBreadcrumbs.find(b => b.value === 'add_link'));
+      } else if (this.currentStep === 'fix_link') {
+        result.push(allBreadcrumbs.find(b => b.value === 'fix_link'));
+      } else if (this.currentStep === 'add_date') {
+        result.push(allBreadcrumbs.find(b => b.value === 'add_date'));
+      }
+      
+      // Include submit step if we're on that step
+      if (this.currentStep === 'submit') {
+        result.push(allBreadcrumbs.find(b => b.value === 'submit'));
+      }
+      
+      return result;
     },
-    showReviewSection() {
-      // Never show review section if additional form is showing
-      if (this.showAdditionalForm) return false;
-      
-      // If the force flag is set, show the review section
-      if (this.forceShowReviewSection) return true;
-      
-      // Show review section if we have a correction and any required additional info
-      if (!this.corrections.action || !this.corrections.field) return false;
-      
-      // If no additional form is needed, show review immediately
-      return true;
+    currentBreadcrumbIndex() {
+      // Find the index of the current step in the visible breadcrumbs
+      return this.visibleBreadcrumbs.findIndex(item => item.value === this.currentStep);
     },
-    showHostTypeRow() {
-      return this.documentType === 'doi' && 
-             (this.corrections.action === 'Add' || this.corrections.action === 'Correct') && 
-             this.corrections.field === 'best_oa_location.url';
+    pageTitles() {
+      switch (this.currentStep) {
+        case 'start':
+          return [
+            'Fix Unpaywall Errors',
+            'Sometimes, Unpaywall makes errors. You can fix them here. Corrections will show up in a few days.',
+          ];
+        case 'journal':
+          return [
+            'Find Journal to Fix',
+            'Lookup at journal by ISSN to submit fixes.',
+          ];
+        case 'edit':
+          if (this.documentType === 'doi') {
+            return [
+              "Fix Work Metadata",
+              "Review what Unpaywall currently thinks about this work then fix if needed."
+            ];
+          } else if (this.documentType === 'journal') {
+            return [
+              "Fix Journal Metadata",
+              "Review what Unpaywall currently thinks about this journal then fix if needed."
+            ];
+          }
+          return ['Fix Metadata', null];
+        case 'add_link':
+          return [
+            "Add Open Access Link",
+            "To mark this work as open access, Unpaywall needs a URL where the work is freely available."
+          ];
+        case 'fix_link':
+          return [
+            "Fix Open Access Link",
+            "Correct the link to the open access version of this work."
+          ];
+        case 'add_date':
+          return [
+            "Add Journal Open Access Date",
+            "To mark this journal as open access, let us know when it became open access."
+          ];
+        case 'submit':
+          return [
+            "Submit Your Fix",
+            null
+          ];
+        default:
+          return [
+            "Fix Unpaywall Errors",
+            null
+          ];
+      }
+    },
+    currentStepIndex() {
+      return this.breadcrumbs.findIndex(step => step.value === this.currentStep);
     },    
     showOADateRow() {
       return this.documentType === 'journal' && 
@@ -528,47 +612,42 @@
       return this.corrections.action && this.corrections.field;
     }
   },
+  watch: {
+    currentStep() {
+      this.error = null;
+      this.loadError = null;
+    }
+  },
   methods: {
-    updateUrlState() {
-      if (!this.documentData) return;
-      
-      let path;
-      if (this.documentType === 'doi') {
-        let doi = this.documentData.doi;
-        let doiPrefix = doi;
-        let doiSuffix = '';
-        const slashIndex = doi.indexOf('/');
-        if (slashIndex !== -1) {
-          doiPrefix = doi.substring(0, slashIndex);
-          doiSuffix = doi.substring(slashIndex + 1);
-        }
-        path = `/fix/work/${doiPrefix}`;
-        if (doiSuffix) path += `/${doiSuffix}`;
-      } else if (this.documentType === 'journal') {
-        path = `/fix/journal/${this.documentData.issn_l}`;
-      }
-      
-      // Only update if the path is different from current
-      if (path && this.$route.path !== path) {
-        this.$router.push(path);
-      }
-    },
     normalizeDOI(doi) {
       // Remove any https://doi.org/ prefix
       return doi.replace(/^https?:\/\/doi\.org\//i, '')
     },
     submitDOI() {
       if (!this.doiInput) {
-        this.error = 'Please enter a DOI'
-        return
+        this.error = 'Please enter a DOI';
+        return;
       }
-      
-      this.loading = true
-      this.error = null
-      this.loadError = null
-      
-      const normalizedDOI = this.normalizeDOI(this.doiInput)
-      const apiUrl = `https://api.openalex.org/unpaywall/${normalizedDOI}`
+
+      this.loading = true;
+      this.error = null;
+      this.loadError = null;
+
+      const normalizedDOI = this.normalizeDOI(this.doiInput);
+      // Check for test data first
+      const testData = testDoiData[normalizedDOI];
+      if (testData) {
+        this.documentData = testData;
+        this.documentType = 'doi';
+        this.successMessage = null;
+        this.currentStep = 'edit';
+        this.updateUrlState();
+        this.loading = false;
+        this.initialLoading = false;
+        return;
+      }
+
+      const apiUrl = `https://api.openalex.org/unpaywall/${normalizedDOI}`;
       axios.get(apiUrl)
         .then(resp => {
           if (!resp.data || Object.keys(resp.data).length === 0) {
@@ -578,20 +657,47 @@
             this.documentData = resp.data;
             this.documentType = 'doi';
             this.successMessage = null;
+            this.currentStep = 'edit';
+            this.updateUrlState();
           }
-          this.loading = false
-          this.initialLoading = false
+          this.loading = false;
+          this.initialLoading = false;
         })
-    },    
+        .catch(err => {
+          if (err.response && err.response.status === 404) {
+            this.loadError = 'DOI not found.';
+          } else {
+            this.loadError = `Error loading DOI: ${err.message}`;
+          }
+          this.loading = false;
+          this.initialLoading = false;
+        });
+    },
     submitISSN() {
       if (!this.issnInput) {
-        this.error = 'Please enter an ISSN'
-        return
+        this.error = 'Please enter an ISSN';
+        return;
       }
-      
-      this.loading = true
-      this.error = null
-      
+
+      this.loading = true;
+      this.error = null;
+
+      // Check for test data first
+      const testData = testDoiData[this.issnInput];
+      if (testData) {
+        this.documentData = testData;
+        this.documentType = 'journal';
+        this.rawApiResponse = testData;
+        this.successMessage = null;
+        this.resetCorrections();
+        this.currentStep = 'edit';
+        // Keep the journal breadcrumb in the URL
+        this.updateUrlState();
+        this.loading = false;
+        this.initialLoading = false;
+        return;
+      }
+
       axios.get(`https://api.openalex.org/sources/issn:${this.issnInput}`)
         .then(response => {
           this.documentData = response.data;
@@ -599,15 +705,21 @@
           this.rawApiResponse = response.data;
           this.successMessage = null;
           this.resetCorrections();
+          this.currentStep = 'edit';
+          // Keep the journal breadcrumb in the URL
           this.updateUrlState();
         })
         .catch(err => {
-          this.error = `Error fetching Journal: ${err.message}`;
+          if (err.response && err.response.status === 404) {
+            this.error = 'ISSN not found.';
+          } else {
+            this.error = `Error fetching Journal: ${err.message}`;
+          }
         })
         .finally(() => {
           this.loading = false;
           this.initialLoading = false;
-        })
+        });
     },
     getRandomDOI() {
       this.loading = true;
@@ -627,6 +739,7 @@
           this.rawApiResponse = response.data;
           this.successMessage = null;
           this.resetCorrections();
+          this.currentStep = 'edit';
           this.updateUrlState();
         })
         .catch(err => {
@@ -655,6 +768,8 @@
           this.rawApiResponse = response.data;
           this.successMessage = null;
           this.resetCorrections();
+          this.currentStep = 'edit';
+          // Keep the journal breadcrumb in the URL
           this.updateUrlState();
         })
         .catch(err => {
@@ -676,6 +791,7 @@
           this.rawApiResponse = testData;
           this.successMessage = null;
           this.resetCorrections();
+          this.currentStep = 'edit';
           this.updateUrlState();
         } else {
           this.error = 'Test DOI data not found';
@@ -698,6 +814,8 @@
           this.rawApiResponse = testData;
           this.successMessage = null;
           this.resetCorrections();
+          this.currentStep = 'edit';
+          // Keep the journal breadcrumb in the URL
           this.updateUrlState();
         } else {
           this.error = 'Test ISSN data not found';
@@ -715,17 +833,39 @@
         return `https://api.openalex.org/sources/issn:${this.documentData.issn_l}`;
       }
       return '#';
-    },    
+    },
     getBestOALocationUrl() {
       if (!this.documentData) return null;
       if (!this.documentData.best_oa_location) return null;
       return this.documentData.best_oa_location.url;
     },
+    updateUrlState() {
+      if (!this.documentData) return;
+      
+      let path;
+      if (this.documentType === 'doi') {
+        let doi = this.documentData.doi;
+        let doiPrefix = doi;
+        let doiSuffix = '';
+        const slashIndex = doi.indexOf('/');
+        if (slashIndex !== -1) {
+          doiPrefix = doi.substring(0, slashIndex);
+          doiSuffix = doi.substring(slashIndex + 1);
+        }
+        path = `/fix/work/${doiPrefix}`;
+        if (doiSuffix) path += `/${doiSuffix}`;
+      } else if (this.documentType === 'journal') {
+        path = `/fix/journal/${this.documentData.issn_l}`;
+      }
+      
+      // Only update if the path is different from current
+      if (path && this.$route.path !== path) {
+        this.$router.push(path);
+      }
+    },
     handleCorrection(action, field) {
-      this.resetCorrections();
       this.corrections.action = action;
       this.corrections.field = field;
-      
       // Pre-fill form data if needed
       if (action === 'Correct' && field === 'best_oa_location.url' && this.documentData.best_oa_location) {
         this.locationForm.url = this.documentData.best_oa_location.url
@@ -734,14 +874,38 @@
         this.locationForm.url = ''
         this.locationForm.host_type = 'publisher'
       }
+      // Determine which explicit step is needed
+      if (this.documentType === 'doi') {
+        if (action === 'Add' && field === 'best_oa_location.url') {
+          this.additionalInfoNeeded = true;
+          this.currentStep = 'add_link';
+          return;
+        } else if (action === 'Correct' && field === 'best_oa_location.url') {
+          this.additionalInfoNeeded = true;
+          this.currentStep = 'fix_link';
+          return;
+        }
+      } else if (this.documentType === 'journal') {
+        if (action === 'Open' && field === 'is_oa') {
+          this.additionalInfoNeeded = true;
+          this.currentStep = 'add_date';
+          return;
+        }
+      }
+      // If no additional info needed, go straight to review
+      this.additionalInfoNeeded = false;
+      this.currentStep = 'submit';
     },
     resetCorrections() {
       this.corrections = {
         action: null,
         field: null,
-        newValue: null
-      }
-      this.showSubmissionPreview = false
+        oldValue: null,
+        newValue: null,
+        url: '',
+        oa_date: null,
+      };
+      this.additionalInfoNeeded = false;
     },
     getOldValue() {
       if (this.documentType === 'doi') {
@@ -794,7 +958,6 @@
           "Your correction has been received and will be reviewed within a few days. Thank you for your help.";
         this.resetForm();
       } catch (e) {
-        // Avoid optional chaining for compatibility
         const errData = e.response && e.response.data;
         this.submitError = (errData && errData.error) || e.message;
       }
@@ -824,11 +987,6 @@
       }
       return post;
     },    
-    moveToReviewStep() {
-      // This method is called when the user clicks the Save button in step 3
-      // Simply set a flag to show the review section instead of the form
-      this.forceShowReviewSection = true
-    },
     resetForm() {
       this.documentData = null;
       this.documentType = null;
@@ -837,13 +995,53 @@
       this.doiInput = '';
       this.issnInput = '';
       this.selectedTestDOI = null;
-      this.forceShowReviewSection = false;
+      this.currentStep = 'start';
       this.loading = false;
       this.initialLoading = false;
+      this.additionalInfoNeeded = false;
       if (this.$route.path !== '/fix') {
         this.$router.push('/fix');
       }
-    }
+    },
+    goToStep(step) {
+      const targetIndex = this.breadcrumbs.findIndex(s => s.value === step);
+      
+      // Always allow going back to start from any step
+      if (step === 'start') {
+        this.resetForm();
+        return;
+      }
+      
+      // Special case: Allow forward navigation from add_link, fix_link, or add_date to submit step
+      if (step === 'submit' && 
+          (this.currentStep === 'add_link' || this.currentStep === 'fix_link' || this.currentStep === 'add_date')) {
+        this.currentStep = step;
+        return;
+      }
+      
+      if (targetIndex < this.currentStepIndex) {
+        // Only allow navigation to previous steps
+        this.currentStep = step;
+        // Reset state as needed for each step
+        if (step === 'start') {
+          // When clicking 'Start', reset form and go back to /fix
+          this.resetForm();
+          if (this.$route.path !== '/fix') {
+            this.$router.push('/fix');
+          }
+        } else if (step === 'edit') {
+          // Keep document data but reset corrections
+          this.resetCorrections();
+        } else if (step === 'add_link' || step === 'fix_link' || step === 'add_date') {
+          // If going back from review to an additional info step, just update step
+        }
+        // Add more logic here if needed for other steps
+      }
+    },
+    goToJournalStep() {
+      this.currentStep = 'journal';
+      this.$router.push('/fix/journal');
+    },
   },
   watch: {
     // Watch for browser navigation (forward/back)
@@ -853,25 +1051,82 @@
         // Example: /fix/work/:prefix/:suffix or /fix/journal/:issn
         const doiWorkMatch = to.path.match(/^\/fix\/work\/([^\/]+)(?:\/([^\/]+))?/);
         const journalMatch = to.path.match(/^\/fix\/journal\/([^\/]+)/);
-        if (doiWorkMatch) {
+        const journalPageMatch = to.path === '/fix/journal';
+        
+        if (to.path === '/fix') {
+          // Reset form when navigating to /fix
+          this.resetForm();
+        } else if (journalPageMatch) {
+          // Set current step to journal for /fix/journal
+          this.currentStep = 'journal';
+          // Clear any previous data
+          this.documentData = null;
+          this.documentType = null;
+        } else if (doiWorkMatch) {
           // Compose DOI from prefix/suffix
           let doi = doiWorkMatch[1];
           if (doiWorkMatch[2]) doi += '/' + doiWorkMatch[2];
+          
+          // Check if we already have this data loaded (from test data)
+          if (this.documentData && this.documentType === 'doi' && this.documentData.doi === doi) {
+            // We already have this data loaded, no need to make an API call
+            return;
+          }
+          
           if (doi !== this.doiInput) {
             this.doiInput = doi;
             this.issnInput = '';
             this.initialLoading = true;
             this.loadError = null;
-            this.submitDOI();
+            
+            // Check if we have test data for this DOI
+            const testData = testDoiData[doi];
+            if (testData) {
+              // Use test data instead of making an API call
+              this.documentData = testData;
+              this.documentType = 'doi';
+              this.rawApiResponse = testData;
+              this.successMessage = null;
+              this.resetCorrections();
+              this.currentStep = 'edit';
+              this.initialLoading = false;
+              this.loading = false;
+            } else {
+              // No test data, make the API call
+              this.submitDOI();
+            }
           }
         } else if (journalMatch) {
           const issn = journalMatch[1];
+          
+          // Check if we already have this data loaded (from test data)
+          if (this.documentData && this.documentType === 'journal' && this.documentData.issn_l === issn) {
+            // We already have this data loaded, no need to make an API call
+            return;
+          }
+          
           if (issn !== this.issnInput) {
             this.issnInput = issn;
             this.doiInput = '';
             this.initialLoading = true;
             this.loadError = null;
-            this.submitISSN();
+            
+            // Check if we have test data for this ISSN
+            const testData = testDoiData[issn];
+            if (testData) {
+              // Use test data instead of making an API call
+              this.documentData = testData;
+              this.documentType = 'journal';
+              this.rawApiResponse = testData;
+              this.successMessage = null;
+              this.resetCorrections();
+              this.currentStep = 'edit';
+              this.initialLoading = false;
+              this.loading = false;
+            } else {
+              // No test data, make the API call
+              this.submitISSN();
+            }
           }
         } else if (to.path === '/fix') {
           // Reset form if navigated to /fix root
@@ -902,11 +1157,50 @@
       immediate: true
     }
   },
+  created() {
+    // Handle direct loading of pages
+    if (this.$route.path === '/fix/journal') {
+      this.currentStep = 'journal';
+    }
+  }
 }
 </script>
 
 
 <style scoped>
+.page.corrections {
+  position: relative;
+}
+.corrections {
+  max-width: 800px;
+  margin: 0 auto;
+}
+h1 {
+  text-align: left;
+  margin-bottom: 0px;
+}
+.page-subtitle {
+  font-size: 15px;
+  color: #666;
+}
+.breadcrumbs {
+  color: #777;
+  font-size: 12px;
+  font-weight: 500;
+}
+.breadcrumb-step {
+  cursor: pointer;
+}
+.breadcrumb-step.active {
+  color: #777;
+  font-weight: 500;
+}
+.breadcrumb-step.clickable {
+  color: #1976D2; /* Vuetify primary blue */
+}
+.breadcrumb-step.clickable:hover {
+  text-decoration: underline;
+}
 .correct-label {
   font-size: 18px;
   font-weight: 500;
@@ -915,20 +1209,33 @@
 .submit-btn {
   height: 40px !important;
 }
-.corrections {
-  max-width: 800px;
-  margin: 0 auto;
+.divider {
+  height: 1px;
+  margin: 30px -24px;
+  background-color: #ccc;
 }
 .v-card.light-grey {
   background-color: #edf0ed;
 }
 .document-title {
-  font-size: 18px;
-  font-weight: 500;
+  font-size: 20px;
+}
+.sublinks, .sublinks * {
+  color: #999 !important;
+}
+.sublinks .v-icon {
+  margin-top: -3px;
+  font-size: 9px;
+}
+.subcard {
+  font-size: 14px;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
 }
 .status {
   font-weight: bold;
-  font-size: 20px;
+  font-size: 34px;
+  display: block;
 }
 .status.open {
   color: green;
@@ -936,8 +1243,13 @@
 .status.closed {
   color: red;
 } 
-.url {
-  font-size: 16px;
+.url * {
+  font-size: 14px;
+  color: #362cf9 !important;
+}
+.url .v-icon {
+  margin-top: -3px;
+  font-size: 9px;
 }
 .changes-list {
   padding-left: 10px !important;
@@ -972,18 +1284,6 @@
   top: -30px;
   width: 150px;
   z-index: 1;
-}
-h1 {
-  text-align: left;
-  margin-bottom: 0px;
-}
-.page-subtitle {
-  font-size: 16px;
-  color: #666;
-  margin-bottom: 25px;
-}
-.page.corrections {
-  position: relative;
 }
 h2 {
   margin: 5px 0;
