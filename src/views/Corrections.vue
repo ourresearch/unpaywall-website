@@ -2,7 +2,7 @@
   <div class="page corrections">
     <h1>{{ pageTitles[0] }}</h1>
 
-    <div class="page-subtitle mb-6">
+    <div class="page-subtitle mb-4">
       <div v-if="successMessage" class="mt-2">
         <v-alert type="success" dense>{{ successMessage }}</v-alert>
       </div>
@@ -14,17 +14,7 @@
       </div>
     </div> 
 
-    <div v-if="currentStep !== 'start'" class="breadcrumbs mx-1 mb-1">
-      <span v-for="(item, index) in visibleBreadcrumbs" :key="item.value">
-        <span
-          :class="['breadcrumb-step', { active: currentStep === item.value, clickable: index < currentBreadcrumbIndex }]"
-          @click="index < currentBreadcrumbIndex ? goToStep(item.value) : null"
-        >
-          {{ item.text }}
-        </span>
-        <span v-if="index < currentBreadcrumbIndex"> &gt; </span>
-      </span>
-    </div>
+    <!-- Breadcrumbs moved inside cards -->
 
     <!-- Loading Card -->
     <div v-if="loading && !documentData" class="py-6 text-center">
@@ -118,6 +108,7 @@
               placeholder="10.1016/j.cell.2007.11.019"
               outlined
               hide-details
+              @keydown.enter="submitDOI"
               class="mr-2"
               style="flex: 1 1 0; min-width: 0; width: 100%;"
             ></v-text-field>
@@ -134,6 +125,7 @@
               placeholder="1234-5678"
               outlined
               hide-details
+              @keydown.enter="submitISSN"
               class="mr-2"
               style="flex: 1 1 0; min-width: 0; width: 100%;"
             ></v-text-field>
@@ -151,7 +143,22 @@
       <!-- Step 2+ Main Card with Fixed Header and Subcards -->
       <template v-if="documentData">      
         <!-- Main Card for Step 2+ -->
-        <v-card class="pa-4 mb-4 mt-2">
+        <v-card class="mb-4 mt-2 pa-0">
+          <!-- Breadcrumbs inside card with full width -->
+          <div v-if="currentStep !== 'article' && currentStep !== 'journal'" class="breadcrumbs">
+            <span v-for="(item, index) in visibleBreadcrumbs" :key="item.value">
+              <span
+                :class="['breadcrumb-step', { active: currentStep === item.value, clickable: index < currentBreadcrumbIndex }]"
+                @click="index < currentBreadcrumbIndex ? goToStep(item.value) : null"
+              >
+                {{ item.text }}
+              </span>
+              <span v-if="index < currentBreadcrumbIndex"> &gt; </span>
+            </span>
+          </div>
+          
+          <!-- Card content with padding -->
+          <div class="pa-4">
 
           <div class="mb-4">
             <!-- DOI Display Header -->
@@ -405,6 +412,7 @@
             >Submit Correction</v-btn>
             <div v-if="submitError" class="error--text mt-2">{{ submitError }}</div>
           </div>
+          </div>
         </v-card>
       </template>
     </template>
@@ -488,7 +496,8 @@
       },
       journalFormValid: false,
       // Flow control
-      currentStep: "start", // "start", "edit", "additional", "review", "submit",
+      currentStep: "article", // "article", "journal", "edit", "add_link", "fix_link", "add_date", "submit",
+      previousStep: null, // Tracks the previous step for breadcrumb navigation
       additionalInfoNeeded: false,
     }
   },
@@ -498,9 +507,9 @@
     },
     breadcrumbs() {
       return [
-        { text: 'Start', value: 'start' },
-        { text: 'Find Journal', value: 'journal' },
-        { text: 'Fix', value: 'edit' },
+        { text: 'Fix an Article', value: 'article' },
+        { text: 'Fix a Journal', value: 'journal' },
+        { text: 'Review', value: 'edit' },
         { text: 'Add Link', value: 'add_link' },
         { text: 'Fix Link', value: 'fix_link' },
         { text: 'Add Date', value: 'add_date' },
@@ -512,20 +521,21 @@
       const allBreadcrumbs = this.breadcrumbs;
       const result = [];
       
-      // Always include Start as the first breadcrumb
-      result.push(allBreadcrumbs.find(b => b.value === 'start'));
-      
-      // For journal page or when documentType is journal, include the journal breadcrumb
-      if (this.currentStep === 'journal' || this.documentType === 'journal') {
-        result.push(allBreadcrumbs.find(b => b.value === 'journal'));
+      // Include the appropriate first breadcrumb based on document type
+      if (this.documentType === 'journal') {
+        // For journal flow, only add the journal breadcrumb once
+        const journalBreadcrumb = allBreadcrumbs.find(b => b.value === 'journal');
+        result.push(journalBreadcrumb);
         
         // If we're just on the journal search page, return early
         if (this.currentStep === 'journal') {
           return result;
         }
+      } else {
+        result.push(allBreadcrumbs.find(b => b.value === 'article'));
       }
       
-      // Always include edit step if we're past start
+      // Always include edit step if we're past the initial step
       if (this.currentStepIndex > 0 && this.currentStep !== 'journal') {
         result.push(allBreadcrumbs.find(b => b.value === 'edit'));
       }
@@ -537,6 +547,15 @@
         result.push(allBreadcrumbs.find(b => b.value === 'fix_link'));
       } else if (this.currentStep === 'add_date') {
         result.push(allBreadcrumbs.find(b => b.value === 'add_date'));
+      } else if (this.currentStep === 'submit' && this.previousStep) {
+        // When on submit step, include the previous step in the breadcrumb trail
+        if (this.previousStep === 'add_link') {
+          result.push(allBreadcrumbs.find(b => b.value === 'add_link'));
+        } else if (this.previousStep === 'fix_link') {
+          result.push(allBreadcrumbs.find(b => b.value === 'fix_link'));
+        } else if (this.previousStep === 'add_date') {
+          result.push(allBreadcrumbs.find(b => b.value === 'add_date'));
+        }
       }
       
       // Include submit step if we're on that step
@@ -552,15 +571,11 @@
     },
     pageTitles() {
       switch (this.currentStep) {
-        case 'start':
-          return [
-            'Fix Unpaywall Errors',
-            'Sometimes, Unpaywall makes errors. You can fix them here. Corrections will show up in a few days.',
-          ];
+        case 'article':
         case 'journal':
           return [
-            'Find Journal to Fix',
-            'Look up a journal by ISSN to submit fixes.',
+            'Fix Unpaywall Errors',
+            'Sometimes Unpaywall makes errors. You can fix them here. Corrections will show up in a few days.',
           ];
         case 'edit':
           if (this.documentType === 'doi') {
@@ -593,7 +608,7 @@
         case 'submit':
           return [
             "Submit Your Fix",
-            null
+            "Your report will be reviewed by our team and live within a few days."
           ];
         default:
           return [
@@ -1006,7 +1021,8 @@
       this.doiInput = '';
       this.issnInput = '';
       this.selectedTestDOI = null;
-      this.currentStep = 'start';
+      this.currentStep = 'article';
+      this.previousStep = null;
       this.loading = false;
       this.initialLoading = false;
       this.additionalInfoNeeded = false;
@@ -1017,15 +1033,22 @@
     goToStep(step) {
       const targetIndex = this.breadcrumbs.findIndex(s => s.value === step);
       
-      // Always allow going back to start from any step
-      if (step === 'start') {
+      // Handle navigation to initial steps
+      if (step === 'article' || step === 'journal') {
+        // When going back to initial step, reset form and update URL
         this.resetForm();
+        const path = step === 'article' ? '/fix/article' : '/fix/journal';
+        if (this.$route.path !== path) {
+          this.$router.push(path);
+        }
         return;
       }
       
       // Special case: Allow forward navigation from add_link, fix_link, or add_date to submit step
       if (step === 'submit' && 
           (this.currentStep === 'add_link' || this.currentStep === 'fix_link' || this.currentStep === 'add_date')) {
+        // Store the previous step for breadcrumb navigation
+        this.previousStep = this.currentStep;
         this.currentStep = step;
         return;
       }
@@ -1034,7 +1057,7 @@
         // Only allow navigation to previous steps
         this.currentStep = step;
         // Reset state as needed for each step
-        if (step === 'start') {
+        if (step === 'article') {
           // When clicking 'Start', reset form and go back to /fix
           this.resetForm();
           if (this.$route.path !== '/fix') {
@@ -1172,6 +1195,8 @@
     // Handle direct loading of pages
     if (this.$route.path === '/fix/journal') {
       this.currentStep = 'journal';
+    } else if (this.$route.path === '/fix/article') {
+      this.currentStep = 'article';
     }
   }
 }
@@ -1180,12 +1205,12 @@
 
 <style scoped>
 .corrections-initial-step-card {
-  min-height: 180px;
+  min-height: 160px;
 }
 .vertical-tab-list {
   display: flex;
   flex-direction: column;
-  padding-top: 20px;
+  padding-top: 12px;
   border-right: 1px solid #ddd;
 }
 .vertical-tab-item {
@@ -1195,14 +1220,13 @@
   color: #333;
 }
 .vertical-tab-item.active {
-  background-color: #e4e4e4;
+  background-color: #eee;
 }
 .corrections-tab-col {
   min-width: 120px;
   max-width: 160px;
-}
-.corrections-input-panel {
-  min-width: 260px;
+  border-radius: none !important;
+
 }
 .page.corrections {
   position: relative;
@@ -1223,6 +1247,9 @@ h1 {
   color: #777;
   font-size: 12px;
   font-weight: 500;
+  padding: 10px;
+  background-color: #f2f2f2;
+  border-bottom: 1px solid #ddd;
 }
 .breadcrumb-step {
   cursor: pointer;
