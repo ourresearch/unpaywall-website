@@ -303,12 +303,14 @@
                   required
                 ></v-text-field>
                 
+                <!-- Left out for now 
                 <div class="d-flex justify-space-between align-center mt-2">
                   <v-radio-group v-model="locationForm.host_type" row dense hide-details class="radio-group">
                     <v-radio label="Publisher" value="publisher"></v-radio>
                     <v-radio label="Repository" value="repository"></v-radio>
                   </v-radio-group>
                 </div>
+                -->
               </v-form>
             </div>
 
