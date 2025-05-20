@@ -410,38 +410,6 @@
         <p>The OA Location object describes particular place where we found a given OA article. The same article is often available from multiple locations, and there may be differences in format, version, and license depending on the location; the OA Location object describes these key attributes. An OA Location Object is always a Child of a <router-link to="#doi-object">DOI Object.</router-link></p>
         <table class="api-responses">
 
-            <!--evidence-->
-            <tr id="oa-location-evidence">
-                <td class="key">
-                    <span class="name">evidence</span>
-                    <span class="type">String</span>
-                </td>
-                <td class="contents">
-                    How we found this OA location.
-                </td>
-                <td class="notes">
-                    <p>
-                        Used for debugging. Don’t depend on the exact contents of this for anything, because values are subject to change without warning. Example values:
-
-                    </p>
-                    <ul>
-                        <li>
-                            <span class="value"><code>oa journal (via journal title in doaj)</code></span>
-                            <span class="notes">
-                            We found the name of the journal that publishes this article in the DOAJ database.
-                        </span>
-                        </li>
-                        <li>
-                            <span class="value"><code>oa repository (via pmcid lookup)</code></span>
-                            <span class="notes">
-                            We found this article in an index of PubMed Central articles.
-                        </span>
-                        </li>
-                    </ul>
-                </td>
-            </tr>
-
-
             <!--host_type-->
             <tr id="oa-location-host-type">
                 <td class="key">
@@ -484,7 +452,7 @@
                     Is this location the <code>best_oa_location</code> for its resource.
                 </td>
                 <td class="notes">
-                    See the DOI object's <code>best_oa_location</code> description for more on how we select which location is "best."
+                    <p>See the DOI object's <code>best_oa_location</code> description for more on how we select which location is "best."</p>
                 </td>
             </tr>
 
@@ -528,7 +496,7 @@
                 </td>
                 <td class="notes">
                     <p>
-                        oa_date is calculated differently for different host types and is not available for all oa_locations.
+                        <code>oa_date</code> is calculated differently for different host types and is not available for all oa_locations.
                         See <a href="https://support.unpaywall.org/a/solutions/articles/44002063719">https://support.unpaywall.org/a/solutions/articles/44002063719</a> for details.
                     </p>
                 </td>
@@ -545,31 +513,9 @@
                     OAI-PMH endpoint where we found this location.
                 </td>
                 <td class="notes">
-                    This is primarily for internal debugging. It's <code>null</code> for locations that weren't found using OAI-PMH.
+                    <p>This is primarily for internal debugging. It's <code>null</code> for locations that weren't found using OAI-PMH.</p>
                 </td>
             </tr>
-
-
-            <!--updated-->
-            <tr id="oa-location-updated">
-                <td class="key">
-                    <span class="name">updated</span>
-                    <span class="type">String</span>
-                </td>
-                <td class="contents">
-                    Time when the data for this location was last updated.
-                </td>
-                <td class="notes">
-                    Returned as an <a href="https://xkcd.com/1179/">ISO8601-formatted</a> timestamp. Example: <code>2017-08-17T23:43:27.753663</code>
-                </td>
-            </tr>
-
-
-
-
-
-
-
 
             <!--url-->
             <tr id="oa-location-url">
@@ -587,7 +533,6 @@
                 </td>
             </tr>
 
-
             <!--url_for_landing_page-->
             <tr id="oa-location-url-for-landing-page">
                 <td class="key">
@@ -604,7 +549,6 @@
                 </td>
             </tr>
 
-
             <!--url_for_pdf-->
             <tr id="oa_location-url-for-pdf">
                 <td class="key">
@@ -620,12 +564,6 @@
                     </p>
                 </td>
             </tr>
-
-
-
-
-
-
 
             <tr id="oa-location-version">
                 <td class="key">
@@ -647,6 +585,35 @@
                 </td>
             </tr>
 
+            <!--evidence-->
+            <tr id="oa-location-evidence">
+                <td class="key">
+                    <span class="name">evidence</span>
+                    <span class="type">String</span>
+                </td>
+                <td class="contents">
+                    <span class="deprecated">Deprecated</span>
+                </td>
+                <td class="notes">
+                    <p>
+                        This field will always be set to the string <code>deprecated</code> and will be removed soon.
+                    </p>
+                </td>
+            </tr>
+            
+            <!--updated-->
+            <tr id="oa-location-updated">
+                <td class="key">
+                    <span class="name">updated</span>
+                    <span class="type">String</span>
+                </td>
+                <td class="contents">
+                    <span class="deprecated">Deprecated</span>
+                </td>
+                <td class="notes">
+                    <p>This field will always be set to the string <code>deprecated</code> and will be removed soon.</p>
+                </td>
+            </tr>
 
 
         </table>
@@ -732,6 +699,10 @@
     
     div.page.data-format table td.key span.type {
         font-size: 12px;
+    }
+    .deprecated {
+        font-weight: bold;
+        color: red;
     }
 </style>
 
