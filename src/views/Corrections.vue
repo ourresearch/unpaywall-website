@@ -1225,10 +1225,8 @@
   background-color: #eee;
 }
 .corrections-tab-col {
-  min-width: 120px;
-  max-width: 160px;
+  width: 180px;
   border-radius: none !important;
-
 }
 .page.corrections {
   position: relative;
