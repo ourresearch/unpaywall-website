@@ -437,6 +437,7 @@
   data() {
     return {
       successMessage: null,
+      docId: null, // stores the normalized DOI or ISSN currently being used
       submitError: null,
       // Input fields
       doiInput: '',
@@ -634,6 +635,7 @@
       this.loadError = null;
 
       const normalizedDOI = this.normalizeDOI(this.doiInput);
+      this.docId = normalizedDOI;
       // Check for test data first
       const testData = testDoiData[normalizedDOI];
       if (testData) {
@@ -667,7 +669,8 @@
           if (err.response && err.response.status === 404) {
             this.loadError = 'DOI not found.';
           } else {
-            this.loadError = `Error loading DOI: ${err.message}`;
+            console.log(err);
+            this.loadError = `Error loading DOI. Please try again later.`;
           }
           this.loading = false;
           this.initialLoading = false;
@@ -683,6 +686,7 @@
       this.error = null;
 
       // Check for test data first
+      this.docId = this.issnInput;
       const testData = testDoiData[this.issnInput];
       if (testData) {
         this.documentData = testData;
@@ -713,7 +717,8 @@
           if (err.response && err.response.status === 404) {
             this.error = 'ISSN not found.';
           } else {
-            this.error = `Error fetching Journal: ${err.message}`;
+            console.log(err);
+            this.error = `Error loading journal. Please try again later.`;
           }
         })
         .finally(() => {
@@ -743,7 +748,8 @@
           this.updateUrlState();
         })
         .catch(err => {
-          this.error = `Error fetching random DOI: ${err.message}`
+          console.log(err);
+          this.error = `Error fetching random DOI.`
         })
         .finally(() => {
           this.loading = false
@@ -757,7 +763,7 @@
         .then(response => {
           const issn = response.data.results[0].issn_l
           this.issnInput = issn
-          
+          this.docId = issn;
           // Fetch the ISSN data directly instead of calling submitISSN
           return axios.get(`https://api.openalex.org/sources/issn:${issn}`)
         })
@@ -773,7 +779,8 @@
           this.updateUrlState();
         })
         .catch(err => {
-          this.error = `Error fetching random journal: ${err.message}`
+          console.log(err);
+          this.error = `Error loading random journal. Please try again later.`
         })
         .finally(() => {
           this.loading = false
@@ -784,6 +791,7 @@
       if (!doiValue) return;
       this.loading = true;
       try {
+        this.docId = doiValue;
         const testData = testDoiData[doiValue];
         if (testData) {
           this.documentData = testData;
@@ -807,6 +815,7 @@
       if (!issnValue) return;
       this.loading = true;
       try {
+        this.docId = issnValue;
         const testData = testDoiData[issnValue];
         if (testData) {
           this.documentData = testData;
@@ -827,10 +836,10 @@
       }
     },
     getApiUrl() {
-      if (this.documentType === 'doi') {
-        return `https://api.openalex.org/unpaywall/${this.documentData.doi}`;
-      } else if (this.documentType === 'journal') {
-        return `https://api.openalex.org/sources/issn:${this.documentData.issn_l}`;
+      if (this.documentType === 'doi' && this.docId) {
+        return `https://api.openalex.org/unpaywall/${this.docId}`;
+      } else if (this.documentType === 'journal' && this.docId) {
+        return `https://api.openalex.org/sources/issn:${this.docId}`;
       }
       return '#';
     },
@@ -844,7 +853,7 @@
       
       let path;
       if (this.documentType === 'doi') {
-        let doi = this.documentData.doi;
+        let doi = this.doiInput;
         let doiPrefix = doi;
         let doiSuffix = '';
         const slashIndex = doi.indexOf('/');
