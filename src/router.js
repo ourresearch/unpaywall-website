@@ -104,10 +104,11 @@ export default new Router({
     // Fix/Corrections routes
     {
       path: '/fix',
-      component: Corrections
+      redirect: '/fix/article'
     },
+
     {
-      path: '/fix/work',
+      path: '/fix/article',
       component: Corrections,
       props: { showDoiOnly: true }
     },
@@ -117,7 +118,7 @@ export default new Router({
       props: { showJournalOnly: true }
     },
     {
-      path: '/fix/work/:doiPrefix/:doiSuffix',
+      path: '/fix/article/:doiPrefix/:doiSuffix',
       component: Corrections,
       props: route => ({ initialDoi: `${route.params.doiPrefix}/${route.params.doiSuffix}` })
     },

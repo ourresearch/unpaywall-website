@@ -89,61 +89,63 @@
 
       <!-- Step 1: Retrieve Document Metadata -->
 
-      <v-card v-if="!documentData" class="pa-6">
-        <v-row>
-          <v-col v-if="!showJournalOnly" :cols="12">
-            <!-- DOI Section -->
-            <div class="pa-4 main-card">
-              <v-row><div class="correct-label">Fix a Work</div></v-row>
-              <v-row>
-                <v-text-field
-                  v-model="doiInput"
-                  label="Enter DOI"
-                  placeholder="10.1016/j.cell.2007.11.019"
-                  outlined
-                  dense
-                  hide-details
-                  class="mr-2"
-                ></v-text-field>
-                <v-btn
-                  class="submit-btn"
-                  color="primary"
-                  @click="submitDOI"
-                >Submit</v-btn>
-              </v-row>
-            </div>
-            <!-- Fix a Journal Button -->
-            <div v-if="!showDoiOnly && !showJournalOnly" class="px-1 mt-6">
-              <div class="divider"></div>
-              <v-btn @click="goToJournalStep()">
-                Fix a Journal
-              </v-btn>
-            </div>
-          </v-col>
-          <v-col v-if="currentStep === 'journal' || currentStep === 'add_date'" :cols="12">
-            <!-- Journal Section -->
-            <div class="pa-4 main-card">
-              <v-row><div class="correct-label">Fix a Journal</div></v-row>
-              <v-row>
-                <v-text-field
-                  v-model="issnInput"
-                  label="Enter ISSN"
-                  placeholder="1234-5678"
-                  outlined
-                  dense
-                  hide-details
-                  class="mr-2"
-                ></v-text-field>
-                <v-btn
-                  class="submit-btn"
-                  color="primary"
-                  @click="submitISSN"
-                >Submit</v-btn>
-              </v-row>
-            </div>
-          </v-col>
-        </v-row>
+      <v-card v-if="!documentData" class="corrections-initial-step-card d-flex flex-row" style="height: 100px;">
+        <!-- Left tab column -->
+        <div class="corrections-tab-col vertical-tab-list d-flex flex-column justify-start" style="height: 100%;">
+          <div
+            class="vertical-tab-item"
+            :class="{ active: $route.path.startsWith('/fix/article') }"
+            @click="$route.path !== '/fix/article' && $router.push('/fix/article')"
+          >
+            <v-icon x-small class="mr-2">fa-file</v-icon>
+            Fix an Article
+          </div>
+          <div
+            class="vertical-tab-item"
+            :class="{ active: $route.path.startsWith('/fix/journal') }"
+            @click="$route.path !== '/fix/journal' && $router.push('/fix/journal')"
+          >
+            <v-icon x-small class="mr-2">fa-book</v-icon>
+            Fix a Journal
+          </div>
+        </div>
+        <!-- Right panel -->
+        <div class="corrections-input-panel d-flex flex-row align-center flex-grow-1 py-6 px-10" style="height: 100%;">
+          <template v-if="$route.path.startsWith('/fix/article')">
+            <v-text-field
+              v-model="doiInput"
+              label="Enter DOI"
+              placeholder="10.1016/j.cell.2007.11.019"
+              outlined
+              hide-details
+              class="mr-2"
+              style="flex: 1 1 0; min-width: 0; width: 100%;"
+            ></v-text-field>
+            <v-btn
+              class="submit-btn"
+              color="primary"
+              @click="submitDOI"
+            >Find Article</v-btn>
+          </template>
+          <template v-else-if="$route.path.startsWith('/fix/journal')">
+            <v-text-field
+              v-model="issnInput"
+              label="Enter ISSN"
+              placeholder="1234-5678"
+              outlined
+              hide-details
+              class="mr-2"
+              style="flex: 1 1 0; min-width: 0; width: 100%;"
+            ></v-text-field>
+            <v-btn
+              class="submit-btn"
+              color="primary"
+              @click="submitISSN"
+            >Find Journal</v-btn>
+          </template>
+        </div>
       </v-card>
+
 
     
       <!-- Step 2+ Main Card with Fixed Header and Subcards -->
@@ -558,7 +560,7 @@
         case 'journal':
           return [
             'Find Journal to Fix',
-            'Lookup at journal by ISSN to submit fixes.',
+            'Look up a journal by ISSN to submit fixes.',
           ];
         case 'edit':
           if (this.documentType === 'doi') {
@@ -861,7 +863,7 @@
           doiPrefix = doi.substring(0, slashIndex);
           doiSuffix = doi.substring(slashIndex + 1);
         }
-        path = `/fix/work/${doiPrefix}`;
+        path = `/fix/article/${doiPrefix}`;
         if (doiSuffix) path += `/${doiSuffix}`;
       } else if (this.documentType === 'journal') {
         path = `/fix/journal/${this.documentData.issn_l}`;
@@ -1057,8 +1059,8 @@
     $route(to, from) {
       // Only react if the path actually changes
       if (to.path !== from.path) {
-        // Example: /fix/work/:prefix/:suffix or /fix/journal/:issn
-        const doiWorkMatch = to.path.match(/^\/fix\/work\/([^\/]+)(?:\/([^\/]+))?/);
+        // Example: /fix/article/:prefix/:suffix or /fix/journal/:issn
+        const doiWorkMatch = to.path.match(/^\/fix\/article\/([^\/]+)(?:\/([^\/]+))?/);
         const journalMatch = to.path.match(/^\/fix\/journal\/([^\/]+)/);
         const journalPageMatch = to.path === '/fix/journal';
         
@@ -1177,6 +1179,31 @@
 
 
 <style scoped>
+.corrections-initial-step-card {
+  min-height: 180px;
+}
+.vertical-tab-list {
+  display: flex;
+  flex-direction: column;
+  padding-top: 20px;
+  border-right: 1px solid #ddd;
+}
+.vertical-tab-item {
+  cursor: pointer;
+  padding: 10px 30px 10px 20px;
+  font-size: 14px;
+  color: #333;
+}
+.vertical-tab-item.active {
+  background-color: #e4e4e4;
+}
+.corrections-tab-col {
+  min-width: 120px;
+  max-width: 160px;
+}
+.corrections-input-panel {
+  min-width: 260px;
+}
 .page.corrections {
   position: relative;
 }
@@ -1216,7 +1243,7 @@ h1 {
   margin-bottom: 10px;
 }
 .submit-btn {
-  height: 40px !important;
+  height: 56px !important;
 }
 .divider {
   height: 1px;
