@@ -188,7 +188,7 @@
           </div>
           
           <!-- Subcard for Step 2 (Edit Fields) -->
-          <div v-if="currentStep === 'edit'" class="pa-4 mb-4 subcard">
+          <div v-if="currentStep === 'edit_article' || currentStep === 'edit_journal'" class="pa-4 mb-4 subcard">
             <!-- DOI Subcard -->
             <div v-if="documentType === 'doi'">
               <template v-if="documentData.is_oa">
@@ -225,7 +225,7 @@
           </div>
 
           <!-- Subcard Action Buttons -->
-          <div v-if="currentStep === 'edit'" class="subcard-actions d-flex">
+          <div v-if="currentStep === 'edit_article' || currentStep === 'edit_journal'" class="subcard-actions d-flex">
             <!-- DOI Actions -->
             <template v-if="documentType === 'doi'">
               <template v-if="documentData.is_oa">
@@ -498,7 +498,7 @@
       },
       journalFormValid: false,
       // Flow control
-      currentStep: "article", // "article", "journal", "edit", "add_link", "fix_link", "add_date", "submit",
+      currentStep: "article", // "article", "journal", "edit_article", "edit_journal", "add_link", "fix_link", "add_date", "submit",
       previousStep: null, // Tracks the previous step for breadcrumb navigation
       additionalInfoNeeded: false,
     }
@@ -509,9 +509,10 @@
     },
     breadcrumbs() {
       return [
-        { text: 'Fix an Article', value: 'article' },
-        { text: 'Fix a Journal', value: 'journal' },
-        { text: 'Review', value: 'edit' },
+        { text: 'Fix', value: 'article' },
+        { text: 'Fix', value: 'journal' },
+        { text: 'Article', value: 'edit_article' },
+        { text: 'Journal', value: 'edit_journal' },
         { text: 'Add Link', value: 'add_link' },
         { text: 'Fix Link', value: 'fix_link' },
         { text: 'Add Date', value: 'add_date' },
@@ -523,23 +524,24 @@
       const allBreadcrumbs = this.breadcrumbs;
       const result = [];
       
-      // Include the appropriate first breadcrumb based on document type
+      // Include the appropriate breadcrumbs based on document type and step
       if (this.documentType === 'journal') {
-        // For journal flow, only add the journal breadcrumb once
+        // Always add the 'Fix' (journal) breadcrumb first
         const journalBreadcrumb = allBreadcrumbs.find(b => b.value === 'journal');
         result.push(journalBreadcrumb);
-        
+        // For edit_journal and later, also add the 'Journal' breadcrumb
+        if (this.currentStep === 'edit_journal' || this.currentStepIndex > 0 && this.currentStep !== 'journal') {
+          result.push(allBreadcrumbs.find(b => b.value === 'edit_journal'));
+        }
         // If we're just on the journal search page, return early
         if (this.currentStep === 'journal') {
           return result;
         }
       } else {
         result.push(allBreadcrumbs.find(b => b.value === 'article'));
-      }
-      
-      // Always include edit step if we're past the initial step
-      if (this.currentStepIndex > 0 && this.currentStep !== 'journal') {
-        result.push(allBreadcrumbs.find(b => b.value === 'edit'));
+        if (this.currentStep === 'edit_article' || this.currentStepIndex > 0 && this.currentStep !== 'article') {
+          result.push(allBreadcrumbs.find(b => b.value === 'edit_article'));
+        }
       }
       
       // Add explicit additional steps
@@ -661,7 +663,7 @@
         this.documentData = testData;
         this.documentType = 'doi';
         this.successMessage = null;
-        this.currentStep = 'edit';
+        this.currentStep = 'edit_article';
         this.updateUrlState();
         this.loading = false;
         this.initialLoading = false;
@@ -678,7 +680,7 @@
             this.documentData = resp.data;
             this.documentType = 'doi';
             this.successMessage = null;
-            this.currentStep = 'edit';
+            this.currentStep = 'edit_article';
             this.updateUrlState();
           }
           this.loading = false;
@@ -713,7 +715,7 @@
         this.rawApiResponse = testData;
         this.successMessage = null;
         this.resetCorrections();
-        this.currentStep = 'edit';
+        this.currentStep = 'edit_journal';
         // Keep the journal breadcrumb in the URL
         this.updateUrlState();
         this.loading = false;
@@ -728,7 +730,7 @@
           this.rawApiResponse = response.data;
           this.successMessage = null;
           this.resetCorrections();
-          this.currentStep = 'edit';
+          this.currentStep = 'edit_journal';
           // Keep the journal breadcrumb in the URL
           this.updateUrlState();
         })
@@ -763,7 +765,7 @@
           this.rawApiResponse = response.data;
           this.successMessage = null;
           this.resetCorrections();
-          this.currentStep = 'edit';
+          this.currentStep = 'edit_article';
           this.updateUrlState();
         })
         .catch(err => {
@@ -793,7 +795,7 @@
           this.rawApiResponse = response.data;
           this.successMessage = null;
           this.resetCorrections();
-          this.currentStep = 'edit';
+          this.currentStep = 'edit_journal';
           // Keep the journal breadcrumb in the URL
           this.updateUrlState();
         })
@@ -818,7 +820,7 @@
           this.rawApiResponse = testData;
           this.successMessage = null;
           this.resetCorrections();
-          this.currentStep = 'edit';
+          this.currentStep = 'edit_article';
           this.updateUrlState();
         } else {
           this.error = 'Test DOI data not found';
@@ -842,7 +844,7 @@
           this.rawApiResponse = testData;
           this.successMessage = null;
           this.resetCorrections();
-          this.currentStep = 'edit';
+          this.currentStep = 'edit_journal';
           // Keep the journal breadcrumb in the URL
           this.updateUrlState();
         } else {
@@ -1046,6 +1048,11 @@
         return;
       }
       
+      // Set the appropriate edit step based on document type
+      if (step === 'edit') {
+        step = this.documentType === 'doi' ? 'edit_article' : 'edit_journal';
+      }
+      
       // Special case: Allow forward navigation from add_link, fix_link, or add_date to submit step
       if (step === 'submit' && 
           (this.currentStep === 'add_link' || this.currentStep === 'fix_link' || this.currentStep === 'add_date')) {
@@ -1065,7 +1072,7 @@
           if (this.$route.path !== '/fix') {
             this.$router.push('/fix');
           }
-        } else if (step === 'edit') {
+        } else if (step === 'edit_article' || step === 'edit_journal') {
           // Keep document data but reset corrections
           this.resetCorrections();
         } else if (step === 'add_link' || step === 'fix_link' || step === 'add_date') {
@@ -1124,7 +1131,7 @@
               this.rawApiResponse = testData;
               this.successMessage = null;
               this.resetCorrections();
-              this.currentStep = 'edit';
+              this.currentStep = 'edit_article';
               this.initialLoading = false;
               this.loading = false;
             } else {
@@ -1156,7 +1163,7 @@
               this.rawApiResponse = testData;
               this.successMessage = null;
               this.resetCorrections();
-              this.currentStep = 'edit';
+              this.currentStep = 'edit_journal';
               this.initialLoading = false;
               this.loading = false;
             } else {
