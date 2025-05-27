@@ -128,6 +128,11 @@ export default new Router({
       props: route => ({ initialIssn: route.params.issn })
     },
     {
+      path: '/fix/contact',
+      component: Corrections,
+      props: { showContactOnly: true }
+    },
+    {
       path: '/contact',
       component: Contact
     },

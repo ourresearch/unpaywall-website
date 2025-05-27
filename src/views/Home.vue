@@ -1,9 +1,6 @@
 <template>
   <div class="home">
 
-    <!--<img src="../assets/logo.png">-->
-    <!--<HelloWorld msg="Welcome to Your Vue.js App"/>-->
-
     <div class="banner">
       <div class="headline">
         An open database of {{(numOa).toLocaleString() }} free scholarly articles.
@@ -11,14 +8,16 @@
 
       <div class="subheadline">
         We harvest Open Access content from over 50,000 publishers and repositories, and make it easy to find, track, and use.
-
-
       </div>
 
       <div class="cta">
         <div>
           <md-button class="md-raised md-accent main" to="/products/extension">
             Get the extension
+          </md-button>
+
+          <md-button class="md-raised md-accent main" to="/fix">
+            Fix an Error
           </md-button>
         </div>
       </div>
@@ -37,8 +36,6 @@
                   </a>
               </div>
           </div>
-
-
       </div>
 
     <div  class="selling-point social-proof">
