@@ -39,12 +39,12 @@
             <div class="breadcrumbs">
               <span v-for="(item, index) in visibleBreadcrumbs" :key="item.value">
                 <span
-                  :class="['breadcrumb-step', { active: currentStep === item.value, clickable: index < currentBreadcrumbIndex }]"
-                  @click="index < currentBreadcrumbIndex ? goToStep(item.value) : null"
+                  :class="['breadcrumb-step', { active: currentStep === item.value, clickable: !item.disabled }]"
+                  @click="!item.disabled ? goToStep(item.value) : null"
                 >
                   {{ item.text }}
                 </span>
-                <span v-if="index < visibleBreadcrumbs.length - 1 && index < currentBreadcrumbIndex"> &gt; </span>
+                <span v-if="index < visibleBreadcrumbs.length - 1"> &gt; </span>
               </span>
             </div>
           </div>
@@ -279,7 +279,7 @@
             <template v-if="documentType === 'doi'">
               <template v-if="documentData.is_oa">
                 <v-btn
-                  color="red lighten-2"
+                  color="red"
                   dark
                   large
                   class="mr-2 text-none"
@@ -392,12 +392,13 @@
               </v-form>
             </div>
           </v-card>
-          <div v-if="currentStep === 'add_link' || currentStep === 'fix_link' || currentStep === 'add_date'" class="text-right">
+          <div v-if="currentStep === 'add_link' || currentStep === 'fix_link' || currentStep === 'add_date'">
             <v-btn
               v-if="(currentStep === 'add_link' || currentStep === 'fix_link') && documentType === 'doi' && (corrections.action === 'Add' || corrections.action === 'Correct') && corrections.field === 'best_oa_location.url'"
               color="primary"
               @click="goToStep('submit')"
               :disabled="!locationFormValid"
+              large
             >
               Save
             </v-btn>
@@ -406,13 +407,14 @@
               color="primary"
               @click="goToStep('submit')"
               :disabled="!journalFormValid"
+              large
             >
               Save
             </v-btn>
           </div>
 
           <!-- Subcard for Step 4 (Review Changes) -->
-          <div v-if="currentStep === 'submit'" class="subcard pa-4 mb-4">
+          <div v-if="currentStep === 'submit'" class="subcard px-1 py-5 mb-4">
             <!-- Review changes left of for now
             <div class="inner-header">Review Changes</div>
             
@@ -439,7 +441,7 @@
             </ul>
             -->
 
-            <div class="inner-header">Optionally add your email in case we need to follow up:</div>
+            <div class="inner-header">Add your email in case we need to follow up (optional):</div>
 
             <v-row no-gutters class="mt-1 justify-space-between">
               <v-text-field
@@ -454,12 +456,12 @@
             </v-row>
           </div>
 
-          <div v-if="currentStep === 'submit'" class="text-right">
+          <div v-if="currentStep === 'submit'">
             <v-btn
               color="primary"
               @click="submitCorrection"
               :disabled="!canSubmit"
-              class="submit-btn"
+              large
             >Submit Correction</v-btn>
             <div v-if="submitError" class="error--text mt-2">{{ submitError }}</div>
           </div>
@@ -604,8 +606,8 @@
         // Edit steps
         'edit_article': {
           breadcrumb: 'Article',
-          title: 'Fix Work Metadata',
-          subtitle: 'Review what Unpaywall currently thinks about this work then fix if needed.'
+          title: 'Fix Article Metadata',
+          subtitle: 'Review what Unpaywall currently thinks about this article then fix if needed.'
         },
         'edit_journal': {
           breadcrumb: 'Journal',
@@ -639,73 +641,65 @@
     
     // Helper method to get breadcrumb info
     breadcrumbs() {
-      // For DOI-related steps (edit_article, add_link, fix_link, etc.)
-      if (this.documentData && this.documentData.doi && 
-          (this.currentStep === 'edit_article' || 
-           this.currentStep === 'add_link' || 
-           this.currentStep === 'fix_link' || 
-           this.currentStep === 'submit')) {
-        
-        // Base breadcrumbs for all DOI-related steps
-        const crumbs = [
-          { text: 'Fix', value: 'article' },
-          { text: 'Article', value: 'article' },
-          { text: this.documentData.doi, value: 'edit_article' }
-        ];
-        
-        // Add the current step if it's not edit_article
-        if (this.currentStep !== 'edit_article') {
-          const stepInfo = this.stepInfo[this.currentStep];
-          crumbs.push({ text: stepInfo.breadcrumb, value: this.currentStep, disabled: true });
-        } else {
-          // Mark the DOI as disabled/current if we're on edit_article
-          crumbs[2].disabled = true;
+      const crumbs = [];
+      // Handle initial steps before documentData is loaded or for contact page
+      if (!this.documentData || this.currentStep === 'contact') {
+        if (this.currentStep === 'article' || this.currentStep === 'journal') {
+          crumbs.push({ text: 'Fix', value: this.currentStep, disabled: true });
+        } else if (this.currentStep === 'contact') {
+          crumbs.push({ text: 'Other', value: 'contact', disabled: true });
+        } else if (this.stepInfo[this.currentStep]) {
+          // Fallback for any other step without documentData but with stepInfo
+          crumbs.push({ text: this.stepInfo[this.currentStep].breadcrumb, value: this.currentStep, disabled: true });
         }
-        
-        return crumbs;
-      } 
-      // For journal-related steps
-      else if (this.documentData && this.documentData.issn_l && 
-               (this.currentStep === 'edit_journal' || 
-                this.currentStep === 'add_date' || 
-                this.currentStep === 'submit')) {
-        
-        // Base breadcrumbs for all journal-related steps
-        const crumbs = [
-          { text: 'Fix', value: 'journal' },
-          { text: 'Journal', value: 'journal' },
-          { text: this.documentData.issn_l, value: 'edit_journal' }
-        ];
-        
-        // Add the current step if it's not edit_journal
-        if (this.currentStep !== 'edit_journal') {
-          const stepInfo = this.stepInfo[this.currentStep];
-          crumbs.push({ text: stepInfo.breadcrumb, value: this.currentStep, disabled: true });
-        } else {
-          // Mark the ISSN as disabled/current if we're on edit_journal
-          crumbs[2].disabled = true;
+        return crumbs.length > 0 ? crumbs : [];
+      }
+
+      // DOI-related steps
+      if (this.documentType === 'doi' && this.documentData.doi) {
+        crumbs.push({ text: 'Fix', value: 'article', disabled: false });
+        crumbs.push({ text: 'Article', value: 'article', disabled: false });
+        crumbs.push({ text: this.documentData.doi, value: 'edit_article', disabled: (this.currentStep === 'edit_article') });
+
+        if (this.currentStep === 'add_link' || this.currentStep === 'fix_link') {
+          const currentStepInfo = this.stepInfo[this.currentStep];
+          crumbs.push({ text: currentStepInfo.breadcrumb, value: this.currentStep, disabled: true });
+        } else if (this.currentStep === 'submit') {
+          if (this.previousStep && (this.previousStep === 'add_link' || this.previousStep === 'fix_link')) {
+            const prevStepInfo = this.stepInfo[this.previousStep];
+            crumbs.push({ text: prevStepInfo.breadcrumb, value: this.previousStep, disabled: false });
+          }
+          const submitStepInfo = this.stepInfo.submit;
+          crumbs.push({ text: submitStepInfo.breadcrumb, value: 'submit', disabled: true });
         }
-        
-        return crumbs;
-      } 
-      // For initial steps
-      else if (this.currentStep === 'article' || this.currentStep === 'journal') {
-        return [
-          { text: 'Fix', value: this.currentStep }
-        ];
-      } 
-      // For contact page
-      else if (this.currentStep === 'contact') {
-        return [
-          { text: 'Other', value: 'contact' }
-        ];
+        // If currentStep is 'edit_article', crumbs are already complete.
+      }
+      // Journal-related steps
+      else if (this.documentType === 'journal' && this.documentData.issn_l) {
+        crumbs.push({ text: 'Fix', value: 'journal', disabled: false });
+        crumbs.push({ text: 'Journal', value: 'journal', disabled: false });
+        crumbs.push({ text: this.documentData.issn_l, value: 'edit_journal', disabled: (this.currentStep === 'edit_journal') });
+
+        if (this.currentStep === 'add_date') {
+          const currentStepInfo = this.stepInfo[this.currentStep];
+          crumbs.push({ text: currentStepInfo.breadcrumb, value: this.currentStep, disabled: true });
+        } else if (this.currentStep === 'submit') {
+          if (this.previousStep && this.previousStep === 'add_date') {
+            const prevStepInfo = this.stepInfo[this.previousStep];
+            crumbs.push({ text: prevStepInfo.breadcrumb, value: this.previousStep, disabled: false });
+          }
+          const submitStepInfo = this.stepInfo.submit;
+          crumbs.push({ text: submitStepInfo.breadcrumb, value: 'submit', disabled: true });
+        }
+        // If currentStep is 'edit_journal', crumbs are already complete.
       }
       
-      // For other steps, use the stepInfo configuration
-      return Object.entries(this.stepInfo).map(([value, info]) => ({
-        text: info.breadcrumb,
-        value
-      }));
+      // Fallback if crumbs array is empty but step is known (should be rare)
+      if (crumbs.length === 0 && this.stepInfo[this.currentStep]) {
+        crumbs.push({ text: this.stepInfo[this.currentStep].breadcrumb, value: this.currentStep, disabled: true });
+      }
+      
+      return crumbs;
     },
     visibleBreadcrumbs() {
       return this.breadcrumbs;
@@ -858,9 +852,14 @@
       
       axios.get('https://api.openalex.org/works?filter=indexed_in:crossref&sample=1')
         .then(response => {
+          // Get the DOI and normalize it (remove https://doi.org/ prefix)
           const doi = response.data.results[0].doi;
-          this.doiInput = doi;
           const normalizedDOI = this.normalizeDOI(doi);
+          
+          // Set the normalized DOI as the input
+          this.doiInput = normalizedDOI;
+          
+          // Fetch the Unpaywall data
           return axios.get(`https://api.unpaywall.org/${normalizedDOI}?email=team@ourresearch.org`);
         })
         .then(response => {
@@ -1153,6 +1152,9 @@
       
       // Handle navigation to edit steps with proper parameters
       if (step === 'edit_article' && this.documentData && this.documentData.doi) {
+        // Update the current step first to ensure the UI updates correctly
+        this.currentStep = 'edit_article';
+        
         // Split DOI into prefix and suffix for the URL
         const [prefix, suffix] = this.documentData.doi.split('/');
         if (prefix && suffix) {
@@ -1163,6 +1165,9 @@
         }
         return;
       } else if (step === 'edit_journal' && this.documentData && this.documentData.issn_l) {
+        // Update the current step first to ensure the UI updates correctly
+        this.currentStep = 'edit_journal';
+        
         const path = `/fix/journal/${encodeURIComponent(this.documentData.issn_l)}`;
         if (this.$route.path !== path) {
           this.$router.push(path);
@@ -1346,13 +1351,30 @@
 
 
 <style scoped>
+.corrections-page {
+  max-width: none !important;
+  width: 100%;
+  min-height: 80vh;
+  padding-bottom: 100px;
+}
+.corrections-container {
+  position: relative;
+  width: 100%;
+  padding-top: 60px;
+}
+.corrections-content {
+  padding-right: 15px; /* Add some padding for better readability */
+  position: relative; /* For absolute positioning of breadcrumbs */
+}
+.corrections-nav-tabs {
+  padding-top: 10px;
+}
 .corrections-initial-step-card {
-  min-height: 160px;
+  min-height: 140px;
 }
 .vertical-tab-list {
   display: flex;
   flex-direction: column;
-  margin-top: 20px;
 }
 .vertical-tab-item {
   cursor: pointer;
@@ -1373,9 +1395,6 @@
   width: 180px;
   border-radius: none !important;
 }
-.corrections-content {
-  margin-top: 50px; 
-}
 h1 {
   text-align: left;
   margin: 0px;
@@ -1383,11 +1402,11 @@ h1 {
 .page-subtitle {
   font-size: 15px;
   color: #666;
-  margin-top: -3px;
+  margin-top: -6px;
 }
 .breadcrumbs-container {
   position: absolute;
-  top: -30px;
+  top: -35px;
   left: 0;
   width: 100%;
   z-index: 1;
@@ -1491,24 +1510,6 @@ h1 {
 .email-label {
   font-size: 12px;
 }
-.corrections-page {
-  max-width: none !important;
-  width: 100%;
-  min-height: 80vh;
-  padding-bottom: 100px;
-}
-.corrections-container {
-  position: relative;
-  width: 100%;
-}
-.corrections-nav-tabs {
-  padding-top: 40px; /* Align with page title */
-}
-.corrections-content {
-  padding-right: 15px; /* Add some padding for better readability */
-  position: relative; /* For absolute positioning of breadcrumbs */
-  padding-top: 30px; /* Space for the breadcrumbs */
-}
 .main-content {
   position: relative;
 }
@@ -1517,7 +1518,6 @@ img.doi-example {
   border-radius: 6px;
   display: block;
 }
-
 .loading-card {
   min-height: 160px;
   display: flex;
@@ -1525,7 +1525,6 @@ img.doi-example {
   justify-content: center;
   margin-bottom: 20px;
 }
-
 .loading-text {
   font-size: 16px;
   color: #666;
