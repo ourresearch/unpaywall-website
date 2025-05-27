@@ -34,32 +34,37 @@
 
         <!-- Main Content Area -->
         <div class="col-7 corrections-content">
-          <!-- Breadcrumbs above page title -->
-          <div v-if="currentStep !== 'article' && currentStep !== 'journal' && documentData" class="breadcrumbs">
-            <span v-for="(item, index) in visibleBreadcrumbs" :key="item.value">
-              <span
-                :class="['breadcrumb-step', { active: currentStep === item.value, clickable: index < currentBreadcrumbIndex }]"
-                @click="index < currentBreadcrumbIndex ? goToStep(item.value) : null"
-              >
-                {{ item.text }}
+          <!-- Breadcrumbs positioned absolutely above the main content -->
+          <div v-if="currentStep !== 'article' && currentStep !== 'journal' && documentData" class="breadcrumbs-container">
+            <div class="breadcrumbs">
+              <span v-for="(item, index) in visibleBreadcrumbs" :key="item.value">
+                <span
+                  :class="['breadcrumb-step', { active: currentStep === item.value, clickable: index < currentBreadcrumbIndex }]"
+                  @click="index < currentBreadcrumbIndex ? goToStep(item.value) : null"
+                >
+                  {{ item.text }}
+                </span>
+                <span v-if="index < visibleBreadcrumbs.length - 1 && index < currentBreadcrumbIndex"> &gt; </span>
               </span>
-              <span v-if="index < visibleBreadcrumbs.length - 1 && index < currentBreadcrumbIndex"> &gt; </span>
-            </span>
+            </div>
           </div>
           
-          <h1>{{ pageTitles[0] }}</h1>
+          <!-- Main content with fixed position -->
+          <div class="main-content">
+            <h1>{{ pageTitles[0] }}</h1>
 
-          <div class="page-subtitle mb-4">
-            <div v-if="successMessage" class="mt-2">
-              <v-alert type="success" dense>{{ successMessage }}</v-alert>
+            <div class="page-subtitle mb-4">
+              <div v-if="successMessage" class="mt-2">
+                <v-alert type="success" dense>{{ successMessage }}</v-alert>
+              </div>
+              <div v-else-if="error || loadError" class="mt-2">
+                <v-alert type="error" dense>{{ error || loadError }}</v-alert>
+              </div>
+              <div v-else-if="pageTitles[1]" class="">
+                {{ pageTitles[1] }}
+              </div>
             </div>
-            <div v-else-if="error || loadError" class="mt-2">
-              <v-alert type="error" dense>{{ error || loadError }}</v-alert>
-            </div>
-            <div v-else-if="pageTitles[1]" class="">
-              {{ pageTitles[1] }}
-            </div>
-          </div> 
+          </div>
 
           <!-- Test Controls Card (always visible in admin mode) -->
           <v-card v-if="isAdminMode" class="test-controls-card pa-4">
@@ -113,12 +118,17 @@
           </v-card>
           
           <!-- Loading Card -->
-          <div v-if="loading && !documentData" class="py-6 text-center">
-            <v-progress-linear
-              indeterminate
-              color="primary"
-            ></v-progress-linear>
-          </div>
+          <v-card v-if="loading && !documentData" class="py-6 text-center loading-card">
+            <div class="d-flex flex-column align-center justify-center">
+              <v-progress-circular
+                indeterminate
+                color="primary"
+                size="50"
+              ></v-progress-circular>
+              <div class="mt-3 loading-text">Loading...</div>
+            </div>
+          </v-card>
+          
           <!-- Cards with Data -->
           <template v-if="!loading || documentData">
 
@@ -149,7 +159,7 @@
                     <!-- Second row: Info button -->
                     <div class="mt-2">
                       <v-btn text large class="info-button text-none pa-0" @click="showDoiInfoDialog = true">
-                        <v-icon small class="mr-1">fa-info-circle</v-icon>
+                        <v-icon small class="mr-2">fa-info-circle</v-icon>
                         What is a DOI?
                       </v-btn>
                     </div>
@@ -179,7 +189,10 @@
                 </template>
                 <template v-else-if="$route.path.startsWith('/fix/contact')">
                   <div class="contact-message">
-                    <p>To report another data error, please submit a ticket to <a href="mailto:support@unpaywall.org">support@unpaywall.org</a>.</p>
+                    <p>
+                      <v-icon color="black" class="mr-2">fa-envelope</v-icon>
+                      To report another data error, please submit a ticket to <a href="mailto:support@unpaywall.org">support@unpaywall.org</a>.
+                    </p>
                   </div>
                 </template>
               </div>
@@ -626,69 +639,80 @@
     
     // Helper method to get breadcrumb info
     breadcrumbs() {
+      // For DOI-related steps (edit_article, add_link, fix_link, etc.)
+      if (this.documentData && this.documentData.doi && 
+          (this.currentStep === 'edit_article' || 
+           this.currentStep === 'add_link' || 
+           this.currentStep === 'fix_link' || 
+           this.currentStep === 'submit')) {
+        
+        // Base breadcrumbs for all DOI-related steps
+        const crumbs = [
+          { text: 'Fix', value: 'article' },
+          { text: 'Article', value: 'article' },
+          { text: this.documentData.doi, value: 'edit_article' }
+        ];
+        
+        // Add the current step if it's not edit_article
+        if (this.currentStep !== 'edit_article') {
+          const stepInfo = this.stepInfo[this.currentStep];
+          crumbs.push({ text: stepInfo.breadcrumb, value: this.currentStep, disabled: true });
+        } else {
+          // Mark the DOI as disabled/current if we're on edit_article
+          crumbs[2].disabled = true;
+        }
+        
+        return crumbs;
+      } 
+      // For journal-related steps
+      else if (this.documentData && this.documentData.issn_l && 
+               (this.currentStep === 'edit_journal' || 
+                this.currentStep === 'add_date' || 
+                this.currentStep === 'submit')) {
+        
+        // Base breadcrumbs for all journal-related steps
+        const crumbs = [
+          { text: 'Fix', value: 'journal' },
+          { text: 'Journal', value: 'journal' },
+          { text: this.documentData.issn_l, value: 'edit_journal' }
+        ];
+        
+        // Add the current step if it's not edit_journal
+        if (this.currentStep !== 'edit_journal') {
+          const stepInfo = this.stepInfo[this.currentStep];
+          crumbs.push({ text: stepInfo.breadcrumb, value: this.currentStep, disabled: true });
+        } else {
+          // Mark the ISSN as disabled/current if we're on edit_journal
+          crumbs[2].disabled = true;
+        }
+        
+        return crumbs;
+      } 
+      // For initial steps
+      else if (this.currentStep === 'article' || this.currentStep === 'journal') {
+        return [
+          { text: 'Fix', value: this.currentStep }
+        ];
+      } 
+      // For contact page
+      else if (this.currentStep === 'contact') {
+        return [
+          { text: 'Other', value: 'contact' }
+        ];
+      }
+      
+      // For other steps, use the stepInfo configuration
       return Object.entries(this.stepInfo).map(([value, info]) => ({
         text: info.breadcrumb,
         value
       }));
     },
     visibleBreadcrumbs() {
-      // Filter out steps that aren't needed based on the current state
-      const allBreadcrumbs = this.breadcrumbs;
-      const result = [];
-      
-      // Include the appropriate breadcrumbs based on document type and step
-      if (this.currentStep === 'contact') {
-        // For the contact page, just add the 'Other' breadcrumb
-        const contactBreadcrumb = allBreadcrumbs.find(b => b.value === 'contact');
-        result.push(contactBreadcrumb);
-        return result;
-      } else if (this.documentType === 'journal') {
-        // Always add the 'Fix' (journal) breadcrumb first
-        const journalBreadcrumb = allBreadcrumbs.find(b => b.value === 'journal');
-        result.push(journalBreadcrumb);
-        // For edit_journal and later, also add the 'Journal' breadcrumb
-        if (this.currentStep === 'edit_journal' || this.currentStepIndex > 0 && this.currentStep !== 'journal') {
-          result.push(allBreadcrumbs.find(b => b.value === 'edit_journal'));
-        }
-        // If we're just on the journal search page, return early
-        if (this.currentStep === 'journal') {
-          return result;
-        }
-      } else {
-        result.push(allBreadcrumbs.find(b => b.value === 'article'));
-        if (this.currentStep === 'edit_article' || this.currentStepIndex > 0 && this.currentStep !== 'article') {
-          result.push(allBreadcrumbs.find(b => b.value === 'edit_article'));
-        }
-      }
-      
-      // Add explicit additional steps
-      if (this.currentStep === 'add_link') {
-        result.push(allBreadcrumbs.find(b => b.value === 'add_link'));
-      } else if (this.currentStep === 'fix_link') {
-        result.push(allBreadcrumbs.find(b => b.value === 'fix_link'));
-      } else if (this.currentStep === 'add_date') {
-        result.push(allBreadcrumbs.find(b => b.value === 'add_date'));
-      } else if (this.currentStep === 'submit' && this.previousStep) {
-        // When on submit step, include the previous step in the breadcrumb trail
-        if (this.previousStep === 'add_link') {
-          result.push(allBreadcrumbs.find(b => b.value === 'add_link'));
-        } else if (this.previousStep === 'fix_link') {
-          result.push(allBreadcrumbs.find(b => b.value === 'fix_link'));
-        } else if (this.previousStep === 'add_date') {
-          result.push(allBreadcrumbs.find(b => b.value === 'add_date'));
-        }
-      }
-      
-      // Include submit step if we're on that step
-      if (this.currentStep === 'submit') {
-        result.push(allBreadcrumbs.find(b => b.value === 'submit'));
-      }
-      
-      return result;
+      return this.breadcrumbs;
     },
     currentBreadcrumbIndex() {
-      // Find the index of the current step in the visible breadcrumbs
-      return this.visibleBreadcrumbs.findIndex(item => item.value === this.currentStep);
+      const currentStepIndex = this.breadcrumbs.findIndex(b => b.value === this.currentStep);
+      return currentStepIndex >= 0 ? currentStepIndex : this.breadcrumbs.length - 1;
     },
     pageTitles() {
       // Get the step info for the current step
@@ -1116,20 +1140,37 @@
       }
     },
     goToStep(step) {
-      const targetIndex = this.breadcrumbs.findIndex(s => s.value === step);
-      
       // Handle navigation to initial steps
       if (step === 'article' || step === 'journal') {
         // When going back to initial step, reset form and update URL
         this.resetForm();
-        const path = step === 'article' ? '/fix/article' : '/fix/journal';
+        const path = step === 'article' ? '/fix' : `/fix/${step}`;
         if (this.$route.path !== path) {
           this.$router.push(path);
         }
         return;
       }
       
-      // Set the appropriate edit step based on document type
+      // Handle navigation to edit steps with proper parameters
+      if (step === 'edit_article' && this.documentData && this.documentData.doi) {
+        // Split DOI into prefix and suffix for the URL
+        const [prefix, suffix] = this.documentData.doi.split('/');
+        if (prefix && suffix) {
+          const path = `/fix/article/${encodeURIComponent(prefix)}/${encodeURIComponent(suffix)}`;
+          if (this.$route.path !== path) {
+            this.$router.push(path);
+          }
+        }
+        return;
+      } else if (step === 'edit_journal' && this.documentData && this.documentData.issn_l) {
+        const path = `/fix/journal/${encodeURIComponent(this.documentData.issn_l)}`;
+        if (this.$route.path !== path) {
+          this.$router.push(path);
+        }
+        return;
+      }
+      
+      // Set the appropriate edit step based on document type for generic 'edit' step
       if (step === 'edit') {
         step = this.documentType === 'doi' ? 'edit_article' : 'edit_journal';
       }
@@ -1143,7 +1184,7 @@
         return;
       }
       
-      if (targetIndex < this.currentStepIndex) {
+      if (this.currentStepIndex > this.breadcrumbs.findIndex(s => s.value === step)) {
         // Only allow navigation to previous steps
         this.currentStep = step;
         // Reset state as needed for each step
@@ -1171,12 +1212,18 @@
     // Watch for browser navigation (forward/back)
     $route(to, from) {
       // Handle the contact route
-      if (to.path === '/fix/contact' && this.currentStep !== 'contact') {
+      if (to.path === '/fix/contact') {
         this.currentStep = 'contact';
         return;
       }
       // Only react if the path actually changes
       if (to.path !== from.path) {
+        // Reset document data when navigating away from edit pages
+        if (to.path === '/fix/article' || to.path === '/fix/journal') {
+          this.documentData = null;
+          this.documentType = null;
+          this.resetCorrections();
+        }
         // Example: /fix/article/:prefix/:suffix or /fix/journal/:issn
         const doiWorkMatch = to.path.match(/^\/fix\/article\/([^\/]+)(?:\/([^\/]+))?/);
         const journalMatch = to.path.match(/^\/fix\/journal\/([^\/]+)/);
@@ -1305,7 +1352,7 @@
 .vertical-tab-list {
   display: flex;
   flex-direction: column;
-  margin-top: 10px;
+  margin-top: 20px;
 }
 .vertical-tab-item {
   cursor: pointer;
@@ -1336,6 +1383,14 @@ h1 {
 .page-subtitle {
   font-size: 15px;
   color: #666;
+  margin-top: -3px;
+}
+.breadcrumbs-container {
+  position: absolute;
+  top: -30px;
+  left: 0;
+  width: 100%;
+  z-index: 1;
 }
 .breadcrumbs {
   color: #777;
@@ -1451,11 +1506,30 @@ h1 {
 }
 .corrections-content {
   padding-right: 15px; /* Add some padding for better readability */
+  position: relative; /* For absolute positioning of breadcrumbs */
+  padding-top: 30px; /* Space for the breadcrumbs */
+}
+.main-content {
+  position: relative;
 }
 img.doi-example {
   border: 1px solid #ccc;
   border-radius: 6px;
   display: block;
+}
+
+.loading-card {
+  min-height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.loading-text {
+  font-size: 16px;
+  color: #666;
+  font-weight: 500;
 }
 .test-controls-card {
   position: fixed;
