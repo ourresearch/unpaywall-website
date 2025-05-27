@@ -1,151 +1,41 @@
 <template>
-  <div class="page corrections">
-    <h1>{{ pageTitles[0] }}</h1>
-
-    <div class="page-subtitle mb-4">
-      <div v-if="successMessage" class="mt-2">
-        <v-alert type="success" dense>{{ successMessage }}</v-alert>
-      </div>
-      <div v-else-if="error || loadError" class="mt-2">
-        <v-alert type="error" dense>{{ error || loadError }}</v-alert>
-      </div>
-      <div v-else-if="pageTitles[1]" class="">
-        {{ pageTitles[1] }}
-      </div>
-    </div> 
-
-    <!-- Breadcrumbs moved inside cards -->
-
-    <!-- Loading Card -->
-    <div v-if="loading && !documentData" class="py-6 text-center">
-      <v-progress-linear
-        indeterminate
-        color="primary"
-      ></v-progress-linear>
-    </div>
-
-    <!-- Cards with Data -->
-    <template v-if="!loading || documentData">
-      <!-- Test Controls Card (positioned absolutely) -->
-      <v-card v-if="!documentData && isAdminMode" class="test-controls-card pa-4">
-        <div class="text-body-2 mb-2">Test DOIs</div>
-        <v-card-text class="pa-0">
-          <v-btn
-            block
-            small
-            class="text-none mb-1"
-            @click="getRandomDOI"
-          >Random DOI</v-btn>
-          
-          <div>
-            <div class="d-flex flex-column">
-              <v-btn
-                v-for="doi in testDOIs"
-                :key="doi.value"
-                block
-                small
-                class="text-none mb-1"
-                @click="loadTestDOI(doi.value)"
-              >
-                {{ doi.text }} DOI
-              </v-btn>
+  <div class="page corrections-page">
+    <div class="corrections-container">
+      <div class="row no-gutters">
+        <!-- Navigation Tabs to the left of all content -->
+        <div class="col-3">
+          <div class="corrections-nav-tabs vertical-tab-list d-flex flex-column justify-start">
+            <div
+              class="vertical-tab-item"
+              :class="{ active: $route.path.startsWith('/fix/article') }"
+              @click="$route.path !== '/fix/article' && $router.push('/fix/article')"
+            >
+              <v-icon x-small class="mr-2">fa-file</v-icon>
+              Fix an Article
+            </div>
+            <div
+              class="vertical-tab-item"
+              :class="{ active: $route.path.startsWith('/fix/journal') }"
+              @click="$route.path !== '/fix/journal' && $router.push('/fix/journal')"
+            >
+              <v-icon x-small class="mr-2">fa-book</v-icon>
+              Fix a Journal
+            </div>
+            <div
+              class="vertical-tab-item"
+              :class="{ active: $route.path.startsWith('/fix/contact') }"
+              @click="$route.path !== '/fix/contact' && $router.push('/fix/contact')"
+            >
+              <v-icon x-small class="mr-2">fa-question-circle</v-icon>
+              Other
             </div>
           </div>
-
-          <div class="text-body-2 my-2">Test ISSNs</div>
-          <v-btn
-            block
-            small            
-            class="text-none mb-1"
-            @click="getRandomJournal"
-          >Random Journal</v-btn>
-
-          <div>
-            <div class="d-flex flex-column">
-              <v-btn
-                v-for="issn in testISSNs"
-                :key="issn.value"
-                small
-                tonal
-                class="text-none mb-1"
-                @click="loadTestISSN(issn.value)"
-              >
-                {{ issn.text }} ISSN
-              </v-btn>
-            </div>
-          </div>
-        </v-card-text>
-      </v-card>
-
-      <!-- Step 1: Retrieve Document Metadata -->
-
-      <v-card v-if="!documentData" class="corrections-initial-step-card d-flex flex-row" style="height: 100px;">
-        <!-- Left tab column -->
-        <div class="corrections-tab-col vertical-tab-list d-flex flex-column justify-start" style="height: 100%;">
-          <div
-            class="vertical-tab-item"
-            :class="{ active: $route.path.startsWith('/fix/article') }"
-            @click="$route.path !== '/fix/article' && $router.push('/fix/article')"
-          >
-            <v-icon x-small class="mr-2">fa-file</v-icon>
-            Fix an Article
-          </div>
-          <div
-            class="vertical-tab-item"
-            :class="{ active: $route.path.startsWith('/fix/journal') }"
-            @click="$route.path !== '/fix/journal' && $router.push('/fix/journal')"
-          >
-            <v-icon x-small class="mr-2">fa-book</v-icon>
-            Fix a Journal
-          </div>
         </div>
-        <!-- Right panel -->
-        <div class="corrections-input-panel d-flex flex-row align-center flex-grow-1 py-6 px-10" style="height: 100%;">
-          <template v-if="$route.path.startsWith('/fix/article')">
-            <v-text-field
-              v-model="doiInput"
-              label="Enter DOI"
-              placeholder="10.1016/j.cell.2007.11.019"
-              outlined
-              hide-details
-              @keydown.enter="submitDOI"
-              class="mr-2"
-              style="flex: 1 1 0; min-width: 0; width: 100%;"
-            ></v-text-field>
-            <v-btn
-              class="submit-btn"
-              color="primary"
-              @click="submitDOI"
-            >Find Article</v-btn>
-          </template>
-          <template v-else-if="$route.path.startsWith('/fix/journal')">
-            <v-text-field
-              v-model="issnInput"
-              label="Enter ISSN"
-              placeholder="1234-5678"
-              outlined
-              hide-details
-              @keydown.enter="submitISSN"
-              class="mr-2"
-              style="flex: 1 1 0; min-width: 0; width: 100%;"
-            ></v-text-field>
-            <v-btn
-              class="submit-btn"
-              color="primary"
-              @click="submitISSN"
-            >Find Journal</v-btn>
-          </template>
-        </div>
-      </v-card>
 
-
-    
-      <!-- Step 2+ Main Card with Fixed Header and Subcards -->
-      <template v-if="documentData">      
-        <!-- Main Card for Step 2+ -->
-        <v-card class="mb-4 mt-2 pa-0">
-          <!-- Breadcrumbs inside card with full width -->
-          <div v-if="currentStep !== 'article' && currentStep !== 'journal'" class="breadcrumbs">
+        <!-- Main Content Area -->
+        <div class="col-7 corrections-content">
+          <!-- Breadcrumbs above page title -->
+          <div v-if="currentStep !== 'article' && currentStep !== 'journal' && documentData" class="breadcrumbs">
             <span v-for="(item, index) in visibleBreadcrumbs" :key="item.value">
               <span
                 :class="['breadcrumb-step', { active: currentStep === item.value, clickable: index < currentBreadcrumbIndex }]"
@@ -153,9 +43,155 @@
               >
                 {{ item.text }}
               </span>
-              <span v-if="index < currentBreadcrumbIndex"> &gt; </span>
+              <span v-if="index < visibleBreadcrumbs.length - 1 && index < currentBreadcrumbIndex"> &gt; </span>
             </span>
           </div>
+          
+          <h1>{{ pageTitles[0] }}</h1>
+
+          <div class="page-subtitle mb-4">
+            <div v-if="successMessage" class="mt-2">
+              <v-alert type="success" dense>{{ successMessage }}</v-alert>
+            </div>
+            <div v-else-if="error || loadError" class="mt-2">
+              <v-alert type="error" dense>{{ error || loadError }}</v-alert>
+            </div>
+            <div v-else-if="pageTitles[1]" class="">
+              {{ pageTitles[1] }}
+            </div>
+          </div> 
+
+          <!-- Test Controls Card (always visible in admin mode) -->
+          <v-card v-if="isAdminMode" class="test-controls-card pa-4">
+            <div class="text-body-2 mb-2">Test DOIs</div>
+            <v-card-text class="pa-0">
+              <v-btn
+                block
+                small
+                class="text-none mb-1"
+                @click="getRandomDOI"
+              >Random DOI</v-btn>
+              
+              <div>
+                <div class="d-flex flex-column">
+                  <v-btn
+                    v-for="doi in testDOIs"
+                    :key="doi.value"
+                    block
+                    small
+                    class="text-none mb-1"
+                    @click="loadTestDOI(doi.value)"
+                  >
+                    {{ doi.text }} DOI
+                  </v-btn>
+                </div>
+              </div>
+
+              <div class="text-body-2 my-2">Test ISSNs</div>
+              <v-btn
+                block
+                small            
+                class="text-none mb-1"
+                @click="getRandomJournal"
+              >Random Journal</v-btn>
+
+              <div>
+                <div class="d-flex flex-column">
+                  <v-btn
+                    v-for="issn in testISSNs"
+                    :key="issn.value"
+                    small
+                    tonal
+                    class="text-none mb-1"
+                    @click="loadTestISSN(issn.value)"
+                  >
+                    {{ issn.text }} ISSN
+                  </v-btn>
+                </div>
+              </div>
+            </v-card-text>
+          </v-card>
+          
+          <!-- Loading Card -->
+          <div v-if="loading && !documentData" class="py-6 text-center">
+            <v-progress-linear
+              indeterminate
+              color="primary"
+            ></v-progress-linear>
+          </div>
+          <!-- Cards with Data -->
+          <template v-if="!loading || documentData">
+
+            <!-- Step 1: Retrieve Document Metadata -->
+            <v-card v-if="!documentData" class="corrections-initial-step-card" style="height: 100px;">
+              <!-- Input panel -->
+              <div class="corrections-input-panel d-flex flex-column justify-center py-6 px-10" style="height: 100%;">
+                <template v-if="$route.path.startsWith('/fix/article')">
+                  <div class="d-flex flex-column">
+                    <!-- First row: Input and Submit button -->
+                    <div class="d-flex flex-row align-center">
+                      <v-text-field
+                        v-model="doiInput"
+                        label="Enter DOI"
+                        placeholder="10.1016/j.cell.2007.11.019"
+                        outlined
+                        hide-details
+                        @keydown.enter="submitDOI"
+                        class="mr-2"
+                        style="flex: 1 1 0; min-width: 0;"
+                      ></v-text-field>
+                      <v-btn
+                        class="submit-btn"
+                        color="primary"
+                        @click="submitDOI"
+                      >Fix Article</v-btn>
+                    </div>
+                    <!-- Second row: Info button -->
+                    <div class="mt-2">
+                      <v-btn text large class="info-button text-none pa-0" @click="showDoiInfoDialog = true">
+                        <v-icon small class="mr-1">fa-info-circle</v-icon>
+                        What is a DOI?
+                      </v-btn>
+                    </div>
+                  </div>
+                </template>
+                <template v-else-if="$route.path.startsWith('/fix/journal')">
+                  <div class="d-flex flex-column justify-center">
+                    <!-- Input and Submit button -->
+                    <div class="d-flex flex-row align-center">
+                      <v-text-field
+                        v-model="issnInput"
+                        label="Enter ISSN"
+                        placeholder="1234-5678"
+                        outlined
+                        hide-details
+                        @keydown.enter="submitISSN"
+                        class="mr-2"
+                        style="flex: 1 1 0; min-width: 0;"
+                      ></v-text-field>
+                      <v-btn
+                        class="submit-btn"
+                        color="primary"
+                        @click="submitISSN"
+                      >Fix Journal</v-btn>
+                    </div>
+                  </div>
+                </template>
+                <template v-else-if="$route.path.startsWith('/fix/contact')">
+                  <div class="contact-message">
+                    <p>To report another data error, please submit a ticket to <a href="mailto:support@unpaywall.org">support@unpaywall.org</a>.</p>
+                  </div>
+                </template>
+              </div>
+            </v-card>
+
+
+    
+      <!-- Step 2+ Main Card with Fixed Header and Subcards -->
+      <template v-if="documentData">      
+        <!-- Main Card for Step 2+ -->
+        <v-card class="mb-4 mt-2 pa-0">
+          <!-- Breadcrumbs removed from here and moved above the page title -->
           
           <!-- Card content with padding -->
           <div class="pa-4">
@@ -418,6 +454,28 @@
         </v-card>
       </template>
     </template>
+        </div>
+        
+        <div class="col-3"></div> <!-- Right margin -->
+      </div>
+    </div>
+    
+    <!-- DOI Info Dialog -->
+    <v-dialog v-model="showDoiInfoDialog" max-width="700">
+      <v-card>
+        <v-card-title class="headline">What is a DOI?</v-card-title>
+        <v-card-text>
+          <p>A DOI (Digital Object Identifier) is a unique and persistent identifier used to identify academic, professional, and research content.</p>
+          <p>DOIs typically look like this: <code>10.1016/j.cell.2007.11.019</code></p>
+          <p>You can find a DOI listed on every landing page in the Unpaywall database.</p>
+          <img src="../assets/doi-example.png" class="doi-example"/>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="primary" text @click="showDoiInfoDialog = false">Close</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>    
 </template>
 
@@ -498,26 +556,80 @@
       },
       journalFormValid: false,
       // Flow control
-      currentStep: "article", // "article", "journal", "edit_article", "edit_journal", "add_link", "fix_link", "add_date", "submit",
+      currentStep: "article", // "article", "journal", "contact", "edit_article", "edit_journal", "add_link", "fix_link", "add_date", "submit",
       previousStep: null, // Tracks the previous step for breadcrumb navigation
       additionalInfoNeeded: false,
+      
+      // UI state
+      showDoiInfoDialog: false,
     }
   },
   computed: {
     isAdminMode() {
       return 'admin' in this.$route.query;
     },
+    // Single source of truth for all step information
+    stepInfo() {
+      return {
+        // Initial steps
+        'article': {
+          breadcrumb: 'Fix',
+          title: 'Fix Unpaywall Errors',
+          subtitle: 'Sometimes Unpaywall makes errors. You can fix them here. Corrections will show up in a few days.'
+        },
+        'journal': {
+          breadcrumb: 'Fix',
+          title: 'Fix Unpaywall Errors',
+          subtitle: 'Sometimes Unpaywall makes errors. You can fix them here. Corrections will show up in a few days.'
+        },
+        'contact': {
+          breadcrumb: 'Other',
+          title: 'Fix Unpaywall Errors',
+          subtitle: 'Sometimes Unpaywall makes errors. You can fix them here. Corrections will show up in a few days.'
+        },
+        
+        // Edit steps
+        'edit_article': {
+          breadcrumb: 'Article',
+          title: 'Fix Work Metadata',
+          subtitle: 'Review what Unpaywall currently thinks about this work then fix if needed.'
+        },
+        'edit_journal': {
+          breadcrumb: 'Journal',
+          title: 'Fix Journal Metadata',
+          subtitle: 'Review what Unpaywall currently thinks about this journal then fix if needed.'
+        },
+        
+        // Additional steps
+        'add_link': {
+          breadcrumb: 'Add Link',
+          title: 'Add Open Access Link',
+          subtitle: 'To mark this work as open access, Unpaywall needs a URL where the work is freely available.'
+        },
+        'fix_link': {
+          breadcrumb: 'Fix Link',
+          title: 'Fix Open Access Link',
+          subtitle: 'Correct the link to the open access version of this work.'
+        },
+        'add_date': {
+          breadcrumb: 'Add Date',
+          title: 'Add Journal Open Access Date',
+          subtitle: 'To mark this journal as open access, let us know when it became open access.'
+        },
+        'submit': {
+          breadcrumb: 'Submit',
+          title: 'Submit Your Fix',
+          subtitle: 'Your report will be reviewed by our team and live within a few days.'
+        }
+      };
+    },
+    
+    // Helper method to get breadcrumb info
     breadcrumbs() {
-      return [
-        { text: 'Fix', value: 'article' },
-        { text: 'Fix', value: 'journal' },
-        { text: 'Article', value: 'edit_article' },
-        { text: 'Journal', value: 'edit_journal' },
-        { text: 'Add Link', value: 'add_link' },
-        { text: 'Fix Link', value: 'fix_link' },
-        { text: 'Add Date', value: 'add_date' },
-        { text: 'Submit', value: 'submit' },
-      ];
+      return Object.entries(this.stepInfo).map(([value, info]) => ({
+        text: info.breadcrumb,
+        value
+      }));
     },
     visibleBreadcrumbs() {
       // Filter out steps that aren't needed based on the current state
@@ -525,7 +637,12 @@
       const result = [];
       
       // Include the appropriate breadcrumbs based on document type and step
-      if (this.documentType === 'journal') {
+      if (this.currentStep === 'contact') {
+        // For the contact page, just add the 'Other' breadcrumb
+        const contactBreadcrumb = allBreadcrumbs.find(b => b.value === 'contact');
+        result.push(contactBreadcrumb);
+        return result;
+      } else if (this.documentType === 'journal') {
         // Always add the 'Fix' (journal) breadcrumb first
         const journalBreadcrumb = allBreadcrumbs.find(b => b.value === 'journal');
         result.push(journalBreadcrumb);
@@ -574,52 +691,16 @@
       return this.visibleBreadcrumbs.findIndex(item => item.value === this.currentStep);
     },
     pageTitles() {
-      switch (this.currentStep) {
-        case 'article':
-        case 'journal':
-          return [
-            'Fix Unpaywall Errors',
-            'Sometimes Unpaywall makes errors. You can fix them here. Corrections will show up in a few days.',
-          ];
-        case 'edit':
-          if (this.documentType === 'doi') {
-            return [
-              "Fix Work Metadata",
-              "Review what Unpaywall currently thinks about this work then fix if needed."
-            ];
-          } else if (this.documentType === 'journal') {
-            return [
-              "Fix Journal Metadata",
-              "Review what Unpaywall currently thinks about this journal then fix if needed."
-            ];
-          }
-          return ['Fix Metadata', null];
-        case 'add_link':
-          return [
-            "Add Open Access Link",
-            "To mark this work as open access, Unpaywall needs a URL where the work is freely available."
-          ];
-        case 'fix_link':
-          return [
-            "Fix Open Access Link",
-            "Correct the link to the open access version of this work."
-          ];
-        case 'add_date':
-          return [
-            "Add Journal Open Access Date",
-            "To mark this journal as open access, let us know when it became open access."
-          ];
-        case 'submit':
-          return [
-            "Submit Your Fix",
-            "Your report will be reviewed by our team and live within a few days."
-          ];
-        default:
-          return [
-            "Fix Unpaywall Errors",
-            null
-          ];
-      }
+      // Get the step info for the current step
+      const info = this.stepInfo[this.currentStep] || {
+        title: "Fix Unpaywall Errors",
+        subtitle: null
+      };
+      
+      return [
+        info.title,
+        info.subtitle
+      ];
     },
     currentStepIndex() {
       return this.breadcrumbs.findIndex(step => step.value === this.currentStep);
@@ -1089,6 +1170,11 @@
   watch: {
     // Watch for browser navigation (forward/back)
     $route(to, from) {
+      // Handle the contact route
+      if (to.path === '/fix/contact' && this.currentStep !== 'contact') {
+        this.currentStep = 'contact';
+        return;
+      }
       // Only react if the path actually changes
       if (to.path !== from.path) {
         // Example: /fix/article/:prefix/:suffix or /fix/journal/:issn
@@ -1219,32 +1305,33 @@
 .vertical-tab-list {
   display: flex;
   flex-direction: column;
-  padding-top: 12px;
-  border-right: 1px solid #ddd;
+  margin-top: 10px;
 }
 .vertical-tab-item {
   cursor: pointer;
-  padding: 10px 30px 10px 20px;
-  font-size: 14px;
+  padding: 10px 30px 10px 30px;
+  margin-right: 70px;
+  font-size: 16px;
   color: #333;
+  border-top-right-radius: 22px;
+  border-bottom-right-radius: 22px;
+}
+.vertical-tab-item .v-icon {
+  margin-top: -2px;
 }
 .vertical-tab-item.active {
-  background-color: #eee;
+  background-color: #ddd;
 }
 .corrections-tab-col {
   width: 180px;
   border-radius: none !important;
 }
-.page.corrections {
-  position: relative;
-}
-.corrections {
-  max-width: 800px;
-  margin: 0 auto;
+.corrections-content {
+  margin-top: 50px; 
 }
 h1 {
   text-align: left;
-  margin-bottom: 0px;
+  margin: 0px;
 }
 .page-subtitle {
   font-size: 15px;
@@ -1254,9 +1341,7 @@ h1 {
   color: #777;
   font-size: 12px;
   font-weight: 500;
-  padding: 10px;
-  background-color: #f2f2f2;
-  border-bottom: 1px solid #ddd;
+  display: inline-block;
 }
 .breadcrumb-step {
   cursor: pointer;
@@ -1278,6 +1363,9 @@ h1 {
 }
 .submit-btn {
   height: 56px !important;
+}
+.v-btn.info-button {
+  padding: 0 10px !important;
 }
 .divider {
   height: 1px;
@@ -1348,12 +1436,35 @@ h1 {
 .email-label {
   font-size: 12px;
 }
+.corrections-page {
+  max-width: none !important;
+  width: 100%;
+  min-height: 80vh;
+  padding-bottom: 100px;
+}
+.corrections-container {
+  position: relative;
+  width: 100%;
+}
+.corrections-nav-tabs {
+  padding-top: 40px; /* Align with page title */
+}
+.corrections-content {
+  padding-right: 15px; /* Add some padding for better readability */
+}
+img.doi-example {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  display: block;
+}
 .test-controls-card {
-  position: absolute;
-  left: -220px;
-  top: -30px;
-  width: 150px;
-  z-index: 1;
+  position: fixed;
+  right: 20px;
+  top: 100px;
+  width: 200px;
+  z-index: 10;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border: 1px solid #ddd;
 }
 h2 {
   margin: 5px 0;
