@@ -283,7 +283,7 @@
                   dark
                   large
                   class="mr-2 text-none"
-                  @click="handleCorrection('Remove', 'best_oa_location.url')"
+                  @click="corrections.action = 'Remove'; corrections.field = 'best_oa_location.url'; goToStep('submit')"
                 >
                   No, it's paywalled
                 </v-btn>
@@ -291,7 +291,7 @@
                   plain
                   large
                   class="text-none mt-1"
-                  @click="handleCorrection('Correct', 'best_oa_location.url')"
+                  @click="openModal('fix_link'); corrections.action = 'Correct'; corrections.field = 'best_oa_location.url';"
                 >
                   This link is wrong
                 </v-btn>
@@ -302,7 +302,7 @@
                   color="green"
                   dark
                   class="text-none"
-                  @click="handleCorrection('Add', 'best_oa_location.url')"
+                  @click="openModal('add_link'); corrections.action = 'Add'; corrections.field = 'best_oa_location.url';"
                 >
                   No, it's free to read
                 </v-btn>
@@ -316,7 +316,7 @@
                   color="red lighten-2"
                   dark
                   class="text-none"
-                  @click="handleCorrection('Close', 'is_oa')"
+                  @click="corrections.action = 'Close'; corrections.field = 'is_oa'; goToStep('submit')"
                 >
                   No, this journal is closed access
                 </v-btn>
@@ -327,7 +327,7 @@
                   color="green"
                   dark
                   class="text-none"
-                  @click="handleCorrection('Open', 'is_oa')"
+                  @click="openModal('add_date'); corrections.action = 'Open'; corrections.field = 'is_oa';"
                 >
                   No, this journal is open access
                 </v-btn>
@@ -335,83 +335,122 @@
             </template>
           </div>
           
-          <!-- Subcard for Step 3 (Additional Information) -->
-          <v-card v-if="currentStep === 'add_link' || currentStep === 'fix_link' || currentStep === 'add_date'" flat outlined class="pa-4 mb-4">
-            <!-- DOI Location Form -->
-            <div v-if="(currentStep === 'add_link' || currentStep === 'fix_link') && documentType === 'doi' && (corrections.action === 'Add' || corrections.action === 'Correct') && corrections.field === 'best_oa_location.url'">
-              <div class="inner-header">{{ currentStep === 'add_link' ? 'What URL gives free access to this work?' : "What's the correct link for this work?" }}</div>
-              
-              <v-form ref="locationForm" v-model="locationFormValid">
-                <v-text-field
-                  v-model="locationForm.url"
-                  :rules="[v => !!v || 'URL is required', urlRule]"
-                  outlined
-                  dense
-                  autofocus
-                  hide-details
-                  required
-                ></v-text-field>
-                
-                <!-- Left out for now 
-                <div class="d-flex justify-space-between align-center mt-2">
-                  <v-radio-group v-model="locationForm.host_type" row dense hide-details class="radio-group">
-                    <v-radio label="Publisher" value="publisher"></v-radio>
-                    <v-radio label="Repository" value="repository"></v-radio>
+          <!-- Modals for Additional Information -->
+          <!-- Add Link Modal -->
+          <v-dialog v-model="modals.add_link" max-width="600px">
+            <v-card>
+              <v-card-title class="headline">{{ stepInfo['add_link'].title }}</v-card-title>
+              <v-card-subtitle>{{ stepInfo['add_link'].subtitle }}</v-card-subtitle>
+              <v-card-text>
+                <v-form ref="locationForm" v-model="locationFormValid">
+                  <v-text-field
+                    v-model="locationForm.url"
+                    :rules="[v => !!v || 'URL is required', urlRule]"
+                    outlined
+                    dense
+                    autofocus
+                    hide-details
+                    required
+                    label="URL where the work is freely available"
+                  ></v-text-field>
+                </v-form>
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="grey darken-1" text @click="closeModal('add_link')">
+                  Cancel
+                </v-btn>
+                <v-btn
+                  color="primary"
+                  @click="submitModal('add_link')"
+                  :disabled="!locationFormValid"
+                >
+                  Save
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+          
+          <!-- Fix Link Modal -->
+          <v-dialog v-model="modals.fix_link" max-width="600px">
+            <v-card>
+              <v-card-title class="headline">{{ stepInfo['fix_link'].title }}</v-card-title>
+              <v-card-subtitle>{{ stepInfo['fix_link'].subtitle }}</v-card-subtitle>
+              <v-card-text>
+                <v-form ref="locationForm" v-model="locationFormValid">
+                  <v-text-field
+                    v-model="locationForm.url"
+                    :rules="[v => !!v || 'URL is required', urlRule]"
+                    outlined
+                    dense
+                    autofocus
+                    hide-details
+                    required
+                    label="Correct URL for this work"
+                  ></v-text-field>
+                </v-form>
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="grey darken-1" text @click="closeModal('fix_link')">
+                  Cancel
+                </v-btn>
+                <v-btn
+                  color="primary"
+                  @click="submitModal('fix_link')"
+                  :disabled="!locationFormValid"
+                >
+                  Save
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+          
+          <!-- Add Date Modal -->
+          <v-dialog v-model="modals.add_date" max-width="600px">
+            <v-card>
+              <v-card-title class="headline">{{ stepInfo['add_date'].title }}</v-card-title>
+              <v-card-subtitle>{{ stepInfo['add_date'].subtitle }}</v-card-subtitle>
+              <v-card-text>
+                <v-form ref="journalForm" v-model="journalFormValid">
+                  <v-radio-group v-model="journalForm.alwaysOA" class="mt-3">
+                    <v-radio :value="false">
+                      <template v-slot:label>
+                        <div class="d-flex align-center">
+                          <v-text-field
+                            v-model="journalForm.oa_date"
+                            type="number"
+                            :rules="[v => journalForm.alwaysOA || !!v || 'Year is required', 
+                                    v => journalForm.alwaysOA || /^\d{4}$/.test(v) || 'Year must be 4 digits']"
+                            outlined
+                            dense
+                            hide-details
+                            :disabled="journalForm.alwaysOA"
+                            style="max-width: 80px;"
+                            label="Year"
+                          ></v-text-field>
+                        </div>
+                      </template>
+                    </v-radio>
+                    <v-radio :value="true" label="This journal has always been open access."></v-radio>
                   </v-radio-group>
-                </div>
-                -->
-              </v-form>
-            </div>
-
-            <!-- Journal Open Access Status Form -->
-            <div v-if="documentType === 'journal' && corrections.action === 'Open' && corrections.field === 'is_oa'">
-              <div class="inner-header">In what year did this journal become open access?</div>
-              
-              <v-form ref="journalForm" v-model="journalFormValid">
-                <v-radio-group v-model="journalForm.alwaysOA" class="mt-3">
-                  <v-radio :value="false">
-                    <template v-slot:label>
-                      <div class="d-flex align-center">
-                        <v-text-field
-                          v-model="journalForm.oa_date"
-                          type="number"
-                          :rules="[v => journalForm.alwaysOA || !!v || 'Year is required', 
-                                  v => journalForm.alwaysOA || /^\d{4}$/.test(v) || 'Year must be 4 digits']"
-                          outlined
-                          dense
-                          hide-details
-                          :disabled="journalForm.alwaysOA"
-                          style="max-width: 80px;"
-                        ></v-text-field>
-                      </div>
-                    </template>
-                  </v-radio>
-                  <v-radio :value="true" label="This journal has always been open access."></v-radio>
-                </v-radio-group>
-                
-              </v-form>
-            </div>
-          </v-card>
-          <div v-if="currentStep === 'add_link' || currentStep === 'fix_link' || currentStep === 'add_date'">
-            <v-btn
-              v-if="(currentStep === 'add_link' || currentStep === 'fix_link') && documentType === 'doi' && (corrections.action === 'Add' || corrections.action === 'Correct') && corrections.field === 'best_oa_location.url'"
-              color="primary"
-              @click="goToStep('submit')"
-              :disabled="!locationFormValid"
-              large
-            >
-              Save
-            </v-btn>
-            <v-btn
-              v-if="currentStep === 'add_date' && documentType === 'journal' && corrections.action === 'Open' && corrections.field === 'is_oa'"
-              color="primary"
-              @click="goToStep('submit')"
-              :disabled="!journalFormValid"
-              large
-            >
-              Save
-            </v-btn>
-          </div>
+                </v-form>
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="grey darken-1" text @click="closeModal('add_date')">
+                  Cancel
+                </v-btn>
+                <v-btn
+                  color="primary"
+                  @click="submitModal('add_date')"
+                  :disabled="!journalFormValid"
+                >
+                  Save
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
 
           <!-- Subcard for Step 4 (Review Changes) -->
           <div v-if="currentStep === 'submit'" class="subcard px-1 py-5 mb-4">
@@ -521,6 +560,12 @@
   },
   data() {
     return {
+      // Modal states
+      modals: {
+        add_link: false,
+        fix_link: false,
+        add_date: false
+      },
       successMessage: null,
       docId: null, // stores the normalized DOI or ISSN currently being used
       submitError: null,
@@ -641,65 +686,68 @@
     
     // Helper method to get breadcrumb info
     breadcrumbs() {
-      const crumbs = [];
-      // Handle initial steps before documentData is loaded or for contact page
-      if (!this.documentData || this.currentStep === 'contact') {
-        if (this.currentStep === 'article' || this.currentStep === 'journal') {
-          crumbs.push({ text: 'Fix', value: this.currentStep, disabled: true });
-        } else if (this.currentStep === 'contact') {
-          crumbs.push({ text: 'Other', value: 'contact', disabled: true });
-        } else if (this.stepInfo[this.currentStep]) {
-          // Fallback for any other step without documentData but with stepInfo
-          crumbs.push({ text: this.stepInfo[this.currentStep].breadcrumb, value: this.currentStep, disabled: true });
+      // For DOI-related steps (edit_article, submit)
+      if (this.documentData && this.documentData.doi && 
+          (this.currentStep === 'edit_article' || this.currentStep === 'submit')) {
+        
+        // Base breadcrumbs for all DOI-related steps
+        const crumbs = [
+          { text: 'Fix', value: 'article' },
+          { text: 'Article', value: 'article' },
+          { text: this.documentData.doi, value: 'edit_article' }
+        ];
+        
+        // Add the submit step if we're on it
+        if (this.currentStep === 'submit') {
+          const stepInfo = this.stepInfo[this.currentStep];
+          crumbs.push({ text: stepInfo.breadcrumb, value: this.currentStep, disabled: true });
+        } else {
+          // Mark the DOI as disabled/current if we're on edit_article
+          crumbs[2].disabled = true;
         }
-        return crumbs.length > 0 ? crumbs : [];
-      }
-
-      // DOI-related steps
-      if (this.documentType === 'doi' && this.documentData.doi) {
-        crumbs.push({ text: 'Fix', value: 'article', disabled: false });
-        crumbs.push({ text: 'Article', value: 'article', disabled: false });
-        crumbs.push({ text: this.documentData.doi, value: 'edit_article', disabled: (this.currentStep === 'edit_article') });
-
-        if (this.currentStep === 'add_link' || this.currentStep === 'fix_link') {
-          const currentStepInfo = this.stepInfo[this.currentStep];
-          crumbs.push({ text: currentStepInfo.breadcrumb, value: this.currentStep, disabled: true });
-        } else if (this.currentStep === 'submit') {
-          if (this.previousStep && (this.previousStep === 'add_link' || this.previousStep === 'fix_link')) {
-            const prevStepInfo = this.stepInfo[this.previousStep];
-            crumbs.push({ text: prevStepInfo.breadcrumb, value: this.previousStep, disabled: false });
-          }
-          const submitStepInfo = this.stepInfo.submit;
-          crumbs.push({ text: submitStepInfo.breadcrumb, value: 'submit', disabled: true });
+        
+        return crumbs;
+      } 
+      // For journal-related steps (edit_journal, submit)
+      else if (this.documentData && this.documentData.issn_l && 
+              (this.currentStep === 'edit_journal' || this.currentStep === 'submit')) {
+        
+        // Base breadcrumbs for all journal-related steps
+        const crumbs = [
+          { text: 'Fix', value: 'journal' },
+          { text: 'Journal', value: 'journal' },
+          { text: this.documentData.issn_l, value: 'edit_journal' }
+        ];
+        
+        // Add the submit step if we're on it
+        if (this.currentStep === 'submit') {
+          const stepInfo = this.stepInfo[this.currentStep];
+          crumbs.push({ text: stepInfo.breadcrumb, value: this.currentStep, disabled: true });
+        } else {
+          // Mark the ISSN as disabled/current if we're on edit_journal
+          crumbs[2].disabled = true;
         }
-        // If currentStep is 'edit_article', crumbs are already complete.
-      }
-      // Journal-related steps
-      else if (this.documentType === 'journal' && this.documentData.issn_l) {
-        crumbs.push({ text: 'Fix', value: 'journal', disabled: false });
-        crumbs.push({ text: 'Journal', value: 'journal', disabled: false });
-        crumbs.push({ text: this.documentData.issn_l, value: 'edit_journal', disabled: (this.currentStep === 'edit_journal') });
-
-        if (this.currentStep === 'add_date') {
-          const currentStepInfo = this.stepInfo[this.currentStep];
-          crumbs.push({ text: currentStepInfo.breadcrumb, value: this.currentStep, disabled: true });
-        } else if (this.currentStep === 'submit') {
-          if (this.previousStep && this.previousStep === 'add_date') {
-            const prevStepInfo = this.stepInfo[this.previousStep];
-            crumbs.push({ text: prevStepInfo.breadcrumb, value: this.previousStep, disabled: false });
-          }
-          const submitStepInfo = this.stepInfo.submit;
-          crumbs.push({ text: submitStepInfo.breadcrumb, value: 'submit', disabled: true });
-        }
-        // If currentStep is 'edit_journal', crumbs are already complete.
+        
+        return crumbs;
+      } 
+      // For initial steps
+      else if (this.currentStep === 'article' || this.currentStep === 'journal') {
+        return [
+          { text: 'Fix', value: this.currentStep }
+        ];
+      } 
+      // For contact page
+      else if (this.currentStep === 'contact') {
+        return [
+          { text: 'Other', value: 'contact' }
+        ];
       }
       
-      // Fallback if crumbs array is empty but step is known (should be rare)
-      if (crumbs.length === 0 && this.stepInfo[this.currentStep]) {
-        crumbs.push({ text: this.stepInfo[this.currentStep].breadcrumb, value: this.currentStep, disabled: true });
-      }
-      
-      return crumbs;
+      // For other steps, use the stepInfo configuration
+      return Object.entries(this.stepInfo).map(([value, info]) => ({
+        text: info.breadcrumb,
+        value
+      }));
     },
     visibleBreadcrumbs() {
       return this.breadcrumbs;
@@ -996,6 +1044,34 @@
       if (path && this.$route.path !== path) {
         this.$router.push(path);
       }
+    },
+    // Modal handling methods
+    openModal(modalName) {
+      // Reset form data based on modal type
+      if (modalName === 'add_link') {
+        this.locationForm.url = '';
+      } else if (modalName === 'fix_link' && this.documentData.best_oa_location) {
+        this.locationForm.url = this.documentData.best_oa_location.url || '';
+      } else if (modalName === 'add_date') {
+        this.journalForm.oa_date = '';
+        this.journalForm.alwaysOA = false;
+      }
+      
+      // Open the modal
+      this.modals[modalName] = true;
+    },
+    closeModal(modalName) {
+      this.modals[modalName] = false;
+    },
+    submitModal(modalName) {
+      // Store the modal name as previousStep for breadcrumb navigation
+      this.previousStep = modalName;
+      
+      // Close the modal
+      this.modals[modalName] = false;
+      
+      // Navigate to submit step
+      this.goToStep('submit');
     },
     handleCorrection(action, field) {
       this.corrections.action = action;
@@ -1406,7 +1482,7 @@ h1 {
 }
 .breadcrumbs-container {
   position: absolute;
-  top: -35px;
+  top: -30px;
   left: 0;
   width: 100%;
   z-index: 1;
