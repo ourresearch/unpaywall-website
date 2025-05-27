@@ -123,9 +123,25 @@ export default new Router({
       props: route => ({ initialDoi: `${route.params.doiPrefix}/${route.params.doiSuffix}` })
     },
     {
+      path: '/fix/article/:doiPrefix/:doiSuffix/submit',
+      component: Corrections,
+      props: route => ({ 
+        initialDoi: `${route.params.doiPrefix}/${route.params.doiSuffix}`,
+        initialStep: 'submit'
+      })
+    },
+    {
       path: '/fix/journal/:issn',
       component: Corrections,
       props: route => ({ initialIssn: route.params.issn })
+    },
+    {
+      path: '/fix/journal/:issn/submit',
+      component: Corrections,
+      props: route => ({ 
+        initialIssn: route.params.issn,
+        initialStep: 'submit'
+      })
     },
     {
       path: '/fix/contact',

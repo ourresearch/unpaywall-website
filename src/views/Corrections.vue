@@ -556,6 +556,10 @@
       initialIssn: {
         type: String,
         default: null
+      },
+      initialStep: {
+        type: String,
+        default: null
       }
   },
   data() {
@@ -1258,10 +1262,28 @@
       
       // Special case: Allow forward navigation from add_link, fix_link, or add_date to submit step
       if (step === 'submit' && 
-          (this.currentStep === 'add_link' || this.currentStep === 'fix_link' || this.currentStep === 'add_date')) {
+          (this.currentStep === 'add_link' || this.currentStep === 'fix_link' || this.currentStep === 'add_date' || 
+           this.currentStep === 'edit_article' || this.currentStep === 'edit_journal')) {
         // Store the previous step for breadcrumb navigation
         this.previousStep = this.currentStep;
         this.currentStep = step;
+        
+        // Update URL to include /submit
+        if (this.documentType === 'doi' && this.documentData && this.documentData.doi) {
+          const [prefix, suffix] = this.documentData.doi.split('/');
+          if (prefix && suffix) {
+            const path = `/fix/article/${encodeURIComponent(prefix)}/${encodeURIComponent(suffix)}/submit`;
+            if (this.$route.path !== path) {
+              this.$router.push(path);
+            }
+          }
+        } else if (this.documentType === 'journal' && this.documentData && this.documentData.issn_l) {
+          const path = `/fix/journal/${encodeURIComponent(this.documentData.issn_l)}/submit`;
+          if (this.$route.path !== path) {
+            this.$router.push(path);
+          }
+        }
+        
         return;
       }
       
@@ -1299,6 +1321,19 @@
       }
       // Only react if the path actually changes
       if (to.path !== from.path) {
+        // Handle back button navigation from submit to edit step
+        if (from.path.endsWith('/submit') && !to.path.endsWith('/submit')) {
+          // Check if navigating back from article submit
+          if (to.path.match(/^\/fix\/article\/[^/]+\/[^/]+$/) && this.documentType === 'doi') {
+            this.currentStep = 'edit_article';
+            return;
+          }
+          // Check if navigating back from journal submit
+          else if (to.path.match(/^\/fix\/journal\/[^/]+$/) && this.documentType === 'journal') {
+            this.currentStep = 'edit_journal';
+            return;
+          }
+        }
         // Reset document data when navigating away from edit pages
         if (to.path === '/fix/article' || to.path === '/fix/journal') {
           this.documentData = null;
@@ -1306,7 +1341,7 @@
           this.resetCorrections();
         }
         // Example: /fix/article/:prefix/:suffix or /fix/journal/:issn
-        const doiWorkMatch = to.path.match(/^\/fix\/article\/([^\/]+)(?:\/([^\/]+))?/);
+        const doiWorkMatch = to.path.match(/^\/fix\/article\/([^\/]+)(?:\/([^\/]+))(?:\/submit)?/);
         const journalMatch = to.path.match(/^\/fix\/journal\/([^\/]+)/);
         const journalPageMatch = to.path === '/fix/journal';
         
@@ -1420,6 +1455,40 @@
       this.currentStep = 'journal';
     } else if (this.$route.path === '/fix/article') {
       this.currentStep = 'article';
+    }
+    
+    // Handle direct access to submit URLs
+    if (this.initialStep === 'submit') {
+      // If the URL contains /submit but we don't have document data yet,
+      // redirect to the edit page after data loads
+      if (this.initialDoi) {
+        const [prefix, suffix] = this.initialDoi.split('/');
+        if (prefix && suffix) {
+          // We'll redirect in the initialDoi watcher after data loads
+          this.$watch('documentData', function(newVal) {
+            if (!newVal) {
+              // Redirect to edit page if trying to access submit directly without data
+              const path = `/fix/article/${encodeURIComponent(prefix)}/${encodeURIComponent(suffix)}`;
+              this.$router.replace(path);
+            } else {
+              // If we have document data, set the step to 'submit'
+              this.currentStep = 'submit';
+            }
+          }, { immediate: true });
+        }
+      } else if (this.initialIssn) {
+        // We'll redirect in the initialIssn watcher after data loads
+        this.$watch('documentData', function(newVal) {
+          if (!newVal) {
+            // Redirect to edit page if trying to access submit directly without data
+            const path = `/fix/journal/${encodeURIComponent(this.initialIssn)}`;
+            this.$router.replace(path);
+          } else {
+            // If we have document data, set the step to 'submit'
+            this.currentStep = 'submit';
+          }
+        }, { immediate: true });
+      }
     }
   }
 }
