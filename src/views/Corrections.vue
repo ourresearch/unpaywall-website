@@ -8,7 +8,7 @@
             <div
               class="vertical-tab-item"
               :class="{ active: $route.path.startsWith('/fix/article') }"
-              @click="$route.path !== '/fix/article' && $router.push('/fix/article')"
+              @click="clearSuccessAndNavigate('/fix/article')"
             >
               <v-icon x-small class="mr-2">fa-file</v-icon>
               Fix an Article
@@ -16,7 +16,7 @@
             <div
               class="vertical-tab-item"
               :class="{ active: $route.path.startsWith('/fix/journal') }"
-              @click="$route.path !== '/fix/journal' && $router.push('/fix/journal')"
+              @click="clearSuccessAndNavigate('/fix/journal')"
             >
               <v-icon x-small class="mr-2">fa-book</v-icon>
               Fix a Journal
@@ -24,7 +24,7 @@
             <div
               class="vertical-tab-item"
               :class="{ active: $route.path.startsWith('/fix/contact') }"
-              @click="$route.path !== '/fix/contact' && $router.push('/fix/contact')"
+              @click="clearSuccessAndNavigate('/fix/contact')"
             >
               <v-icon x-small class="mr-2">fa-question-circle</v-icon>
               Other
@@ -1013,17 +1013,32 @@
       }
     },
     getApiUrl() {
-      if (this.documentType === 'doi' && this.docId) {
-        return `https://api.unpaywall.org/${this.docId}?email=team@ourresearch.org`;
-      } else if (this.documentType === 'journal' && this.docId) {
-        return `https://api.openalex.org/sources/issn:${this.docId}`;
-      }
-      return '#';
+      // Use the admin API endpoint if admin mode is enabled
+      return this.isAdminMode ? 'https://api.unpaywall.org/v2/admin' : 'https://api.unpaywall.org/v2';
     },
     getBestOALocationUrl() {
-      if (!this.documentData) return null;
-      if (!this.documentData.best_oa_location) return null;
-      return this.documentData.best_oa_location.url;
+      if (!this.documentData || !this.documentData.best_oa_location) return '';
+      return this.documentData.best_oa_location.url || '';
+    },
+    // Helper methods for URL path construction
+    getArticlePath(doi, includeSubmit = false) {
+      if (!doi) return '/fix/article';
+      const [prefix, suffix] = doi.split('/');
+      if (!prefix || !suffix) return '/fix/article';
+      
+      const basePath = `/fix/article/${encodeURIComponent(prefix)}/${encodeURIComponent(suffix)}`;
+      return includeSubmit ? `${basePath}/submit` : basePath;
+    },
+    getJournalPath(issn, includeSubmit = false) {
+      if (!issn) return '/fix/journal';
+      
+      const basePath = `/fix/journal/${encodeURIComponent(issn)}`;
+      return includeSubmit ? `${basePath}/submit` : basePath;
+    },
+    navigateTo(path) {
+      if (this.$route.path !== path) {
+        this.$router.push(path);
+      }
     },
     updateUrlState() {
       if (!this.documentData) return;
@@ -1219,14 +1234,14 @@
       }
     },
     goToStep(step) {
+      this.successMessage = null;
+      
       // Handle navigation to initial steps
       if (step === 'article' || step === 'journal') {
         // When going back to initial step, reset form and update URL
         this.resetForm();
         const path = step === 'article' ? '/fix' : `/fix/${step}`;
-        if (this.$route.path !== path) {
-          this.$router.push(path);
-        }
+        this.navigateTo(path);
         return;
       }
       
@@ -1235,23 +1250,17 @@
         // Update the current step first to ensure the UI updates correctly
         this.currentStep = 'edit_article';
         
-        // Split DOI into prefix and suffix for the URL
-        const [prefix, suffix] = this.documentData.doi.split('/');
-        if (prefix && suffix) {
-          const path = `/fix/article/${encodeURIComponent(prefix)}/${encodeURIComponent(suffix)}`;
-          if (this.$route.path !== path) {
-            this.$router.push(path);
-          }
-        }
+        // Use helper method to generate article path
+        const path = this.getArticlePath(this.documentData.doi);
+        this.navigateTo(path);
         return;
       } else if (step === 'edit_journal' && this.documentData && this.documentData.issn_l) {
         // Update the current step first to ensure the UI updates correctly
         this.currentStep = 'edit_journal';
         
-        const path = `/fix/journal/${encodeURIComponent(this.documentData.issn_l)}`;
-        if (this.$route.path !== path) {
-          this.$router.push(path);
-        }
+        // Use helper method to generate journal path
+        const path = this.getJournalPath(this.documentData.issn_l);
+        this.navigateTo(path);
         return;
       }
       
@@ -1268,20 +1277,13 @@
         this.previousStep = this.currentStep;
         this.currentStep = step;
         
-        // Update URL to include /submit
+        // Update URL to include /submit using helper methods
         if (this.documentType === 'doi' && this.documentData && this.documentData.doi) {
-          const [prefix, suffix] = this.documentData.doi.split('/');
-          if (prefix && suffix) {
-            const path = `/fix/article/${encodeURIComponent(prefix)}/${encodeURIComponent(suffix)}/submit`;
-            if (this.$route.path !== path) {
-              this.$router.push(path);
-            }
-          }
+          const path = this.getArticlePath(this.documentData.doi, true); // true = include submit
+          this.navigateTo(path);
         } else if (this.documentType === 'journal' && this.documentData && this.documentData.issn_l) {
-          const path = `/fix/journal/${encodeURIComponent(this.documentData.issn_l)}/submit`;
-          if (this.$route.path !== path) {
-            this.$router.push(path);
-          }
+          const path = this.getJournalPath(this.documentData.issn_l, true); // true = include submit
+          this.navigateTo(path);
         }
         
         return;
@@ -1310,6 +1312,19 @@
       this.currentStep = 'journal';
       this.$router.push('/fix/journal');
     },
+    clearSuccessAndNavigate(path) {
+      // Only navigate if we're not already on this path
+      if (this.$route.path !== path) {
+        // Clear success message
+        this.successMessage = null;
+        // Clear any error messages
+        this.error = null;
+        this.loadError = null;
+        this.submitError = null;
+        // Navigate to the path
+        this.$router.push(path);
+      }
+    },
   },
   watch: {
     // Watch for browser navigation (forward/back)
@@ -1323,13 +1338,15 @@
       if (to.path !== from.path) {
         // Handle back button navigation from submit to edit step
         if (from.path.endsWith('/submit') && !to.path.endsWith('/submit')) {
-          // Check if navigating back from article submit
-          if (to.path.match(/^\/fix\/article\/[^/]+\/[^/]+$/) && this.documentType === 'doi') {
+          // Check if navigating back from article submit to article edit
+          if (this.documentType === 'doi' && this.documentData && 
+              to.path === this.getArticlePath(this.documentData.doi)) {
             this.currentStep = 'edit_article';
             return;
           }
-          // Check if navigating back from journal submit
-          else if (to.path.match(/^\/fix\/journal\/[^/]+$/) && this.documentType === 'journal') {
+          // Check if navigating back from journal submit to journal edit
+          else if (this.documentType === 'journal' && this.documentData && 
+                   to.path === this.getJournalPath(this.documentData.issn_l)) {
             this.currentStep = 'edit_journal';
             return;
           }
