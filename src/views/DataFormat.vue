@@ -388,7 +388,7 @@
                     The authors of this resource.
                 </td>
                 <td class="notes">
-                    Each other object may have the following fields:
+                    Each author object may have the following fields:
                     <ul>
                         <li><code>author_position</code>: string with possible values "first", "additional", "last".</li>
                         <li><code>raw_author_name</code>: string</li>
