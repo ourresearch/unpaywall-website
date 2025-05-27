@@ -670,7 +670,7 @@
         return;
       }
 
-      const apiUrl = `https://api.openalex.org/unpaywall/${normalizedDOI}`;
+      const apiUrl = `https://api.unpaywall.org/${normalizedDOI}?email=team@ourresearch.org`;
       axios.get(apiUrl)
         .then(resp => {
           if (!resp.data || Object.keys(resp.data).length === 0) {
@@ -756,7 +756,7 @@
           const doi = response.data.results[0].doi;
           this.doiInput = doi;
           const normalizedDOI = this.normalizeDOI(doi);
-          return axios.get(`https://api.openalex.org/unpaywall/${normalizedDOI}`);
+          return axios.get(`https://api.unpaywall.org/${normalizedDOI}?email=team@ourresearch.org`);
         })
         .then(response => {
           // Set the document data to move to step 2
@@ -858,7 +858,7 @@
     },
     getApiUrl() {
       if (this.documentType === 'doi' && this.docId) {
-        return `https://api.openalex.org/unpaywall/${this.docId}`;
+        return `https://api.unpaywall.org/${this.docId}?email=team@ourresearch.org`;
       } else if (this.documentType === 'journal' && this.docId) {
         return `https://api.openalex.org/sources/issn:${this.docId}`;
       }
