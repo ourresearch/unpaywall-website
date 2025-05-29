@@ -73,10 +73,7 @@ export default new Router({
       component: Home
     },
 
-
-
     // top-level pages
-
     {
       path: '/about',
       component: About
@@ -118,31 +115,17 @@ export default new Router({
       props: { showJournalOnly: true }
     },
     {
-      path: '/fix/article/:doiPrefix/:doiSuffix',
+      path: '/fix/article/*',
       component: Corrections,
-      props: route => ({ initialDoi: `${route.params.doiPrefix}/${route.params.doiSuffix}` })
+      props: route => ({ initialDoi: route.params.pathMatch })
     },
-    {
-      path: '/fix/article/:doiPrefix/:doiSuffix/submit',
-      component: Corrections,
-      props: route => ({ 
-        initialDoi: `${route.params.doiPrefix}/${route.params.doiSuffix}`,
-        initialStep: 'submit'
-      })
-    },
+    // Submit path removed as per new UX flow
     {
       path: '/fix/journal/:issn',
       component: Corrections,
       props: route => ({ initialIssn: route.params.issn })
     },
-    {
-      path: '/fix/journal/:issn/submit',
-      component: Corrections,
-      props: route => ({ 
-        initialIssn: route.params.issn,
-        initialStep: 'submit'
-      })
-    },
+    // Submit path removed as per new UX flow
     {
       path: '/fix/contact',
       component: Corrections,
@@ -278,4 +261,3 @@ export default new Router({
 
   ]
 })
-

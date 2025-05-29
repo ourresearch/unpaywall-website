@@ -5,6 +5,11 @@
         <!-- Navigation Tabs to the left of all content -->
         <div class="col-3">
           <div class="corrections-nav-tabs vertical-tab-list d-flex flex-column justify-start">
+            <div class="vertical-tab-header">
+              <v-icon x-small class="mr-2">fa-bug</v-icon>
+              Fix Unpaywall Errors
+            </div>
+            
             <div
               class="vertical-tab-item"
               :class="{ active: $route.path.startsWith('/fix/article') }"
@@ -27,13 +32,16 @@
               @click="clearSuccessAndNavigate('/fix/contact')"
             >
               <v-icon x-small class="mr-2">fa-question-circle</v-icon>
-              Other
+              Report Another Error
             </div>
           </div>
         </div>
 
         <!-- Main Content Area -->
         <div class="col-7 corrections-content">
+          <!-- Back Button -->
+           <v-btn class="back-button" v-if="documentData" text x-small color="primary" @click="goBack"><v-icon x-small class="mr-2">fa-arrow-left</v-icon> Back</v-btn>
+          
           <!-- Breadcrumbs positioned absolutely above the main content -->
           <div v-if="currentStep !== 'article' && currentStep !== 'journal' && documentData" class="breadcrumbs-container">
             <div class="breadcrumbs">
@@ -51,7 +59,7 @@
           
           <!-- Main content with fixed position -->
           <div class="main-content">
-            <h1>{{ pageTitles[0] }}</h1>
+            <h3>{{ pageTitles[0] }}</h3>
 
             <div class="page-subtitle mb-4">
               <div v-if="successMessage" class="mt-2">
@@ -118,21 +126,15 @@
           </v-card>
           
           <!-- Loading Card -->
-          <v-card v-if="loading && !documentData" class="py-6 text-center loading-card">
+          <v-card v-if="loading && !documentData" :loading="true" class="py-6 text-center loading-card">
             <div class="d-flex flex-column align-center justify-center">
-              <v-progress-circular
-                indeterminate
-                color="primary"
-                size="50"
-              ></v-progress-circular>
-              <div class="mt-3 loading-text">Loading...</div>
             </div>
           </v-card>
           
           <!-- Cards with Data -->
           <template v-if="!loading || documentData">
 
-            <!-- Step 1: Retrieve Document Metadata -->
+            <!-- Step 1: Get Data -->
             <v-card v-if="!documentData" class="corrections-initial-step-card" style="height: 100px;">
               <!-- Input panel -->
               <div class="corrections-input-panel d-flex flex-column justify-center py-6 px-10" style="height: 100%;">
@@ -154,12 +156,13 @@
                         class="submit-btn"
                         color="primary"
                         @click="submitDOI"
+                        :disabled="!doiInput"
                       >Fix Article</v-btn>
                     </div>
                     <!-- Second row: Info button -->
                     <div class="mt-2">
                       <v-btn text large class="info-button text-none pa-0" @click="showDoiInfoDialog = true">
-                        <v-icon small class="mr-2">fa-info-circle</v-icon>
+                        <v-icon x-small class="mr-2">fa-info-circle</v-icon>
                         What is a DOI?
                       </v-btn>
                     </div>
@@ -183,6 +186,7 @@
                         class="submit-btn"
                         color="primary"
                         @click="submitISSN"
+                        :disabled="!issnInput"
                       >Fix Journal</v-btn>
                     </div>
                   </div>
@@ -190,7 +194,7 @@
                 <template v-else-if="$route.path.startsWith('/fix/contact')">
                   <div class="contact-message">
                     <p>
-                      <v-icon color="black" class="mr-2">fa-envelope</v-icon>
+                      <v-icon class="mr-2" small>fa-envelope</v-icon>
                       To report another data error, please submit a ticket to <a href="mailto:support@unpaywall.org">support@unpaywall.org</a>.
                     </p>
                   </div>
@@ -198,319 +202,325 @@
               </div>
             </v-card>
 
+            <!-- Step 2+ Main Card with Data-->
+            <template v-if="documentData">      
+              <v-card class="mb-4 mt-2 pa-0">
+                
+                <div class="pa-6">
 
-    
-      <!-- Step 2+ Main Card with Fixed Header and Subcards -->
-      <template v-if="documentData">      
-        <!-- Main Card for Step 2+ -->
-        <v-card class="mb-4 mt-2 pa-0">
-          <!-- Breadcrumbs removed from here and moved above the page title -->
-          
-          <!-- Card content with padding -->
-          <div class="pa-4">
+                  <div class="mb-4">
+                    <!-- DOI Display Header -->
+                    <div v-if="documentType === 'doi'">
+                      <div class="d-flex justify-space-between align-center">
+                        <div class="document-title">{{ documentData.title }}</div>
+                      </div>
+                      <div class="sublinks subtitle-2 mb-2">
+                        <a :href="documentData.doi_url" target="_blank">{{ documentData.doi }} <v-icon style="font-size: 11px;">fa-external-link-alt</v-icon></a>
+                        <span class="mx-3">-</span>
+                        <a :href="getApiUrl()" target="_blank">API <v-icon style="font-size: 11px;">fa-external-link-alt</v-icon></a>
+                      </div>
+                    </div>
 
-          <div class="mb-4">
-            <!-- DOI Display Header -->
-            <div v-if="documentType === 'doi'">
-              <div class="d-flex justify-space-between align-center">
-                <div class="document-title">{{ documentData.title }}</div>
-              </div>
-              <div class="sublinks subtitle-2 mb-2">
-                <a :href="documentData.doi_url" target="_blank">{{ documentData.doi }} <v-icon style="font-size: 11px;">fa-external-link-alt</v-icon></a>
-                <span class="mx-3">-</span>
-                <a :href="getApiUrl()" target="_blank">API <v-icon style="font-size: 11px;">fa-external-link-alt</v-icon></a>
-              </div>
-            </div>
-
-            <!-- Journal Display Header -->
-            <div v-if="documentType === 'journal'">
-              <div class="d-flex justify-space-between align-center">
-                <div class="document-title">{{ documentData.display_name }}</div>
-              </div>
-              <div class="sublinks subtitle-2">
-                {{ documentData.issn_l }}
-                <span class="mx-3">-</span>
-                <a :href="getApiUrl()" target="_blank">API <v-icon style="font-size: 11px;">fa-external-link-alt</v-icon></a>
-              </div>
-            </div>
-            
-          </div>
-          
-          <!-- Subcard for Step 2 (Edit Fields) -->
-          <div v-if="currentStep === 'edit_article' || currentStep === 'edit_journal'" class="pa-4 mb-4 subcard">
-            <!-- DOI Subcard -->
-            <div v-if="documentType === 'doi'">
-              <template v-if="documentData.is_oa">
-                <div class="mb-1">
-                  Unpaywall thinks this work is <span class="status open">free to read</span>
-                  <template v-if="getBestOALocationUrl() && documentData.best_oa_location && documentData.best_oa_location.host_type">
-                    at {{ documentData.best_oa_location.host_type === 'publisher' ? 'the publisher' : 'a repository' }}:
-                  </template>
-                </div>
-                <code v-if="getBestOALocationUrl()" class="url mb-3">
-                  <a :href="getBestOALocationUrl()" target="_blank">{{ getBestOALocationUrl() }} <v-icon x-small>fa-external-link-alt</v-icon></a>
-                </code>
-              </template>
-              <template v-else>
-                <div class="mb-2">
-                  Unpaywall thinks this work is <span class="status closed">paywalled</span>
-                </div>
-              </template>
-            </div>
-
-            <!-- Journal Subcard -->
-            <div v-if="documentType === 'journal'">
-              <template v-if="documentData.is_oa">
-                <div class="mb-2">
-                  Unpaywall thinks this journal is <span class="status open">open access</span>
-                </div>
-              </template>
-              <template v-else>
-                <div class="mb-2">
-                  Unpaywall thinks this journal is <span class="status closed">closed access</span>
-                </div>
-              </template>
-            </div>
-          </div>
-
-          <!-- Subcard Action Buttons -->
-          <div v-if="currentStep === 'edit_article' || currentStep === 'edit_journal'" class="subcard-actions d-flex">
-            <!-- DOI Actions -->
-            <template v-if="documentType === 'doi'">
-              <template v-if="documentData.is_oa">
-                <v-btn
-                  color="red"
-                  dark
-                  large
-                  class="mr-2 text-none"
-                  @click="corrections.action = 'Remove'; corrections.field = 'best_oa_location.url'; goToStep('submit')"
-                >
-                  No, it's paywalled
-                </v-btn>
-                <v-btn
-                  plain
-                  large
-                  class="text-none mt-1"
-                  @click="openModal('fix_link'); corrections.action = 'Correct'; corrections.field = 'best_oa_location.url';"
-                >
-                  This link is wrong
-                </v-btn>
-              </template>
-              <template v-else>
-                <v-btn
-                  large
-                  color="green"
-                  dark
-                  class="text-none"
-                  @click="openModal('add_link'); corrections.action = 'Add'; corrections.field = 'best_oa_location.url';"
-                >
-                  No, it's free to read
-                </v-btn>
-              </template>
-            </template>
-            <!-- Journal Actions -->
-            <template v-if="documentType === 'journal'">
-              <template v-if="documentData.is_oa">
-                <v-btn
-                  large
-                  color="red lighten-2"
-                  dark
-                  class="text-none"
-                  @click="corrections.action = 'Close'; corrections.field = 'is_oa'; goToStep('submit')"
-                >
-                  No, this journal is closed access
-                </v-btn>
-              </template>
-              <template v-else>
-                <v-btn
-                  large
-                  color="green"
-                  dark
-                  class="text-none"
-                  @click="openModal('add_date'); corrections.action = 'Open'; corrections.field = 'is_oa';"
-                >
-                  No, this journal is open access
-                </v-btn>
-              </template>
-            </template>
-          </div>
-          
-          <!-- Modals for Additional Information -->
-          <!-- Add Link Modal -->
-          <v-dialog v-model="modals.add_link" max-width="600px">
-            <v-card>
-              <v-card-title class="headline">{{ stepInfo['add_link'].title }}</v-card-title>
-              <v-card-subtitle>{{ stepInfo['add_link'].subtitle }}</v-card-subtitle>
-              <v-card-text>
-                <v-form ref="locationForm" v-model="locationFormValid">
-                  <v-text-field
-                    v-model="locationForm.url"
-                    :rules="[v => !!v || 'URL is required', urlRule]"
-                    outlined
-                    dense
-                    autofocus
-                    hide-details
-                    required
-                    label="URL where the work is freely available"
-                  ></v-text-field>
-                </v-form>
-              </v-card-text>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="grey darken-1" text @click="closeModal('add_link')">
-                  Cancel
-                </v-btn>
-                <v-btn
-                  color="primary"
-                  @click="submitModal('add_link')"
-                  :disabled="!locationFormValid"
-                >
-                  Save
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-          
-          <!-- Fix Link Modal -->
-          <v-dialog v-model="modals.fix_link" max-width="600px">
-            <v-card>
-              <v-card-title class="headline">{{ stepInfo['fix_link'].title }}</v-card-title>
-              <v-card-subtitle>{{ stepInfo['fix_link'].subtitle }}</v-card-subtitle>
-              <v-card-text>
-                <v-form ref="locationForm" v-model="locationFormValid">
-                  <v-text-field
-                    v-model="locationForm.url"
-                    :rules="[v => !!v || 'URL is required', urlRule]"
-                    outlined
-                    dense
-                    autofocus
-                    hide-details
-                    required
-                    label="Correct URL for this work"
-                  ></v-text-field>
-                </v-form>
-              </v-card-text>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="grey darken-1" text @click="closeModal('fix_link')">
-                  Cancel
-                </v-btn>
-                <v-btn
-                  color="primary"
-                  @click="submitModal('fix_link')"
-                  :disabled="!locationFormValid"
-                >
-                  Save
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-          
-          <!-- Add Date Modal -->
-          <v-dialog v-model="modals.add_date" max-width="600px">
-            <v-card>
-              <v-card-title class="headline">{{ stepInfo['add_date'].title }}</v-card-title>
-              <v-card-subtitle>{{ stepInfo['add_date'].subtitle }}</v-card-subtitle>
-              <v-card-text>
-                <v-form ref="journalForm" v-model="journalFormValid">
-                  <v-radio-group v-model="journalForm.alwaysOA" class="mt-3">
-                    <v-radio :value="false">
-                      <template v-slot:label>
-                        <div class="d-flex align-center">
-                          <v-text-field
-                            v-model="journalForm.oa_date"
-                            type="number"
-                            :rules="[v => journalForm.alwaysOA || !!v || 'Year is required', 
-                                    v => journalForm.alwaysOA || /^\d{4}$/.test(v) || 'Year must be 4 digits']"
-                            outlined
-                            dense
-                            hide-details
-                            :disabled="journalForm.alwaysOA"
-                            style="max-width: 80px;"
-                            label="Year"
-                          ></v-text-field>
+                    <!-- Journal Display Header -->
+                    <div v-if="documentType === 'journal'">
+                      <div class="d-flex justify-space-between align-center">
+                        <div class="document-title">{{ documentData.display_name }}</div>
+                      </div>
+                      <div class="sublinks subtitle-2">
+                        {{ documentData.issn_l }}
+                        <span class="mx-3">-</span>
+                        <a :href="getApiUrl()" target="_blank">API <v-icon style="font-size: 11px;">fa-external-link-alt</v-icon></a>
+                      </div>
+                    </div>
+                    
+                  </div>
+                  
+                  <!-- Subcard for Edit Fields -->
+                  <div v-if="currentStep === 'edit_article' || currentStep === 'edit_journal'" class="py-5 subcard">
+                    <!-- DOI Subcard -->
+                    <div v-if="documentType === 'doi'">
+                      <template v-if="documentData.is_oa">
+                        <div class="mb-1">
+                          Unpaywall thinks this work is <span class="status open">free to read</span>
+                          <template v-if="getBestOALocationUrl() && documentData.best_oa_location && documentData.best_oa_location.host_type">
+                            at {{ documentData.best_oa_location.host_type === 'publisher' ? 'the publisher' : 'a repository' }}:
+                          </template>
+                        </div>
+                        <code v-if="getBestOALocationUrl()" class="url mb-3">
+                          <a :href="getBestOALocationUrl()" target="_blank">{{ getBestOALocationUrl() }} <v-icon x-small>fa-external-link-alt</v-icon></a>
+                        </code>
+                      </template>
+                      <template v-else>
+                        <div class="mb-2">
+                          Unpaywall thinks this work is <span class="status closed">paywalled</span>
                         </div>
                       </template>
-                    </v-radio>
-                    <v-radio :value="true" label="This journal has always been open access."></v-radio>
-                  </v-radio-group>
-                </v-form>
-              </v-card-text>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="grey darken-1" text @click="closeModal('add_date')">
-                  Cancel
-                </v-btn>
-                <v-btn
-                  color="primary"
-                  @click="submitModal('add_date')"
-                  :disabled="!journalFormValid"
-                >
-                  Save
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
+                    </div>
 
-          <!-- Subcard for Step 4 (Review Changes) -->
-          <div v-if="currentStep === 'submit'" class="subcard px-1 py-5 mb-4">
-            <!-- Review changes left of for now
-            <div class="inner-header">Review Changes</div>
-            
-            <ul class="changes-list">
-              <li v-if="documentType === 'doi' && corrections.action === 'Add' && corrections.field === 'best_oa_location.url'">
-                <span class="emoji-icon">✅</span> Added an <a :href="locationForm.url" target="_blank">open access link</a> ({{ locationForm.host_type }}).
-              </li>
-              
-              <li v-if="documentType === 'doi' && corrections.action === 'Remove' && corrections.field === 'best_oa_location.url'">
-                <span class="emoji-icon">❌</span> Reported a <a :href="getOldValue()" target="_blank">broken open access link</a>.
-              </li>
-              
-              <li v-if="documentType === 'doi' && corrections.action === 'Correct' && corrections.field === 'best_oa_location.url'">
-                <span class="emoji-icon">✴️</span> Corrected an open access link to <a :href="locationForm.url" target="_blank">{{ locationForm.url }}</a>.
-              </li>
-              
-              <li v-if="documentType === 'journal' && corrections.action === 'Open' && corrections.field === 'is_oa'">
-                <span class="emoji-icon">🟢</span> Reported {{ documentData.display_name }} as open access {{ journalForm.alwaysOA ? 'since its inception' : 'since ' + journalForm.oa_date }}.
-              </li>
-              
-              <li v-if="documentType === 'journal' && corrections.action === 'Close' && corrections.field === 'is_oa'">
-                <span class="emoji-icon">🛑</span> Reported {{ documentData.display_name }} as closed access.
-              </li>
-            </ul>
-            -->
+                    <!-- Journal Subcard -->
+                    <div v-if="documentType === 'journal'">
+                      <template v-if="documentData.is_oa">
+                        <div class="mb-2">
+                          Unpaywall thinks this journal is <span class="status open">open access</span>
+                        </div>
+                      </template>
+                      <template v-else>
+                        <div class="mb-2">
+                          Unpaywall thinks this journal is <span class="status closed">closed access</span>
+                        </div>
+                      </template>
+                    </div>
+                  </div>
 
-            <div class="inner-header">Add your email in case we need to follow up (optional):</div>
+                  <!-- Subcard Action Buttons for Edit (hidden when in review mode) -->
+                  <div v-if="(currentStep === 'edit_article' || currentStep === 'edit_journal') && !showReviewStep" class="subcard-actions d-flex mt-5">
+                    <!-- DOI Actions -->
+                    <template v-if="documentType === 'doi'">
+                      <template v-if="documentData.is_oa">
+                        <v-btn
+                          color="red"
+                          dark
+                          large
+                          class="mr-2 text-none"
+                          @click="corrections.action = 'Remove'; corrections.field = 'best_oa_location.url';"
+                        >
+                          No, it's paywalled
+                        </v-btn>
+                        <v-btn
+                          plain
+                          large
+                          class="text-none mt-1"
+                          @click="openModal('fix_link'); pendingCorrection.action = 'Correct'; pendingCorrection.field = 'best_oa_location.url';"
+                        >
+                          This link is wrong
+                        </v-btn>
+                      </template>
+                      <template v-else>
+                        <v-btn
+                          large
+                          color="green"
+                          dark
+                          class="text-none"
+                          @click="openModal('add_link'); pendingCorrection.action = 'Add'; pendingCorrection.field = 'best_oa_location.url';"
+                        >
+                          No, it's free to read
+                        </v-btn>
+                      </template>
+                    </template>
+                    <!-- Journal Actions -->
+                    <template v-if="documentType === 'journal'">
+                      <template v-if="documentData.is_oa">
+                        <v-btn
+                          large
+                          color="red lighten-2"
+                          dark
+                          class="text-none"
+                          @click="corrections.action = 'Close'; corrections.field = 'is_oa';"
+                        >
+                          No, this journal is closed access
+                        </v-btn>
+                      </template>
+                      <template v-else>
+                        <v-btn
+                          large
+                          color="green"
+                          dark
+                          class="text-none"
+                          @click="openModal('add_date'); pendingCorrection.action = 'Open'; pendingCorrection.field = 'is_oa';"
+                        >
+                          No, this journal is open access
+                        </v-btn>
+                      </template>
+                    </template>
+                  </div>
 
-            <v-row no-gutters class="mt-1 justify-space-between">
-              <v-text-field
-                v-model="email"
-                placeholder="email@example.com"
-                outlined
-                hide-details
-                dense
-                class="mr-2"
-                style="max-width: 300px;"
-              ></v-text-field>
-            </v-row>
-          </div>
+                  <!-- Subcard for Review & Submit (appears below edit fields when in review mode) -->
+                  <div v-if="showReviewStep" class="subcard py-5">
+                    <div class="inner-header">
+                      Your fixes:
+                    </div>
+                    
+                    <ul class="changes-list">
+                      <li v-if="documentType === 'doi' && corrections.action === 'Add' && corrections.field === 'best_oa_location.url'">
+                        <span class="emoji-icon">✅</span> Added <a :href="locationForm.url" target="_blank">open access link</a>.
+                      </li>
+                      
+                      <li v-if="documentType === 'doi' && corrections.action === 'Remove' && corrections.field === 'best_oa_location.url'">
+                        <span class="emoji-icon">❌</span> Reported this article as paywalled.
+                      </li>
+                      
+                      <li v-if="documentType === 'doi' && corrections.action === 'Correct' && corrections.field === 'best_oa_location.url'">
+                        <span class="emoji-icon">✅</span> Corrected open access link to <code class="url"> <a :href="locationForm.url" target="_blank">{{ locationForm.url }}  <v-icon x-small>fa-external-link-alt</v-icon></a></code>.
+                      </li>
+                      
+                      <li v-if="documentType === 'journal' && corrections.action === 'Open' && corrections.field === 'is_oa'">
+                        <span class="emoji-icon">🟢</span> Reported {{ documentData.display_name }} as open access {{ journalForm.alwaysOA ? 'since its inception' : 'since ' + journalForm.oa_date }}.
+                      </li>
+                      
+                      <li v-if="documentType === 'journal' && corrections.action === 'Close' && corrections.field === 'is_oa'">
+                        <span class="emoji-icon">🛑</span> Reported {{ documentData.display_name }} as closed access.
+                      </li>
+                    </ul>
 
-          <div v-if="currentStep === 'submit'">
-            <v-btn
-              color="primary"
-              @click="submitCorrection"
-              :disabled="!canSubmit"
-              large
-            >Submit Correction</v-btn>
-            <div v-if="submitError" class="error--text mt-2">{{ submitError }}</div>
-          </div>
-          </div>
-        </v-card>
-      </template>
-    </template>
+                    <div class="inner-header">Add your email in case we need to follow up (optional):</div>
+
+                    <v-row no-gutters class="mt-1 justify-space-between">
+                      <v-text-field
+                        v-model="email"
+                        placeholder="email@example.com"
+                        outlined
+                        hide-details
+                        dense
+                        class="mr-2"
+                        style="max-width: 300px;"
+                      ></v-text-field>
+                    </v-row>
+                    
+                  </div>
+
+                  <div v-if="showReviewStep" class="subcard-actions d-flex mt-5">
+                    <v-btn
+                        color="primary"
+                        @click="submitCorrection"
+                        :disabled="!canSubmit"
+                        large
+                        class="mr-2"
+                      >Submit Fix</v-btn>
+                      <v-btn
+                        large
+                        text
+                        @click="resetCorrections"
+                        >
+                        Undo
+                      </v-btn>
+                      <div v-if="submitError" class="error--text mt-2">{{ submitError }}</div>             
+                  </div>
+
+                  <!-- Modals for Additional Information -->
+                  <!-- Add Link Modal -->
+                  <v-dialog v-model="modals.add_link" max-width="600px">
+                    <v-card>
+                      <v-card-title class="headline">{{ stepInfo['add_link'].title }}</v-card-title>
+                      <v-card-subtitle>{{ stepInfo['add_link'].subtitle }}</v-card-subtitle>
+                      <v-card-text>
+                        <v-form ref="locationForm" v-model="locationFormValid">
+                          <v-text-field
+                            v-model="locationForm.url"
+                            :rules="[v => !!v || 'URL is required', urlRule]"
+                            outlined
+                            dense
+                            autofocus
+                            hide-details
+                            required
+                            label="URL where the work is freely available"
+                          ></v-text-field>
+                        </v-form>
+                      </v-card-text>
+                      <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="grey darken-1" text @click="closeModal('add_link')">
+                          Cancel
+                        </v-btn>
+                        <v-btn
+                          color="primary"
+                          @click="submitModal('add_link')"
+                          :disabled="!locationFormValid"
+                        >
+                          Save
+                        </v-btn>
+                      </v-card-actions>
+                    </v-card>
+                  </v-dialog>
+                  
+                  <!-- Fix Link Modal -->
+                  <v-dialog v-model="modals.fix_link" max-width="600px">
+                    <v-card>
+                      <v-card-title class="headline">{{ stepInfo['fix_link'].title }}</v-card-title>
+                      <v-card-subtitle>{{ stepInfo['fix_link'].subtitle }}</v-card-subtitle>
+                      <v-card-text>
+                        <v-form ref="locationForm" v-model="locationFormValid">
+                          <v-text-field
+                            v-model="locationForm.url"
+                            :rules="[v => !!v || 'URL is required', urlRule]"
+                            outlined
+                            dense
+                            autofocus
+                            hide-details
+                            required
+                            label="Correct URL for this work"
+                          ></v-text-field>
+                        </v-form>
+                      </v-card-text>
+                      <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="grey darken-1" text @click="closeModal('fix_link')">
+                          Cancel
+                        </v-btn>
+                        <v-btn
+                          color="primary"
+                          @click="submitModal('fix_link')"
+                          :disabled="!locationFormValid"
+                        >
+                          Save
+                        </v-btn>
+                      </v-card-actions>
+                    </v-card>
+                  </v-dialog>
+                  
+                  <!-- Add Date Modal -->
+                  <v-dialog v-model="modals.add_date" max-width="600px">
+                    <v-card>
+                      <v-card-title class="headline">{{ stepInfo['add_date'].title }}</v-card-title>
+                      <v-card-subtitle>{{ stepInfo['add_date'].subtitle }}</v-card-subtitle>
+                      <v-card-text>
+                        <v-form ref="journalForm" v-model="journalFormValid">
+                          <v-radio-group v-model="journalForm.alwaysOA" class="mt-3">
+                            <v-radio :value="false">
+                              <template v-slot:label>
+                                <div class="d-flex align-center">
+                                  <v-text-field
+                                    v-model="journalForm.oa_date"
+                                    type="number"
+                                    :rules="[v => journalForm.alwaysOA || !!v || 'Year is required', 
+                                            v => journalForm.alwaysOA || /^\d{4}$/.test(v) || 'Year must be 4 digits']"
+                                    outlined
+                                    dense
+                                    hide-details
+                                    :disabled="journalForm.alwaysOA"
+                                    style="max-width: 80px;"
+                                    label="Year"
+                                  ></v-text-field>
+                                </div>
+                              </template>
+                            </v-radio>
+                            <v-radio :value="true" label="This journal has always been open access."></v-radio>
+                          </v-radio-group>
+                        </v-form>
+                      </v-card-text>
+                      <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="grey darken-1" text @click="closeModal('add_date')">
+                          Cancel
+                        </v-btn>
+                        <v-btn
+                          color="primary"
+                          @click="submitModal('add_date')"
+                          :disabled="!journalFormValid"
+                        >
+                          Save
+                        </v-btn>
+                      </v-card-actions>
+                    </v-card>
+                  </v-dialog>
+                </div>
+              </v-card>
+
+            </template>
+          </template>
         </div>
         
-        <div class="col-3"></div> <!-- Right margin -->
+        <!-- Right margin -->
+        <div class="col-3"></div> 
       </div>
     </div>
     
@@ -564,12 +574,6 @@
   },
   data() {
     return {
-      // Modal states
-      modals: {
-        add_link: false,
-        fix_link: false,
-        add_date: false
-      },
       successMessage: null,
       docId: null, // stores the normalized DOI or ISSN currently being used
       submitError: null,
@@ -586,6 +590,12 @@
       documentData: null,
       documentType: null, // 'doi' or 'journal'
       rawApiResponse: null,
+      // Modal states
+      modals: {
+        add_link: false,
+        fix_link: false,
+        add_date: false
+      },
       // Test data
       testDOIs: [
         { text: 'Gold', value: '10.2221/jcsj.9.70' },
@@ -608,6 +618,11 @@
         url: '',
         oa_date: null,
       },
+      // Pending correction (used when modals are open)
+      pendingCorrection: {
+        action: null,
+        field: null,
+      },
       // Forms
       locationForm: {
         url: '',
@@ -623,44 +638,49 @@
       currentStep: "article", // "article", "journal", "contact", "edit_article", "edit_journal", "add_link", "fix_link", "add_date", "submit",
       previousStep: null, // Tracks the previous step for breadcrumb navigation
       additionalInfoNeeded: false,
-      
       // UI state
       showDoiInfoDialog: false,
+      isAdminMode: 'admin' in this.$route.query,
     }
   },
   computed: {
-    isAdminMode() {
-      return 'admin' in this.$route.query;
+    showReviewStep() {
+      return this.corrections.action && this.corrections.field;
     },
     // Single source of truth for all step information
     stepInfo() {
       return {
         // Initial steps
-        'article': {
+        'fix': {
           breadcrumb: 'Fix',
           title: 'Fix Unpaywall Errors',
           subtitle: 'Sometimes Unpaywall makes errors. You can fix them here. Corrections will show up in a few days.'
         },
+        'article': {
+          breadcrumb: 'Fix an Article',
+          title: 'Fix an Article',
+          subtitle: 'Sometimes Unpaywall makes errors. You can make fixes to articles here. Corrections will show up in a few days.'
+        },
         'journal': {
-          breadcrumb: 'Fix',
-          title: 'Fix Unpaywall Errors',
-          subtitle: 'Sometimes Unpaywall makes errors. You can fix them here. Corrections will show up in a few days.'
+          breadcrumb: 'Fix a Journal',
+          title: 'Fix a Journal',
+          subtitle: 'Sometimes Unpaywall makes errors. You can make fixes to jounrals here. Corrections will show up in a few days.'
         },
         'contact': {
           breadcrumb: 'Other',
-          title: 'Fix Unpaywall Errors',
-          subtitle: 'Sometimes Unpaywall makes errors. You can fix them here. Corrections will show up in a few days.'
+          title: 'Report Another Error',
+          subtitle: 'Sometimes Unpaywall makes errors. To report other issues, please contact us.'
         },
         
         // Edit steps
         'edit_article': {
           breadcrumb: 'Article',
-          title: 'Fix Article Metadata',
+          title: 'Fix an Article',
           subtitle: 'Review what Unpaywall currently thinks about this article then fix if needed.'
         },
         'edit_journal': {
           breadcrumb: 'Journal',
-          title: 'Fix Journal Metadata',
+          title: 'Fix a Journal',
           subtitle: 'Review what Unpaywall currently thinks about this journal then fix if needed.'
         },
         
@@ -682,12 +702,11 @@
         },
         'submit': {
           breadcrumb: 'Submit',
-          title: 'Submit Your Fix',
+          title: 'Fix an Article',
           subtitle: 'Your report will be reviewed by our team and live within a few days.'
-        }
+        },
       };
     },
-    
     // Helper method to get breadcrumb info
     breadcrumbs() {
       // For DOI-related steps (edit_article, submit)
@@ -701,14 +720,8 @@
           { text: this.documentData.doi, value: 'edit_article' }
         ];
         
-        // Add the submit step if we're on it
-        if (this.currentStep === 'submit') {
-          const stepInfo = this.stepInfo[this.currentStep];
-          crumbs.push({ text: stepInfo.breadcrumb, value: this.currentStep, disabled: true });
-        } else {
-          // Mark the DOI as disabled/current if we're on edit_article
-          crumbs[2].disabled = true;
-        }
+        // Mark the DOI as disabled/current if we're on edit_article
+        crumbs[2].disabled = true;
         
         return crumbs;
       } 
@@ -723,14 +736,8 @@
           { text: this.documentData.issn_l, value: 'edit_journal' }
         ];
         
-        // Add the submit step if we're on it
-        if (this.currentStep === 'submit') {
-          const stepInfo = this.stepInfo[this.currentStep];
-          crumbs.push({ text: stepInfo.breadcrumb, value: this.currentStep, disabled: true });
-        } else {
-          // Mark the ISSN as disabled/current if we're on edit_journal
-          crumbs[2].disabled = true;
-        }
+        // Mark the ISSN as disabled/current if we're on edit_journal
+        crumbs[2].disabled = true;
         
         return crumbs;
       } 
@@ -793,8 +800,7 @@
   },
   methods: {
     normalizeDOI(doi) {
-      // Remove any https://doi.org/ prefix
-      return doi.replace(/^https?:\/\/doi\.org\//i, '')
+      return doi.replace(/^https?:\/\/doi\.org\//i, ''); // Remove any https://doi.org/ prefix
     },
     submitDOI() {
       if (!this.doiInput) {
@@ -806,13 +812,12 @@
       this.error = null;
       this.loadError = null;
 
-      const normalizedDOI = this.normalizeDOI(this.doiInput);
-      this.docId = normalizedDOI;
+      this.docId = this.normalizeDOI(this.doiInput);
+      this.documentType = 'doi';
       // Check for test data first
-      const testData = testDoiData[normalizedDOI];
+      const testData = testDoiData[this.docId];
       if (testData) {
         this.documentData = testData;
-        this.documentType = 'doi';
         this.successMessage = null;
         this.currentStep = 'edit_article';
         this.updateUrlState();
@@ -821,15 +826,13 @@
         return;
       }
 
-      const apiUrl = `https://api.unpaywall.org/${normalizedDOI}?email=team@ourresearch.org`;
-      axios.get(apiUrl)
+      axios.get(this.getApiUrl())
         .then(resp => {
           if (!resp.data || Object.keys(resp.data).length === 0) {
             this.loadError = 'No data found for this DOI.';
             this.documentData = null;
           } else {
             this.documentData = resp.data;
-            this.documentType = 'doi';
             this.successMessage = null;
             this.currentStep = 'edit_article';
             this.updateUrlState();
@@ -857,12 +860,12 @@
       this.loading = true;
       this.error = null;
 
-      // Check for test data first
       this.docId = this.issnInput;
-      const testData = testDoiData[this.issnInput];
+      this.documentType = 'journal';
+
+      const testData = testDoiData[this.docId];
       if (testData) {
         this.documentData = testData;
-        this.documentType = 'journal';
         this.rawApiResponse = testData;
         this.successMessage = null;
         this.resetCorrections();
@@ -874,7 +877,7 @@
         return;
       }
 
-      axios.get(`https://api.openalex.org/sources/issn:${this.issnInput}`)
+      axios.get(this.getApiUrl())
         .then(response => {
           this.documentData = response.data;
           this.documentType = 'journal';
@@ -1014,26 +1017,25 @@
     },
     getApiUrl() {
       // Use the admin API endpoint if admin mode is enabled
-      return this.isAdminMode ? 'https://api.unpaywall.org/v2/admin' : 'https://api.unpaywall.org/v2';
+      if (this.documentType === 'doi') {
+        return `https://api.unpaywall.org/${this.docId}?email=team@ourresearch.org`;
+      } else if (this.documentType === 'journal') {
+        return `https://api.unpaywall.org/${this.docId}?email=team@ourresearch.org`;
+      }
     },
     getBestOALocationUrl() {
       if (!this.documentData || !this.documentData.best_oa_location) return '';
       return this.documentData.best_oa_location.url || '';
     },
     // Helper methods for URL path construction
-    getArticlePath(doi, includeSubmit = false) {
+    getArticlePath(doi) {
       if (!doi) return '/fix/article';
-      const [prefix, suffix] = doi.split('/');
-      if (!prefix || !suffix) return '/fix/article';
-      
-      const basePath = `/fix/article/${encodeURIComponent(prefix)}/${encodeURIComponent(suffix)}`;
-      return includeSubmit ? `${basePath}/submit` : basePath;
+      return `/fix/article/${doi}`;
     },
-    getJournalPath(issn, includeSubmit = false) {
+    getJournalPath(issn) {
       if (!issn) return '/fix/journal';
       
-      const basePath = `/fix/journal/${encodeURIComponent(issn)}`;
-      return includeSubmit ? `${basePath}/submit` : basePath;
+      return `/fix/journal/${encodeURIComponent(issn)}`;
     },
     navigateTo(path) {
       if (this.$route.path !== path) {
@@ -1046,15 +1048,7 @@
       let path;
       if (this.documentType === 'doi') {
         let doi = this.doiInput;
-        let doiPrefix = doi;
-        let doiSuffix = '';
-        const slashIndex = doi.indexOf('/');
-        if (slashIndex !== -1) {
-          doiPrefix = doi.substring(0, slashIndex);
-          doiSuffix = doi.substring(slashIndex + 1);
-        }
-        path = `/fix/article/${doiPrefix}`;
-        if (doiSuffix) path += `/${doiSuffix}`;
+        path = `/fix/article/${doi}`;
       } else if (this.documentType === 'journal') {
         path = `/fix/journal/${this.documentData.issn_l}`;
       }
@@ -1081,6 +1075,9 @@
     },
     closeModal(modalName) {
       this.modals[modalName] = false;
+      // Clear the pending correction when modal is closed without saving
+      this.pendingCorrection.action = null;
+      this.pendingCorrection.field = null;
     },
     submitModal(modalName) {
       // Store the modal name as previousStep for breadcrumb navigation
@@ -1089,8 +1086,18 @@
       // Close the modal
       this.modals[modalName] = false;
       
-      // Navigate to submit step
-      this.goToStep('submit');
+      // Apply the pending correction to the actual corrections object
+      if (this.pendingCorrection.action && this.pendingCorrection.field) {
+        this.corrections.action = this.pendingCorrection.action;
+        this.corrections.field = this.pendingCorrection.field;
+      }
+      
+      // Clear the pending correction
+      this.pendingCorrection.action = null;
+      this.pendingCorrection.field = null;
+      
+      // No need to navigate to submit step anymore - the showReviewStep computed property
+      // will automatically show the review section based on corrections state
     },
     handleCorrection(action, field) {
       this.corrections.action = action;
@@ -1121,9 +1128,9 @@
           return;
         }
       }
-      // If no additional info needed, go straight to review
+      // If no additional info needed, we don't need to change the step
+      // The showReviewStep computed property will handle showing the review section
       this.additionalInfoNeeded = false;
-      this.currentStep = 'submit';
     },
     resetCorrections() {
       this.corrections = {
@@ -1185,6 +1192,8 @@
         axios.post(apiEndpoint, payload);
         this.successMessage =
           "Your correction has been received and will be reviewed within a few days. Thank you for your help.";
+        
+        // Reset the form to go back to the initial state
         this.resetForm();
       } catch (e) {
         const errData = e.response && e.response.data;
@@ -1217,18 +1226,42 @@
       return post;
     },    
     resetForm() {
+      // Reset data state
       this.documentData = null;
       this.documentType = null;
       this.rawApiResponse = null;
+      
+      // Reset corrections state
       this.resetCorrections();
+      this.pendingCorrection.action = null;
+      this.pendingCorrection.field = null;
+      
+      // Reset form inputs
       this.doiInput = '';
       this.issnInput = '';
+      this.email = '';
+      
+      // Reset test data selections
       this.selectedTestDOI = null;
+      this.selectedTestISSN = null;
+      
+      // Reset UI state
       this.currentStep = 'article';
       this.previousStep = null;
       this.loading = false;
       this.initialLoading = false;
       this.additionalInfoNeeded = false;
+      
+      // Reset modal states
+      Object.keys(this.modals).forEach(key => {
+        this.modals[key] = false;
+      });
+      
+      // Reset form validation states
+      this.locationFormValid = false;
+      this.journalFormValid = false;
+      
+      // Navigate to initial path if needed
       if (this.$route.path !== '/fix') {
         this.$router.push('/fix');
       }
@@ -1239,7 +1272,32 @@
       // Handle navigation to initial steps
       if (step === 'article' || step === 'journal') {
         // When going back to initial step, reset form and update URL
-        this.resetForm();
+        // Reset all state variables
+        this.documentData = null;
+        this.documentType = null;
+        this.rawApiResponse = null;
+        this.resetCorrections();
+        this.pendingCorrection.action = null;
+        this.pendingCorrection.field = null;
+        this.doiInput = '';
+        this.issnInput = '';
+        this.email = '';
+        this.selectedTestDOI = null;
+        this.selectedTestISSN = null;
+        this.previousStep = null;
+        this.loading = false;
+        this.initialLoading = false;
+        this.additionalInfoNeeded = false;
+        
+        // Reset modal states
+        Object.keys(this.modals).forEach(key => {
+          this.modals[key] = false;
+        });
+        
+        // Set the current step based on the target
+        this.currentStep = step;
+        
+        // Navigate to the appropriate path
         const path = step === 'article' ? '/fix' : `/fix/${step}`;
         this.navigateTo(path);
         return;
@@ -1269,25 +1327,8 @@
         step = this.documentType === 'doi' ? 'edit_article' : 'edit_journal';
       }
       
-      // Special case: Allow forward navigation from add_link, fix_link, or add_date to submit step
-      if (step === 'submit' && 
-          (this.currentStep === 'add_link' || this.currentStep === 'fix_link' || this.currentStep === 'add_date' || 
-           this.currentStep === 'edit_article' || this.currentStep === 'edit_journal')) {
-        // Store the previous step for breadcrumb navigation
-        this.previousStep = this.currentStep;
-        this.currentStep = step;
-        
-        // Update URL to include /submit using helper methods
-        if (this.documentType === 'doi' && this.documentData && this.documentData.doi) {
-          const path = this.getArticlePath(this.documentData.doi, true); // true = include submit
-          this.navigateTo(path);
-        } else if (this.documentType === 'journal' && this.documentData && this.documentData.issn_l) {
-          const path = this.getJournalPath(this.documentData.issn_l, true); // true = include submit
-          this.navigateTo(path);
-        }
-        
-        return;
-      }
+      // Special case for submit step removed - now handled by showReviewStep computed property
+      // This allows the review step to be shown as part of the edit view rather than as a separate URL
       
       if (this.currentStepIndex > this.breadcrumbs.findIndex(s => s.value === step)) {
         // Only allow navigation to previous steps
@@ -1308,6 +1349,13 @@
         // Add more logic here if needed for other steps
       }
     },
+    goBack() {
+      if (this.documentType === 'doi') {
+        this.goToStep("article");
+      } else if (this.documentType === 'journal') {
+        this.goToStep("journal");
+      }
+    },
     goToJournalStep() {
       this.currentStep = 'journal';
       this.$router.push('/fix/journal');
@@ -1321,6 +1369,26 @@
         this.error = null;
         this.loadError = null;
         this.submitError = null;
+        
+        // Reset form state
+        this.documentData = null;
+        this.documentType = null;
+        this.resetCorrections();
+        this.doiInput = '';
+        this.issnInput = '';
+        this.selectedTestDOI = null;
+        this.selectedTestISSN = null;
+        this.email = '';
+        
+        // Set the appropriate step based on the path
+        if (path === '/fix/article') {
+          this.currentStep = 'article';
+        } else if (path === '/fix/journal') {
+          this.currentStep = 'journal';
+        } else if (path === '/fix/contact') {
+          this.currentStep = 'contact';
+        }
+        
         // Navigate to the path
         this.$router.push(path);
       }
@@ -1336,26 +1404,29 @@
       }
       // Only react if the path actually changes
       if (to.path !== from.path) {
-        // Handle back button navigation from submit to edit step
-        if (from.path.endsWith('/submit') && !to.path.endsWith('/submit')) {
-          // Check if navigating back from article submit to article edit
-          if (this.documentType === 'doi' && this.documentData && 
-              to.path === this.getArticlePath(this.documentData.doi)) {
-            this.currentStep = 'edit_article';
-            return;
-          }
-          // Check if navigating back from journal submit to journal edit
-          else if (this.documentType === 'journal' && this.documentData && 
-                   to.path === this.getJournalPath(this.documentData.issn_l)) {
-            this.currentStep = 'edit_journal';
-            return;
-          }
-        }
-        // Reset document data when navigating away from edit pages
-        if (to.path === '/fix/article' || to.path === '/fix/journal') {
+        // No need to handle back button navigation from submit step anymore
+        // since submit is now just a state change within the edit view
+        // Reset state when navigating to main tab pages
+        if (to.path === '/fix/article') {
           this.documentData = null;
           this.documentType = null;
           this.resetCorrections();
+          this.doiInput = '';
+          this.issnInput = '';
+          this.selectedTestDOI = null;
+          this.selectedTestISSN = null;
+          this.email = '';
+          this.currentStep = 'article';
+        } else if (to.path === '/fix/journal') {
+          this.documentData = null;
+          this.documentType = null;
+          this.resetCorrections();
+          this.doiInput = '';
+          this.issnInput = '';
+          this.selectedTestDOI = null;
+          this.selectedTestISSN = null;
+          this.email = '';
+          this.currentStep = 'journal';
         }
         // Example: /fix/article/:prefix/:suffix or /fix/journal/:issn
         const doiWorkMatch = to.path.match(/^\/fix\/article\/([^\/]+)(?:\/([^\/]+))(?:\/submit)?/);
@@ -1488,8 +1559,20 @@
               const path = `/fix/article/${encodeURIComponent(prefix)}/${encodeURIComponent(suffix)}`;
               this.$router.replace(path);
             } else {
-              // If we have document data, set the step to 'submit'
-              this.currentStep = 'submit';
+              // If we have document data and initialStep was 'submit', we should set up the corrections state
+              // but keep the currentStep as 'edit_article' since we no longer have a separate submit step
+              if (this.initialStep === 'submit') {
+                // We'll need to infer what the correction was supposed to be
+                // This is a fallback for any old URLs that might still be in use
+                if (this.documentData.is_oa) {
+                  this.corrections.action = 'Remove';
+                  this.corrections.field = 'best_oa_location.url';
+                } else {
+                  // We can't automatically determine what the user wanted to do here
+                  // Just show the edit screen
+                }
+              }
+              this.currentStep = 'edit_article';
             }
           }, { immediate: true });
         }
@@ -1501,8 +1584,20 @@
             const path = `/fix/journal/${encodeURIComponent(this.initialIssn)}`;
             this.$router.replace(path);
           } else {
-            // If we have document data, set the step to 'submit'
-            this.currentStep = 'submit';
+            // If we have document data and initialStep was 'submit', we should set up the corrections state
+            // but keep the currentStep as 'edit_journal' since we no longer have a separate submit step
+            if (this.initialStep === 'submit') {
+              // We'll need to infer what the correction was supposed to be
+              // This is a fallback for any old URLs that might still be in use
+              if (this.documentData.is_oa) {
+                this.corrections.action = 'Close';
+                this.corrections.field = 'is_oa';
+              } else {
+                // We can't automatically determine what the user wanted to do here
+                // Just show the edit screen
+              }
+            }
+            this.currentStep = 'edit_journal';
           }
         }, { immediate: true });
       }
@@ -1522,14 +1617,15 @@
 .corrections-container {
   position: relative;
   width: 100%;
-  padding-top: 60px;
+  padding-top: 80px;
 }
 .corrections-content {
-  padding-right: 15px; /* Add some padding for better readability */
-  position: relative; /* For absolute positioning of breadcrumbs */
+  padding-right: 15px; 
+  position: relative;
 }
 .corrections-nav-tabs {
-  padding-top: 10px;
+  padding-top: 0px;
+  margin-top: -55px;
 }
 .corrections-initial-step-card {
   min-height: 140px;
@@ -1538,24 +1634,43 @@
   display: flex;
   flex-direction: column;
 }
+.vertical-tab-header {
+  padding: 0px 30px 15px 30px;
+  margin-right: 70px;
+  font-size: 16px;
+  font-weight: 500;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 15px;
+}
 .vertical-tab-item {
   cursor: pointer;
   padding: 10px 30px 10px 30px;
   margin-right: 70px;
-  font-size: 16px;
+  font-size: 14px;
   color: #333;
   border-top-right-radius: 22px;
   border-bottom-right-radius: 22px;
 }
-.vertical-tab-item .v-icon {
+.vertical-tab-item .v-icon,
+.vertical-tab-header .v-icon {
   margin-top: -2px;
+  width: 12px;
 }
-.vertical-tab-item.active {
+.vertical-tab-item.active,
+.vertical-tab-item.active:hover {
   background-color: #ddd;
+}
+.vertical-tab-item:hover {
+  background-color: #eee;
 }
 .corrections-tab-col {
   width: 180px;
   border-radius: none !important;
+}
+.back-button {
+  position: absolute;
+  top: -20px;
+  left: -10px;
 }
 h1 {
   text-align: left;
@@ -1564,7 +1679,7 @@ h1 {
 .page-subtitle {
   font-size: 15px;
   color: #666;
-  margin-top: -6px;
+  margin-top: 0px;
 }
 .breadcrumbs-container {
   position: absolute;
@@ -1572,6 +1687,7 @@ h1 {
   left: 0;
   width: 100%;
   z-index: 1;
+  display: none;
 }
 .breadcrumbs {
   color: #777;
@@ -1601,7 +1717,8 @@ h1 {
   height: 56px !important;
 }
 .v-btn.info-button {
-  padding: 0 10px !important;
+  padding: 5px 10px !important;
+  letter-spacing: normal !important;
 }
 .divider {
   height: 1px;
@@ -1626,6 +1743,9 @@ h1 {
   border-top: 1px solid #ddd;
   border-bottom: 1px solid #ddd;
 }
+.subcard + .subcard {
+  border-top: 1px solid #ddd;
+}
 .status {
   font-weight: bold;
   font-size: 34px;
@@ -1646,20 +1766,18 @@ h1 {
   font-size: 9px;
 }
 .changes-list {
-  padding-left: 10px !important;
-  margin: 10px 0px 20px 10px;
+  padding-left: 0px !important;
+  margin: 10px 0px 20px 0px;
   list-style-type: none;
 }
 .changes-list li {
-  font-size: 14px;
+  font-size: 24px;
 }
 .emoji-icon {
   margin-right: 5px;
-  font-size: 16px;
+  font-size: 24px;
 }
 .inner-header {
-  font-size: 16px;
-  font-weight: 500;
   margin-bottom: 10px;
   color: #333;
 }
