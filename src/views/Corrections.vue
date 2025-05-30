@@ -6,8 +6,10 @@
         <div class="col-3">
           <div class="corrections-nav-tabs vertical-tab-list d-flex flex-column justify-start">
             <div class="vertical-tab-header">
-              <v-icon x-small class="mr-2">fa-bug</v-icon>
-              Fix Unpaywall Errors
+              <div>
+                <v-icon x-small class="mr-2">fa-bug</v-icon>
+                Fix Unpaywall Errors
+              </div>
             </div>
             
             <div
@@ -34,6 +36,10 @@
               <v-icon x-small class="mr-2">fa-question-circle</v-icon>
               Report Another Error
             </div>
+            <a class="vertical-tab-item" href="https://www.youtube.com/watch?v=6qbAs6djMMI" target="_blank">
+              <v-icon x-small class="mr-2">fa-play</v-icon>
+              Video Tutorial
+            </a>
           </div>
         </div>
 
@@ -1445,13 +1451,13 @@
   padding: 10px 30px 10px 30px;
   margin-right: 70px;
   font-size: 14px;
-  color: #333;
+  color: #333 !important;
   border-top-right-radius: 22px;
   border-bottom-right-radius: 22px;
 }
 .vertical-tab-item .v-icon,
 .vertical-tab-header .v-icon {
-  margin-top: -2px;
+  margin-top: -3px;
   width: 12px;
 }
 .vertical-tab-item.active,
@@ -1460,6 +1466,9 @@
 }
 .vertical-tab-item:hover {
   background-color: #eee;
+}
+.vertical-tab-item:hover {
+  text-decoration: none;
 }
 .corrections-tab-col {
   width: 180px;
