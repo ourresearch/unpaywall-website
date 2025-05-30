@@ -126,10 +126,7 @@
           </v-card>
           
           <!-- Loading Card -->
-          <v-card v-if="loading && !documentData" :loading="true" class="py-6 text-center loading-card">
-            <div class="d-flex flex-column align-center justify-center">
-            </div>
-          </v-card>
+          <v-card v-if="loading && !documentData" :loading="true" class="loading-card"></v-card>
           
           <!-- Cards with Data -->
           <template v-if="!loading || documentData">
@@ -505,7 +502,7 @@
                         <v-btn
                           color="primary"
                           @click="submitModal('add_date')"
-                          :disabled="!journalFormValid"
+                          :disabled="!journalForm.alwaysOA && !journalFormValid"
                         >
                           Save
                         </v-btn>
@@ -571,8 +568,8 @@
         type: String,
         default: null
       }
-  },
-  data() {
+    },
+    data() {
     return {
       successMessage: null,
       docId: null, // stores the normalized DOI or ISSN currently being used
@@ -605,8 +602,8 @@
         { text: 'Closed', value: '10.1109/pvsc.1996.564405' }
       ],
       testISSNs: [
-        { text: 'Open', value: 'open_issn' },
-        { text: 'Closed', value: 'closed_issn' }
+        { text: 'Open', value: '2693-8499' },
+        { text: 'Closed', value: '1040-8401' }
       ],
       selectedTestISSN: null,
       // Correction tracking
@@ -635,7 +632,6 @@
       },
       journalFormValid: false,
       // Flow control
-      currentStep: "article", // "article", "journal", "contact", "edit_article", "edit_journal", "add_link", "fix_link", "add_date", "submit",
       previousStep: null, // Tracks the previous step for breadcrumb navigation
       additionalInfoNeeded: false,
       // UI state
@@ -644,6 +640,40 @@
     }
   },
   computed: {
+    currentStep() {
+      const path = this.$route.path;
+      
+      // Check for contact page
+      if (path === '/fix/contact') {
+        return 'contact';
+      }
+      
+      // Check for article with DOI
+      if (path.match(/^\/fix\/article\/[^/]+/)) {
+        // If we have modals open, return the modal step
+        if (this.modals.add_link) return 'add_link';
+        if (this.modals.fix_link) return 'fix_link';
+        if (this.modals.add_date) return 'add_date';
+        
+        return 'edit_article';
+      }
+      
+      // Check for journal with ISSN
+      if (path.match(/^\/fix\/journal\/[^/]+/) && path !== '/fix/journal/') {
+        // If we have modals open, return the modal step
+        if (this.modals.add_date) return 'add_date';
+        
+        return 'edit_journal';
+      }
+      
+      // Check for journal page
+      if (path === '/fix/journal') {
+        return 'journal';
+      }
+      
+      // Default to article page
+      return 'article';
+    },
     showReviewStep() {
       return this.corrections.action && this.corrections.field;
     },
@@ -700,22 +730,17 @@
           title: 'Add Journal Open Access Date',
           subtitle: 'To mark this journal as open access, let us know when it became open access.'
         },
-        'submit': {
-          breadcrumb: 'Submit',
-          title: 'Fix an Article',
-          subtitle: 'Your report will be reviewed by our team and live within a few days.'
-        },
       };
     },
     // Helper method to get breadcrumb info
     breadcrumbs() {
       // For DOI-related steps (edit_article, submit)
       if (this.documentData && this.documentData.doi && 
-          (this.currentStep === 'edit_article' || this.currentStep === 'submit')) {
+          (this.currentStep === 'edit_article')) {
         
         // Base breadcrumbs for all DOI-related steps
         const crumbs = [
-          { text: 'Fix', value: 'article' },
+          { text: 'Fix', value: 'fix' },
           { text: 'Article', value: 'article' },
           { text: this.documentData.doi, value: 'edit_article' }
         ];
@@ -727,11 +752,11 @@
       } 
       // For journal-related steps (edit_journal, submit)
       else if (this.documentData && this.documentData.issn_l && 
-              (this.currentStep === 'edit_journal' || this.currentStep === 'submit')) {
+              (this.currentStep === 'edit_journal')) {
         
         // Base breadcrumbs for all journal-related steps
         const crumbs = [
-          { text: 'Fix', value: 'journal' },
+          { text: 'Fix', value: 'fix' },
           { text: 'Journal', value: 'journal' },
           { text: this.documentData.issn_l, value: 'edit_journal' }
         ];
@@ -792,12 +817,6 @@
       return this.corrections.action && this.corrections.field;
     }
   },
-  watch: {
-    currentStep() {
-      this.error = null;
-      this.loadError = null;
-    }
-  },
   methods: {
     normalizeDOI(doi) {
       return doi.replace(/^https?:\/\/doi\.org\//i, ''); // Remove any https://doi.org/ prefix
@@ -807,103 +826,93 @@
         this.error = 'Please enter a DOI';
         return;
       }
-
+      
       this.loading = true;
       this.error = null;
       this.loadError = null;
-
       this.docId = this.normalizeDOI(this.doiInput);
-      this.documentType = 'doi';
-      // Check for test data first
-      const testData = testDoiData[this.docId];
-      if (testData) {
-        this.documentData = testData;
-        this.successMessage = null;
-        this.currentStep = 'edit_article';
-        this.updateUrlState();
-        this.loading = false;
-        this.initialLoading = false;
-        return;
-      }
-
-      axios.get(this.getApiUrl())
-        .then(resp => {
-          if (!resp.data || Object.keys(resp.data).length === 0) {
-            this.loadError = 'No data found for this DOI.';
-            this.documentData = null;
-          } else {
-            this.documentData = resp.data;
-            this.successMessage = null;
-            this.currentStep = 'edit_article';
-            this.updateUrlState();
-          }
-          this.loading = false;
-          this.initialLoading = false;
-        })
-        .catch(err => {
-          if (err.response && err.response.status === 404) {
-            this.loadError = 'DOI not found.';
-          } else {
-            console.log(err);
-            this.loadError = `Error loading DOI. Please try again later.`;
-          }
-          this.loading = false;
-          this.initialLoading = false;
-        });
+      
+      // Navigate to the article edit page
+      const path = this.getArticlePath(this.docId);
+      this.$router.push(path);
+      
+      // The actual data loading will happen in the $route watcher
     },
     submitISSN() {
       if (!this.issnInput) {
         this.error = 'Please enter an ISSN';
         return;
       }
-
+      
       this.loading = true;
       this.error = null;
-
-      this.docId = this.issnInput;
-      this.documentType = 'journal';
-
-      const testData = testDoiData[this.docId];
+      this.loadError = null;
+      this.docId = this.issnInput.trim();
+      
+      // Navigate to the journal edit page
+      const path = this.getJournalPath(this.docId);
+      this.$router.push(path);
+      
+      // The actual data loading will happen in the $route watcher
+    },
+    loadTestDOI(value) {
+      this.doiInput = value;
+      this.selectedTestDOI = value;
+      this.loading = true;
+      this.error = null;
+      this.loadError = null;
+      
+      // Check if we have test data for this DOI
+      const testData = testDoiData[value];
       if (testData) {
+        // Use test data instead of making an API call
         this.documentData = testData;
+        this.documentType = 'doi';
         this.rawApiResponse = testData;
         this.successMessage = null;
         this.resetCorrections();
-        this.currentStep = 'edit_journal';
-        // Keep the journal breadcrumb in the URL
-        this.updateUrlState();
-        this.loading = false;
         this.initialLoading = false;
-        return;
+        this.loading = false;
+        
+        // Navigate to the article edit page
+        const path = this.getArticlePath(value);
+        this.$router.push(path);
+      } else {
+        // No test data, submit normally
+        this.submitDOI();
       }
-
-      axios.get(this.getApiUrl())
-        .then(response => {
-          this.documentData = response.data;
-          this.documentType = 'journal';
-          this.rawApiResponse = response.data;
-          this.successMessage = null;
-          this.resetCorrections();
-          this.currentStep = 'edit_journal';
-          // Keep the journal breadcrumb in the URL
-          this.updateUrlState();
-        })
-        .catch(err => {
-          if (err.response && err.response.status === 404) {
-            this.error = 'ISSN not found.';
-          } else {
-            console.log(err);
-            this.error = `Error loading journal. Please try again later.`;
-          }
-        })
-        .finally(() => {
-          this.loading = false;
-          this.initialLoading = false;
-        });
+    },
+    loadTestISSN(value) {
+      this.issnInput = value;
+      this.selectedTestISSN = value;
+      this.loading = true;
+      this.error = null;
+      this.loadError = null;
+      
+      // Check if we have test data for this ISSN
+      const testData = testDoiData[value];
+      if (testData) {
+        // Use test data instead of making an API call
+        this.documentData = testData;
+        this.documentType = 'journal';
+        this.rawApiResponse = testData;
+        this.successMessage = null;
+        this.resetCorrections();
+        this.initialLoading = false;
+        this.loading = false;
+        
+        // Navigate to the journal edit page  
+        const path = this.getJournalPath(value);
+        this.$router.push(path);
+      } else {
+        // No test data, submit normally
+        this.submitISSN();
+      }
     },
     getRandomDOI() {
       this.loading = true;
       this.error = null;
+      this.loadError = null; // Clear any previous load errors
       
       axios.get('https://api.openalex.org/works?filter=indexed_in:crossref&sample=1')
         .then(response => {
@@ -911,8 +920,10 @@
           const doi = response.data.results[0].doi;
           const normalizedDOI = this.normalizeDOI(doi);
           
-          // Set the normalized DOI as the input
+          // Set the normalized DOI as the input and document type
           this.doiInput = normalizedDOI;
+          this.docId = normalizedDOI;
+          this.documentType = 'doi';
           
           // Fetch the Unpaywall data
           return axios.get(`https://api.unpaywall.org/${normalizedDOI}?email=team@ourresearch.org`);
@@ -924,12 +935,10 @@
           this.rawApiResponse = response.data;
           this.successMessage = null;
           this.resetCorrections();
-          this.currentStep = 'edit_article';
-          this.updateUrlState();
+          this.$router.push(this.getArticlePath(this.doiInput));
         })
         .catch(err => {
-          console.log(err);
-          this.error = `Error fetching random DOI.`
+          this.error = `Error fetching random DOI: ${err.message}`;
         })
         .finally(() => {
           this.loading = false
@@ -938,12 +947,15 @@
     getRandomJournal() {
       this.loading = true
       this.error = null
+      this.loadError = null // Clear any previous load errors
       
       axios.get('https://api.openalex.org/sources?filter=has_issn:true&sample=1')
         .then(response => {
           const issn = response.data.results[0].issn_l
           this.issnInput = issn
           this.docId = issn;
+          this.documentType = 'journal'; // Set document type
+          
           // Fetch the ISSN data directly instead of calling submitISSN
           return axios.get(`https://api.openalex.org/sources/issn:${issn}`)
         })
@@ -954,73 +966,30 @@
           this.rawApiResponse = response.data;
           this.successMessage = null;
           this.resetCorrections();
-          this.currentStep = 'edit_journal';
-          // Keep the journal breadcrumb in the URL
-          this.updateUrlState();
+          this.$router.push(this.getJournalPath(this.issnInput));
         })
         .catch(err => {
-          console.log(err);
-          this.error = `Error loading random journal. Please try again later.`
+          this.error = `Error loading random journal: ${err.message}`;
         })
         .finally(() => {
           this.loading = false
         })
     },
-    loadTestDOI(value) {
-      const doiValue = value || this.selectedTestDOI;
-      if (!doiValue) return;
-      this.loading = true;
-      try {
-        this.docId = doiValue;
-        const testData = testDoiData[doiValue];
-        if (testData) {
-          this.documentData = testData;
-          this.documentType = 'doi';
-          this.rawApiResponse = testData;
-          this.successMessage = null;
-          this.resetCorrections();
-          this.currentStep = 'edit_article';
-          this.updateUrlState();
-        } else {
-          this.error = 'Test DOI data not found';
-        }
-      } catch (err) {
-        this.error = `Error loading test DOI: ${err.message}`;
-      } finally {
-        this.loading = false;
-      }
-    },
-    loadTestISSN(value) {
-      const issnValue = value || this.selectedTestISSN;
-      if (!issnValue) return;
-      this.loading = true;
-      try {
-        this.docId = issnValue;
-        const testData = testDoiData[issnValue];
-        if (testData) {
-          this.documentData = testData;
-          this.documentType = 'journal';
-          this.rawApiResponse = testData;
-          this.successMessage = null;
-          this.resetCorrections();
-          this.currentStep = 'edit_journal';
-          // Keep the journal breadcrumb in the URL
-          this.updateUrlState();
-        } else {
-          this.error = 'Test ISSN data not found';
-        }
-      } catch (err) {
-        this.error = `Error loading test ISSN: ${err.message}`;
-      } finally {
-        this.loading = false;
-      }
-    },
     getApiUrl() {
-      // Use the admin API endpoint if admin mode is enabled
+      // Construct the API URL based on the document ID
+      if (!this.docId) {
+        this.loadError = 'Unable to construct API URL: No document ID available';
+        return '';
+      }
+      
+      // Use different API endpoints for DOI and journal lookups
       if (this.documentType === 'doi') {
         return `https://api.unpaywall.org/${this.docId}?email=team@ourresearch.org`;
       } else if (this.documentType === 'journal') {
-        return `https://api.unpaywall.org/${this.docId}?email=team@ourresearch.org`;
+        return `https://api.openalex.org/sources/issn:${this.docId}`;
+      } else {
+        this.loadError = 'Unable to determine API endpoint: Unknown document type';
+        return '';
       }
     },
     getBestOALocationUrl() {
@@ -1100,37 +1069,25 @@
       // will automatically show the review section based on corrections state
     },
     handleCorrection(action, field) {
+      this.pendingCorrection.action = action;
+      this.pendingCorrection.field = field;
+      
+      // Apply the correction
       this.corrections.action = action;
       this.corrections.field = field;
-      // Pre-fill form data if needed
-      if (action === 'Correct' && field === 'best_oa_location.url' && this.documentData.best_oa_location) {
-        this.locationForm.url = this.documentData.best_oa_location.url
-        this.locationForm.host_type = this.documentData.best_oa_location.host_type || 'publisher'
-      } else if (action === 'Add' && field === 'best_oa_location.url') {
-        this.locationForm.url = ''
-        this.locationForm.host_type = 'publisher'
+      
+      // Open appropriate modal based on action and field
+      if (action === 'Add' && field === 'best_oa_location.url') {
+        this.openModal('add_link');
+      } else if (action === 'Correct' && field === 'best_oa_location.url') {
+        this.openModal('fix_link');
+      } else if (action === 'Open' && field === 'is_oa') {
+        // For journal OA date
+        this.openModal('add_date');
+      } else {
+        // For actions that don't need additional info
+        this.additionalInfoNeeded = false;
       }
-      // Determine which explicit step is needed
-      if (this.documentType === 'doi') {
-        if (action === 'Add' && field === 'best_oa_location.url') {
-          this.additionalInfoNeeded = true;
-          this.currentStep = 'add_link';
-          return;
-        } else if (action === 'Correct' && field === 'best_oa_location.url') {
-          this.additionalInfoNeeded = true;
-          this.currentStep = 'fix_link';
-          return;
-        }
-      } else if (this.documentType === 'journal') {
-        if (action === 'Open' && field === 'is_oa') {
-          this.additionalInfoNeeded = true;
-          this.currentStep = 'add_date';
-          return;
-        }
-      }
-      // If no additional info needed, we don't need to change the step
-      // The showReviewStep computed property will handle showing the review section
-      this.additionalInfoNeeded = false;
     },
     resetCorrections() {
       this.corrections = {
@@ -1226,382 +1183,223 @@
       return post;
     },    
     resetForm() {
-      // Reset data state
+      // Clear all form data
+      this.doiInput = '';
+      this.issnInput = '';
       this.documentData = null;
       this.documentType = null;
       this.rawApiResponse = null;
-      
-      // Reset corrections state
-      this.resetCorrections();
-      this.pendingCorrection.action = null;
-      this.pendingCorrection.field = null;
-      
-      // Reset form inputs
-      this.doiInput = '';
-      this.issnInput = '';
-      this.email = '';
-      
-      // Reset test data selections
-      this.selectedTestDOI = null;
-      this.selectedTestISSN = null;
-      
-      // Reset UI state
-      this.currentStep = 'article';
-      this.previousStep = null;
+      this.error = null;
+      this.loadError = null;
       this.loading = false;
       this.initialLoading = false;
-      this.additionalInfoNeeded = false;
+      this.selectedTestDOI = null;
+      this.selectedTestISSN = null;
+      this.resetCorrections();
       
       // Reset modal states
       Object.keys(this.modals).forEach(key => {
         this.modals[key] = false;
       });
       
-      // Reset form validation states
-      this.locationFormValid = false;
-      this.journalFormValid = false;
-      
-      // Navigate to initial path if needed
-      if (this.$route.path !== '/fix') {
-        this.$router.push('/fix');
-      }
-    },
-    goToStep(step) {
-      this.successMessage = null;
-      
-      // Handle navigation to initial steps
-      if (step === 'article' || step === 'journal') {
-        // When going back to initial step, reset form and update URL
-        // Reset all state variables
-        this.documentData = null;
-        this.documentType = null;
-        this.rawApiResponse = null;
-        this.resetCorrections();
+      // Reset pending correction
+      if (this.pendingCorrection) {
         this.pendingCorrection.action = null;
         this.pendingCorrection.field = null;
-        this.doiInput = '';
-        this.issnInput = '';
-        this.email = '';
-        this.selectedTestDOI = null;
-        this.selectedTestISSN = null;
-        this.previousStep = null;
-        this.loading = false;
-        this.initialLoading = false;
-        this.additionalInfoNeeded = false;
-        
-        // Reset modal states
-        Object.keys(this.modals).forEach(key => {
-          this.modals[key] = false;
-        });
-        
-        // Set the current step based on the target
-        this.currentStep = step;
-        
-        // Navigate to the appropriate path
-        const path = step === 'article' ? '/fix' : `/fix/${step}`;
-        this.navigateTo(path);
-        return;
       }
       
-      // Handle navigation to edit steps with proper parameters
-      if (step === 'edit_article' && this.documentData && this.documentData.doi) {
-        // Update the current step first to ensure the UI updates correctly
-        this.currentStep = 'edit_article';
-        
-        // Use helper method to generate article path
-        const path = this.getArticlePath(this.documentData.doi);
-        this.navigateTo(path);
-        return;
-      } else if (step === 'edit_journal' && this.documentData && this.documentData.issn_l) {
-        // Update the current step first to ensure the UI updates correctly
-        this.currentStep = 'edit_journal';
-        
-        // Use helper method to generate journal path
-        const path = this.getJournalPath(this.documentData.issn_l);
-        this.navigateTo(path);
-        return;
-      }
+      // Navigate to the appropriate base route based on current step
+      const path = this.currentStep === 'journal' ? '/fix/journal' : 
+                   this.currentStep === 'contact' ? '/fix/contact' : '/fix/article';
       
-      // Set the appropriate edit step based on document type for generic 'edit' step
-      if (step === 'edit') {
-        step = this.documentType === 'doi' ? 'edit_article' : 'edit_journal';
-      }
-      
-      // Special case for submit step removed - now handled by showReviewStep computed property
-      // This allows the review step to be shown as part of the edit view rather than as a separate URL
-      
-      if (this.currentStepIndex > this.breadcrumbs.findIndex(s => s.value === step)) {
-        // Only allow navigation to previous steps
-        this.currentStep = step;
-        // Reset state as needed for each step
-        if (step === 'article') {
-          // When clicking 'Start', reset form and go back to /fix
-          this.resetForm();
-          if (this.$route.path !== '/fix') {
-            this.$router.push('/fix');
+      // Only navigate if we're not already on that path
+      if (this.$route.path !== path) {
+        this.$router.push(path).catch(err => {
+          // Ignore navigation duplicated errors
+          if (err.name !== 'NavigationDuplicated') {
+            throw err;
           }
-        } else if (step === 'edit_article' || step === 'edit_journal') {
-          // Keep document data but reset corrections
-          this.resetCorrections();
-        } else if (step === 'add_link' || step === 'fix_link' || step === 'add_date') {
-          // If going back from review to an additional info step, just update step
-        }
-        // Add more logic here if needed for other steps
+        });
       }
-    },
-    goBack() {
-      if (this.documentType === 'doi') {
-        this.goToStep("article");
-      } else if (this.documentType === 'journal') {
-        this.goToStep("journal");
-      }
-    },
-    goToJournalStep() {
-      this.currentStep = 'journal';
-      this.$router.push('/fix/journal');
     },
     clearSuccessAndNavigate(path) {
-      // Only navigate if we're not already on this path
-      if (this.$route.path !== path) {
-        // Clear success message
-        this.successMessage = null;
-        // Clear any error messages
-        this.error = null;
-        this.loadError = null;
-        this.submitError = null;
-        
-        // Reset form state
-        this.documentData = null;
-        this.documentType = null;
-        this.resetCorrections();
-        this.doiInput = '';
-        this.issnInput = '';
-        this.selectedTestDOI = null;
-        this.selectedTestISSN = null;
-        this.email = '';
-        
-        // Set the appropriate step based on the path
-        if (path === '/fix/article') {
-          this.currentStep = 'article';
-        } else if (path === '/fix/journal') {
-          this.currentStep = 'journal';
-        } else if (path === '/fix/contact') {
-          this.currentStep = 'contact';
+      this.successMessage = null;
+      this.$router.push(path).catch(err => {
+        // Ignore navigation duplicated errors
+        if (err.name !== 'NavigationDuplicated') {
+          throw err;
         }
-        
-        // Navigate to the path
-        this.$router.push(path);
+      });
+    },
+    goBack() {
+      // Navigate back based on current step
+      if (this.currentStep === 'edit_article') {
+        this.$router.push('/fix/article').catch(err => {
+          if (err.name !== 'NavigationDuplicated') {
+            throw err;
+          }
+        });
+      } else if (this.currentStep === 'edit_journal') {
+        this.$router.push('/fix/journal').catch(err => {
+          if (err.name !== 'NavigationDuplicated') {
+            throw err;
+          }
+        });
       }
     },
   },
   watch: {
-    // Watch for browser navigation (forward/back)
-    $route(to, from) {
-      // Handle the contact route
-      if (to.path === '/fix/contact') {
-        this.currentStep = 'contact';
-        return;
-      }
-      // Only react if the path actually changes
-      if (to.path !== from.path) {
-        // No need to handle back button navigation from submit step anymore
-        // since submit is now just a state change within the edit view
-        // Reset state when navigating to main tab pages
-        if (to.path === '/fix/article') {
-          this.documentData = null;
-          this.documentType = null;
-          this.resetCorrections();
-          this.doiInput = '';
-          this.issnInput = '';
-          this.selectedTestDOI = null;
-          this.selectedTestISSN = null;
-          this.email = '';
-          this.currentStep = 'article';
-        } else if (to.path === '/fix/journal') {
-          this.documentData = null;
-          this.documentType = null;
-          this.resetCorrections();
-          this.doiInput = '';
-          this.issnInput = '';
-          this.selectedTestDOI = null;
-          this.selectedTestISSN = null;
-          this.email = '';
-          this.currentStep = 'journal';
-        }
-        // Example: /fix/article/:prefix/:suffix or /fix/journal/:issn
-        const doiWorkMatch = to.path.match(/^\/fix\/article\/([^\/]+)(?:\/([^\/]+))(?:\/submit)?/);
-        const journalMatch = to.path.match(/^\/fix\/journal\/([^\/]+)/);
-        const journalPageMatch = to.path === '/fix/journal';
+    $route: {
+      handler(to, from) {
+        // Only skip if we're navigating to the same path
+        if (from && to.path === from.path) return;
         
-        if (to.path === '/fix') {
-          // Reset form when navigating to /fix
-          this.resetForm();
-        } else if (journalPageMatch) {
-          // Set current step to journal for /fix/journal
-          this.currentStep = 'journal';
-          // Clear any previous data
-          this.documentData = null;
-          this.documentType = null;
-        } else if (doiWorkMatch) {
+        // Handle navigation to main pages - reset form
+        if (to.path === '/fix/article' || to.path === '/fix/journal' || to.path === '/fix/contact') {
+          // Only reset form if we're coming from a different path (not on initial load)
+          if (from) {
+            this.resetForm();
+          }
+          return;
+        }
+        
+        // Handle DOI routes
+        const doiWorkMatch = to.path.match(/^\/fix\/article\/([^/]+)(?:\/([^/]+))?/);
+        if (doiWorkMatch) {
           // Compose DOI from prefix/suffix
           let doi = doiWorkMatch[1];
           if (doiWorkMatch[2]) doi += '/' + doiWorkMatch[2];
           
-          // Check if we already have this data loaded (from test data)
+          // Check if we already have this data loaded
           if (this.documentData && this.documentType === 'doi' && this.documentData.doi === doi) {
-            // We already have this data loaded, no need to make an API call
             return;
           }
           
-          if (doi !== this.doiInput) {
-            this.doiInput = doi;
-            this.issnInput = '';
-            this.initialLoading = true;
-            this.loadError = null;
+          // Load the DOI data
+          this.doiInput = doi;
+          this.issnInput = '';
+          this.initialLoading = true;
+          this.loadError = null;
+          
+          // Check if we have test data for this DOI
+          const testData = testDoiData[doi];
+          if (testData) {
+            // Use test data instead of making an API call
+            this.documentData = testData;
+            this.documentType = 'doi';
+            this.rawApiResponse = testData;
+            this.successMessage = null;
+            this.resetCorrections();
+            this.initialLoading = false;
+            this.loading = false;
+          } else {
+            // No test data, make the API call
+            this.loading = true;
+            this.error = null;
+            this.docId = this.normalizeDOI(doi);
+            this.documentType = 'doi'; // Set document type before getting API URL
             
-            // Check if we have test data for this DOI
-            const testData = testDoiData[doi];
-            if (testData) {
-              // Use test data instead of making an API call
-              this.documentData = testData;
-              this.documentType = 'doi';
-              this.rawApiResponse = testData;
-              this.successMessage = null;
-              this.resetCorrections();
-              this.currentStep = 'edit_article';
-              this.initialLoading = false;
+            const apiUrl = this.getApiUrl();
+            if (!apiUrl) {
+              // If getApiUrl returned empty string, it already set the loadError
               this.loading = false;
-            } else {
-              // No test data, make the API call
-              this.submitDOI();
+              this.initialLoading = false;
+              return;
             }
+            
+            axios.get(apiUrl)
+              .then(response => {
+                this.documentData = response.data;
+                this.documentType = 'doi';
+                this.rawApiResponse = response.data;
+                this.successMessage = null;
+                this.resetCorrections();
+              })
+              .catch(error => {
+                this.loadError = error.response && error.response.data && error.response.data.message 
+                  ? error.response.data.message 
+                  : 'Error loading article data. Please check the DOI and try again.';
+                this.documentData = null;
+                this.documentType = null;
+              })
+              .finally(() => {
+                this.loading = false;
+                this.initialLoading = false;
+              });
           }
-        } else if (journalMatch) {
+          return;
+        }
+        
+        // Handle ISSN routes
+        const journalMatch = to.path.match(/^\/fix\/journal\/([^/]+)/);
+        if (journalMatch) {
           const issn = journalMatch[1];
           
-          // Check if we already have this data loaded (from test data)
+          // Check if we already have this data loaded
           if (this.documentData && this.documentType === 'journal' && this.documentData.issn_l === issn) {
-            // We already have this data loaded, no need to make an API call
             return;
           }
           
-          if (issn !== this.issnInput) {
-            this.issnInput = issn;
-            this.doiInput = '';
-            this.initialLoading = true;
-            this.loadError = null;
+          // Load the ISSN data
+          this.issnInput = issn;
+          this.doiInput = '';
+          this.initialLoading = true;
+          this.loadError = null;
+          
+          // Check if we have test data for this ISSN
+          const testData = testDoiData[issn];
+          if (testData) {
+            // Use test data instead of making an API call
+            this.documentData = testData;
+            this.documentType = 'journal';
+            this.rawApiResponse = testData;
+            this.successMessage = null;
+            this.resetCorrections();
+            this.initialLoading = false;
+            this.loading = false;
+          } else {
+            // No test data, make the API call
+            this.loading = true;
+            this.error = null;
+            this.docId = issn.trim();
+            this.documentType = 'journal'; // Set document type before getting API URL
             
-            // Check if we have test data for this ISSN
-            const testData = testDoiData[issn];
-            if (testData) {
-              // Use test data instead of making an API call
-              this.documentData = testData;
-              this.documentType = 'journal';
-              this.rawApiResponse = testData;
-              this.successMessage = null;
-              this.resetCorrections();
-              this.currentStep = 'edit_journal';
-              this.initialLoading = false;
+            const apiUrl = this.getApiUrl();
+            if (!apiUrl) {
+              // If getApiUrl returned empty string, it already set the loadError
               this.loading = false;
-            } else {
-              // No test data, make the API call
-              this.submitISSN();
+              this.initialLoading = false;
+              return;
             }
+            
+            axios.get(apiUrl)
+              .then(response => {
+                this.documentData = response.data;
+                this.documentType = 'journal';
+                this.rawApiResponse = response.data;
+                this.successMessage = null;
+                this.resetCorrections();
+              })
+              .catch(error => {
+                this.loadError = error.response && error.response.data && error.response.data.message 
+                  ? error.response.data.message 
+                  : 'Error loading journal data. Please check the ISSN and try again.';
+                this.documentData = null;
+                this.documentType = null;
+              })
+              .finally(() => {
+                this.loading = false;
+                this.initialLoading = false;
+              });
           }
-        } else if (to.path === '/fix') {
-          // Reset form if navigated to /fix root
-          this.resetForm();
-        }
-      }
-    },
-    initialDoi: {
-      handler(newVal, oldVal) {
-        if (newVal && newVal !== oldVal) {
-          this.doiInput = newVal;
-          this.initialLoading = true;
-          this.loadError = null;
-          this.submitDOI();
-        }
-      },
-      immediate: true
-    },
-    initialIssn: {
-      handler(newVal, oldVal) {
-        if (newVal && newVal !== oldVal) {
-          this.issnInput = newVal;
-          this.initialLoading = true;
-          this.loadError = null;
-          this.submitISSN();
         }
       },
       immediate: true
     }
   },
   created() {
-    // Handle direct loading of pages
-    if (this.$route.path === '/fix/journal') {
-      this.currentStep = 'journal';
-    } else if (this.$route.path === '/fix/article') {
-      this.currentStep = 'article';
-    }
-    
-    // Handle direct access to submit URLs
-    if (this.initialStep === 'submit') {
-      // If the URL contains /submit but we don't have document data yet,
-      // redirect to the edit page after data loads
-      if (this.initialDoi) {
-        const [prefix, suffix] = this.initialDoi.split('/');
-        if (prefix && suffix) {
-          // We'll redirect in the initialDoi watcher after data loads
-          this.$watch('documentData', function(newVal) {
-            if (!newVal) {
-              // Redirect to edit page if trying to access submit directly without data
-              const path = `/fix/article/${encodeURIComponent(prefix)}/${encodeURIComponent(suffix)}`;
-              this.$router.replace(path);
-            } else {
-              // If we have document data and initialStep was 'submit', we should set up the corrections state
-              // but keep the currentStep as 'edit_article' since we no longer have a separate submit step
-              if (this.initialStep === 'submit') {
-                // We'll need to infer what the correction was supposed to be
-                // This is a fallback for any old URLs that might still be in use
-                if (this.documentData.is_oa) {
-                  this.corrections.action = 'Remove';
-                  this.corrections.field = 'best_oa_location.url';
-                } else {
-                  // We can't automatically determine what the user wanted to do here
-                  // Just show the edit screen
-                }
-              }
-              this.currentStep = 'edit_article';
-            }
-          }, { immediate: true });
-        }
-      } else if (this.initialIssn) {
-        // We'll redirect in the initialIssn watcher after data loads
-        this.$watch('documentData', function(newVal) {
-          if (!newVal) {
-            // Redirect to edit page if trying to access submit directly without data
-            const path = `/fix/journal/${encodeURIComponent(this.initialIssn)}`;
-            this.$router.replace(path);
-          } else {
-            // If we have document data and initialStep was 'submit', we should set up the corrections state
-            // but keep the currentStep as 'edit_journal' since we no longer have a separate submit step
-            if (this.initialStep === 'submit') {
-              // We'll need to infer what the correction was supposed to be
-              // This is a fallback for any old URLs that might still be in use
-              if (this.documentData.is_oa) {
-                this.corrections.action = 'Close';
-                this.corrections.field = 'is_oa';
-              } else {
-                // We can't automatically determine what the user wanted to do here
-                // Just show the edit screen
-              }
-            }
-            this.currentStep = 'edit_journal';
-          }
-        }, { immediate: true });
-      }
-    }
+    // No need to handle initial route setup here anymore
+    // The $route watcher will handle it with immediate: true
   }
 }
 </script>
@@ -1800,10 +1598,6 @@ img.doi-example {
 }
 .loading-card {
   min-height: 160px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 20px;
 }
 .loading-text {
   font-size: 16px;

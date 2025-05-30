@@ -1,5 +1,5 @@
 {
-  "open_issn": {
+  "2693-8499": {
     "id": "https://openalex.org/S4210215801",
     "issn_l": "2693-8499",
     "issn": ["2693-8499", "2096-952X"],
@@ -11,7 +11,7 @@
     "is_in_doaj": true,
     "type": "journal"
   },
-  "closed_issn": {
+  "1040-8401": {
     "id": "https://openalex.org/S73794665",
     "issn_l": "1040-8401",
     "issn": ["1040-8401", "2162-6472"],
