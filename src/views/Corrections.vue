@@ -48,21 +48,6 @@
           <!-- Back Button -->
            <v-btn class="back-button" v-if="documentData" text x-small color="primary" @click="goBack"><v-icon x-small class="mr-2">fa-arrow-left</v-icon> Back</v-btn>
           
-          <!-- Breadcrumbs positioned absolutely above the main content -->
-          <div v-if="currentStep !== 'article' && currentStep !== 'journal' && documentData" class="breadcrumbs-container">
-            <div class="breadcrumbs">
-              <span v-for="(item, index) in visibleBreadcrumbs" :key="item.value">
-                <span
-                  :class="['breadcrumb-step', { active: currentStep === item.value, clickable: !item.disabled }]"
-                  @click="!item.disabled ? goToStep(item.value) : null"
-                >
-                  {{ item.text }}
-                </span>
-                <span v-if="index < visibleBreadcrumbs.length - 1"> &gt; </span>
-              </span>
-            </div>
-          </div>
-          
           <!-- Main content with fixed position -->
           <div class="main-content">
             <h3>{{ pageTitles[0] }}</h3>
@@ -140,7 +125,7 @@
             <!-- Step 1: Get Data -->
             <v-card v-if="!documentData" class="corrections-initial-step-card" style="height: 100px;">
               <!-- Input panel -->
-              <div class="corrections-input-panel d-flex flex-column justify-center py-6 px-10" style="height: 100%;">
+              <div class="corrections-input-panel d-flex flex-column justify-center py-8 px-10" style="height: 100%;">
                 <template v-if="$route.path.startsWith('/fix/article')">
                   <div class="d-flex flex-column">
                     <!-- First row: Input and Submit button -->
@@ -638,7 +623,7 @@
       },
       journalFormValid: false,
       // Flow control
-      previousStep: null, // Tracks the previous step for breadcrumb navigation
+      // UI state
       additionalInfoNeeded: false,
       // UI state
       showDoiInfoDialog: false,
@@ -688,116 +673,57 @@
       return {
         // Initial steps
         'fix': {
-          breadcrumb: 'Fix',
+
           title: 'Fix Unpaywall Errors',
           subtitle: 'Sometimes Unpaywall makes errors. You can fix them here. Corrections will show up in a few days.'
         },
         'article': {
-          breadcrumb: 'Fix an Article',
+
           title: 'Fix an Article',
           subtitle: 'Sometimes Unpaywall makes errors. You can make fixes to articles here. Corrections will show up in a few days.'
         },
         'journal': {
-          breadcrumb: 'Fix a Journal',
+
           title: 'Fix a Journal',
           subtitle: 'Sometimes Unpaywall makes errors. You can make fixes to jounrals here. Corrections will show up in a few days.'
         },
         'contact': {
-          breadcrumb: 'Other',
+
           title: 'Report Another Error',
           subtitle: 'Sometimes Unpaywall makes errors. To report other issues, please contact us.'
         },
         
         // Edit steps
         'edit_article': {
-          breadcrumb: 'Article',
+
           title: 'Fix an Article',
           subtitle: 'Review what Unpaywall currently thinks about this article then fix if needed.'
         },
         'edit_journal': {
-          breadcrumb: 'Journal',
+
           title: 'Fix a Journal',
           subtitle: 'Review what Unpaywall currently thinks about this journal then fix if needed.'
         },
         
         // Additional steps
         'add_link': {
-          breadcrumb: 'Add Link',
+
           title: 'Add Open Access Link',
           subtitle: 'To mark this work as open access, Unpaywall needs a URL where the work is freely available.'
         },
         'fix_link': {
-          breadcrumb: 'Fix Link',
+
           title: 'Fix Open Access Link',
           subtitle: 'Correct the link to the open access version of this work.'
         },
         'add_date': {
-          breadcrumb: 'Add Date',
+
           title: 'Add Journal Open Access Date',
           subtitle: 'To mark this journal as open access, let us know when it became open access.'
         },
       };
     },
-    // Helper method to get breadcrumb info
-    breadcrumbs() {
-      // For DOI-related steps (edit_article, submit)
-      if (this.documentData && this.documentData.doi && 
-          (this.currentStep === 'edit_article')) {
-        
-        // Base breadcrumbs for all DOI-related steps
-        const crumbs = [
-          { text: 'Fix', value: 'fix' },
-          { text: 'Article', value: 'article' },
-          { text: this.documentData.doi, value: 'edit_article' }
-        ];
-        
-        // Mark the DOI as disabled/current if we're on edit_article
-        crumbs[2].disabled = true;
-        
-        return crumbs;
-      } 
-      // For journal-related steps (edit_journal, submit)
-      else if (this.documentData && this.documentData.issn_l && 
-              (this.currentStep === 'edit_journal')) {
-        
-        // Base breadcrumbs for all journal-related steps
-        const crumbs = [
-          { text: 'Fix', value: 'fix' },
-          { text: 'Journal', value: 'journal' },
-          { text: this.documentData.issn_l, value: 'edit_journal' }
-        ];
-        
-        // Mark the ISSN as disabled/current if we're on edit_journal
-        crumbs[2].disabled = true;
-        
-        return crumbs;
-      } 
-      // For initial steps
-      else if (this.currentStep === 'article' || this.currentStep === 'journal') {
-        return [
-          { text: 'Fix', value: this.currentStep }
-        ];
-      } 
-      // For contact page
-      else if (this.currentStep === 'contact') {
-        return [
-          { text: 'Other', value: 'contact' }
-        ];
-      }
-      
-      // For other steps, use the stepInfo configuration
-      return Object.entries(this.stepInfo).map(([value, info]) => ({
-        text: info.breadcrumb,
-        value
-      }));
-    },
-    visibleBreadcrumbs() {
-      return this.breadcrumbs;
-    },
-    currentBreadcrumbIndex() {
-      const currentStepIndex = this.breadcrumbs.findIndex(b => b.value === this.currentStep);
-      return currentStepIndex >= 0 ? currentStepIndex : this.breadcrumbs.length - 1;
-    },
+
     pageTitles() {
       // Get the step info for the current step
       const info = this.stepInfo[this.currentStep] || {
@@ -810,9 +736,7 @@
         info.subtitle
       ];
     },
-    currentStepIndex() {
-      return this.breadcrumbs.findIndex(step => step.value === this.currentStep);
-    },    
+    
     showOADateRow() {
       return this.documentType === 'journal' && 
              this.corrections.action === 'Open' && 
@@ -918,68 +842,40 @@
     getRandomDOI() {
       this.loading = true;
       this.error = null;
-      this.loadError = null; // Clear any previous load errors
-      
+      this.loadError = null;
+
       axios.get('https://api.openalex.org/works?filter=indexed_in:crossref&sample=1')
         .then(response => {
           // Get the DOI and normalize it (remove https://doi.org/ prefix)
           const doi = response.data.results[0].doi;
           const normalizedDOI = this.normalizeDOI(doi);
-          
-          // Set the normalized DOI as the input and document type
-          this.doiInput = normalizedDOI;
-          this.docId = normalizedDOI;
-          this.documentType = 'doi';
-          
-          // Fetch the Unpaywall data
-          return axios.get(`https://api.unpaywall.org/${normalizedDOI}?email=team@ourresearch.org`);
-        })
-        .then(response => {
-          // Set the document data to move to step 2
-          this.documentData = response.data;
-          this.documentType = 'doi';
-          this.rawApiResponse = response.data;
-          this.successMessage = null;
-          this.resetCorrections();
-          this.$router.push(this.getArticlePath(this.doiInput));
+          // Only navigate; let the watcher handle state and data fetching
+          this.$router.push(this.getArticlePath(normalizedDOI));
         })
         .catch(err => {
           this.error = `Error fetching random DOI: ${err.message}`;
         })
         .finally(() => {
-          this.loading = false
-        })
+          this.loading = false;
+        });
     },
     getRandomJournal() {
-      this.loading = true
-      this.error = null
-      this.loadError = null // Clear any previous load errors
-      
+      this.loading = true;
+      this.error = null;
+      this.loadError = null;
+
       axios.get('https://api.openalex.org/sources?filter=has_issn:true&sample=1')
         .then(response => {
-          const issn = response.data.results[0].issn_l
-          this.issnInput = issn
-          this.docId = issn;
-          this.documentType = 'journal'; // Set document type
-          
-          // Fetch the ISSN data directly instead of calling submitISSN
-          return axios.get(`https://api.openalex.org/sources/issn:${issn}`)
-        })
-        .then(response => {
-          // Set the document data to move to step 2
-          this.documentData = response.data;
-          this.documentType = 'journal';
-          this.rawApiResponse = response.data;
-          this.successMessage = null;
-          this.resetCorrections();
-          this.$router.push(this.getJournalPath(this.issnInput));
+          const issn = response.data.results[0].issn_l;
+          // Only navigate; let the watcher handle state and data fetching
+          this.$router.push(this.getJournalPath(issn));
         })
         .catch(err => {
           this.error = `Error loading random journal: ${err.message}`;
         })
         .finally(() => {
-          this.loading = false
-        })
+          this.loading = false;
+        });
     },
     getApiUrl() {
       // Construct the API URL based on the document ID
@@ -1055,8 +951,7 @@
       this.pendingCorrection.field = null;
     },
     submitModal(modalName) {
-      // Store the modal name as previousStep for breadcrumb navigation
-      this.previousStep = modalName;
+
       
       // Close the modal
       this.modals[modalName] = false;
@@ -1487,33 +1382,6 @@ h1 {
   font-size: 15px;
   color: #666;
   margin-top: 0px;
-}
-.breadcrumbs-container {
-  position: absolute;
-  top: -30px;
-  left: 0;
-  width: 100%;
-  z-index: 1;
-  display: none;
-}
-.breadcrumbs {
-  color: #777;
-  font-size: 12px;
-  font-weight: 500;
-  display: inline-block;
-}
-.breadcrumb-step {
-  cursor: pointer;
-}
-.breadcrumb-step.active {
-  color: #777;
-  font-weight: 500;
-}
-.breadcrumb-step.clickable {
-  color: #1976D2; /* Vuetify primary blue */
-}
-.breadcrumb-step.clickable:hover {
-  text-decoration: underline;
 }
 .correct-label {
   font-size: 18px;
