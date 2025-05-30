@@ -309,7 +309,7 @@
                       <template v-if="documentData.is_oa">
                         <v-btn
                           large
-                          color="red lighten-2"
+                          color="red"
                           dark
                           class="text-none"
                           @click="corrections.action = 'Close'; corrections.field = 'is_oa';"
