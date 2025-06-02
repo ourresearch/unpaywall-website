@@ -1,9 +1,9 @@
 <template>
   <div class="page corrections-page">
     <div class="corrections-container">
-      <div class="row no-gutters">
+      <div class="row no-gutters" :class="{'px-4': $vuetify.breakpoint.smAndDown}">
         <!-- Navigation Tabs to the left of all content -->
-        <div class="col-3">
+        <div class="col-12 col-sm-3">
           <div class="corrections-nav-tabs vertical-tab-list d-flex flex-column justify-start">
             <div class="vertical-tab-header">
               <div>
@@ -11,40 +11,41 @@
                 Fix Unpaywall Errors
               </div>
             </div>
-            
-            <div
-              class="vertical-tab-item"
-              :class="{ active: $route.path.startsWith('/fix/article') }"
-              @click="clearSuccessAndNavigate('/fix/article')"
-            >
-              <v-icon x-small class="mr-2">fa-file</v-icon>
-              Fix an Article
+            <div class="d-flex flex-wrap d-sm-flex-row">
+              <div
+                class="vertical-tab-item"
+                :class="{ active: $route.path.startsWith('/fix/article') }"
+                @click="clearSuccessAndNavigate('/fix/article')"
+              >
+                <v-icon x-small class="mr-2">fa-file</v-icon>
+                Fix an Article
+              </div>
+              <div
+                class="vertical-tab-item"
+                :class="{ active: $route.path.startsWith('/fix/journal') }"
+                @click="clearSuccessAndNavigate('/fix/journal')"
+              >
+                <v-icon x-small class="mr-2">fa-book</v-icon>
+                Fix a Journal
+              </div>
+              <div
+                class="vertical-tab-item"
+                :class="{ active: $route.path.startsWith('/fix/contact') }"
+                @click="clearSuccessAndNavigate('/fix/contact')"
+              >
+                <v-icon x-small class="mr-2">fa-question-circle</v-icon>
+                Report Another Error
+              </div>
+              <a class="vertical-tab-item" href="https://www.youtube.com/watch?v=6qbAs6djMMI" target="_blank">
+                <v-icon x-small class="mr-2">fa-play</v-icon>
+                Video Tutorial
+              </a>
             </div>
-            <div
-              class="vertical-tab-item"
-              :class="{ active: $route.path.startsWith('/fix/journal') }"
-              @click="clearSuccessAndNavigate('/fix/journal')"
-            >
-              <v-icon x-small class="mr-2">fa-book</v-icon>
-              Fix a Journal
-            </div>
-            <div
-              class="vertical-tab-item"
-              :class="{ active: $route.path.startsWith('/fix/contact') }"
-              @click="clearSuccessAndNavigate('/fix/contact')"
-            >
-              <v-icon x-small class="mr-2">fa-question-circle</v-icon>
-              Report Another Error
-            </div>
-            <a class="vertical-tab-item" href="https://www.youtube.com/watch?v=6qbAs6djMMI" target="_blank">
-              <v-icon x-small class="mr-2">fa-play</v-icon>
-              Video Tutorial
-            </a>
           </div>
         </div>
 
         <!-- Main Content Area -->
-        <div class="col-7 corrections-content">
+        <div class="col-12 col-sm-7 corrections-content">
           <!-- Back Button -->
            <v-btn class="back-button" v-if="documentData" text x-small color="primary" @click="goBack"><v-icon x-small class="mr-2">fa-arrow-left</v-icon> Back</v-btn>
           
@@ -508,7 +509,7 @@
         </div>
         
         <!-- Right margin -->
-        <div class="col-3"></div> 
+        <div class="col-12 col-sm-3"></div> 
       </div>
     </div>
     
@@ -1346,6 +1347,7 @@
   padding: 10px 30px 10px 30px;
   margin-right: 70px;
   font-size: 14px;
+  min-width: 150px;
   color: #333 !important;
   border-top-right-radius: 22px;
   border-bottom-right-radius: 22px;
@@ -1364,6 +1366,23 @@
 }
 .vertical-tab-item:hover {
   text-decoration: none;
+}
+/* Mobile only (xs) */
+@media (max-width: 599px) {
+  .vertical-tab-header {
+    margin-left: 20px;
+    padding: 0px;
+  }
+  .vertical-tab-item {
+    font-size: 12px;
+    width: 200px;
+    margin: 0px;
+    padding: 10px 20px;
+    border-radius: 22px;
+  }
+  .vertical-tab-list {
+    margin-bottom: 30px;
+  }
 }
 .corrections-tab-col {
   width: 180px;
