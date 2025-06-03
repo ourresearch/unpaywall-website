@@ -109,6 +109,7 @@ export default new Router({
       component: Corrections,
       props: { showDoiOnly: true }
     },
+    // Catch-all route for article corrections with DOI
     {
       path: '/fix/journal',
       component: Corrections,

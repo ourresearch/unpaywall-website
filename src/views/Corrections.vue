@@ -919,10 +919,10 @@
       
       let path;
       if (this.documentType === 'doi') {
-        let doi = this.doiInput;
-        path = `/fix/article/${doi}`;
+        // Use getArticlePath to ensure consistent DOI encoding
+        path = this.getArticlePath(this.doiInput);
       } else if (this.documentType === 'journal') {
-        path = `/fix/journal/${this.documentData.issn_l}`;
+        path = this.getJournalPath(this.documentData.issn_l);
       }
       
       // Only update if the path is different from current
@@ -1165,12 +1165,11 @@
           return;
         }
         
-        // Handle DOI routes
-        const doiWorkMatch = to.path.match(/^\/fix\/article\/([^/]+)(?:\/([^/]+))?/);
+        // Handle DOI routes - match everything after /fix/article/ as the DOI
+        const doiWorkMatch = to.path.match(/^\/fix\/article\/(.+)/);
         if (doiWorkMatch) {
-          // Compose DOI from prefix/suffix
-          let doi = doiWorkMatch[1];
-          if (doiWorkMatch[2]) doi += '/' + doiWorkMatch[2];
+          // The entire match after /fix/article/ is the DOI
+          const doi = decodeURIComponent(doiWorkMatch[1]);
           
           // Check if we already have this data loaded
           if (this.documentData && this.documentType === 'doi' && this.documentData.doi === doi) {
