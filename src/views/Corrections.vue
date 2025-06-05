@@ -389,8 +389,8 @@
                   <!-- Add Link Modal -->
                   <v-dialog v-model="modals.add_link" max-width="600px">
                     <v-card>
-                      <v-card-title class="headline">{{ stepInfo['add_link'].title }}</v-card-title>
-                      <v-card-subtitle>{{ stepInfo['add_link'].subtitle }}</v-card-subtitle>
+                      <v-card-title class="headline">Add Open Access Link</v-card-title>
+                      <v-card-subtitle>To mark this work as open access, Unpaywall needs a URL where the work is freely available.</v-card-subtitle>
                       <v-card-text>
                         <v-form ref="locationForm" v-model="locationFormValid">
                           <v-text-field
@@ -404,6 +404,9 @@
                             label="URL where the work is freely available"
                           ></v-text-field>
                         </v-form>
+                        <div v-if="isLocationUrlDomainBlocked" class="error--text mt-1 pa-0" style="font-size: 12px;">
+                          URLs from {{ currentBlockedDomain }} are not allowed.
+                        </div>
                       </v-card-text>
                       <v-card-actions>
                         <v-spacer></v-spacer>
@@ -413,7 +416,7 @@
                         <v-btn
                           color="primary"
                           @click="submitModal('add_link')"
-                          :disabled="!locationFormValid"
+                          :disabled="!locationFormValid || isLocationUrlDomainBlocked"
                         >
                           Save
                         </v-btn>
@@ -424,8 +427,8 @@
                   <!-- Fix Link Modal -->
                   <v-dialog v-model="modals.fix_link" max-width="600px">
                     <v-card>
-                      <v-card-title class="headline">{{ stepInfo['fix_link'].title }}</v-card-title>
-                      <v-card-subtitle>{{ stepInfo['fix_link'].subtitle }}</v-card-subtitle>
+                      <v-card-title class="headline">Fix Open Access Link</v-card-title>
+                      <v-card-subtitle>Correct the link to the open access version of this work.</v-card-subtitle>
                       <v-card-text>
                         <v-form ref="locationForm" v-model="locationFormValid">
                           <v-text-field
@@ -439,6 +442,9 @@
                             label="Correct URL for this work"
                           ></v-text-field>
                         </v-form>
+                        <div v-if="isLocationUrlDomainBlocked" class="error--text mt-1 pa-0" style="font-size: 12px;">
+                          URLs from {{ currentBlockedDomain }} are not allowed.
+                        </div>
                       </v-card-text>
                       <v-card-actions>
                         <v-spacer></v-spacer>
@@ -448,7 +454,7 @@
                         <v-btn
                           color="primary"
                           @click="submitModal('fix_link')"
-                          :disabled="!locationFormValid"
+                          :disabled="!locationFormValid || isLocationUrlDomainBlocked"
                         >
                           Save
                         </v-btn>
@@ -459,8 +465,8 @@
                   <!-- Add Date Modal -->
                   <v-dialog v-model="modals.add_date" max-width="600px">
                     <v-card>
-                      <v-card-title class="headline">{{ stepInfo['add_date'].title }}</v-card-title>
-                      <v-card-subtitle>{{ stepInfo['add_date'].subtitle }}</v-card-subtitle>
+                      <v-card-title class="headline">Add Journal Open Access Date</v-card-title>
+                      <v-card-subtitle>To mark this journal as open access, let us know when it became open access.</v-card-subtitle>
                       <v-card-text>
                         <v-form ref="journalForm" v-model="journalFormValid">
                           <v-radio-group v-model="journalForm.alwaysOA" class="mt-3">
@@ -617,7 +623,8 @@
         url: '',
         host_type: 'publisher'
       },
-      locationFormValid: false,
+      locationFormValid: true,
+      blockedDomains: ['sci-hub.se'],
       journalForm: {
         oa_date: new Date().getFullYear().toString(),
         alwaysOA: false
@@ -632,6 +639,22 @@
     }
   },
   computed: {
+    currentBlockedDomain() {
+      if (!this.locationForm || !this.locationForm.url) return null;
+      const hostname = this.getHostname(this.locationForm.url);
+      if (hostname) {
+        const lowerHostname = hostname.toLowerCase();
+        for (const domain of this.blockedDomains) {
+          if (lowerHostname === domain.toLowerCase()) {
+            return domain; // Return the matched domain from the list
+          }
+        }
+      }
+      return null;
+    },
+    isLocationUrlDomainBlocked() {
+      return !!this.currentBlockedDomain;
+    },
     currentStep() {
       const path = this.$route.path;
       
@@ -707,21 +730,10 @@
         },
         
         // Additional steps
-        'add_link': {
-
-          title: 'Add Open Access Link',
-          subtitle: 'To mark this work as open access, Unpaywall needs a URL where the work is freely available.'
-        },
-        'fix_link': {
-
-          title: 'Fix Open Access Link',
-          subtitle: 'Correct the link to the open access version of this work.'
-        },
-        'add_date': {
-
-          title: 'Add Journal Open Access Date',
-          subtitle: 'To mark this journal as open access, let us know when it became open access.'
-        },
+        'add_link': {},
+        'fix_link': {},
+        'add_date': {},
+        
       };
     },
 
@@ -749,6 +761,21 @@
     }
   },
   methods: {
+    getHostname(url) {
+      if (!url) return null;
+      let fullUrl = url;
+      // Check if the URL starts with a scheme (e.g., http:, https:, ftp:)
+      if (!/^[a-zA-Z][a-zA-Z\d+\-.]*:/.test(url)) {
+        fullUrl = `http://${url}`;
+      }
+      try {
+        const urlObj = new URL(fullUrl);
+        return urlObj.hostname;
+      } catch (e) {
+        // console.error("Invalid URL for hostname extraction:", e, "Original URL:", url);
+        return null; // Invalid URL
+      }
+    },
     normalizeDOI(doi) {
       return doi.replace(/^https?:\/\/doi\.org\//i, ''); // Remove any https://doi.org/ prefix
     },
