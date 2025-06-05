@@ -408,6 +408,9 @@
                           URLs from {{ currentBlockedDomain }} are not allowed.
                         </div>
                       </v-card-text>
+                      <v-card-text>
+                        Note: Full-text may be available to you through an institutional subscription. Please be sure this link is actually available to everyone without a subscription. 
+                      </v-card-text>
                       <v-card-actions>
                         <v-spacer></v-spacer>
                         <v-btn color="grey darken-1" text @click="closeModal('add_link')">
@@ -445,6 +448,9 @@
                         <div v-if="isLocationUrlDomainBlocked" class="error--text mt-1 pa-0" style="font-size: 12px;">
                           URLs from {{ currentBlockedDomain }} are not allowed.
                         </div>
+                      </v-card-text>
+                      <v-card-text>
+                        Note: Full-text may be available to you through an institutional subscription. Please be sure this link is actually available to everyone without a subscription. 
                       </v-card-text>
                       <v-card-actions>
                         <v-spacer></v-spacer>
@@ -630,10 +636,7 @@
         alwaysOA: false
       },
       journalFormValid: false,
-      // Flow control
-      // UI state
       additionalInfoNeeded: false,
-      // UI state
       showDoiInfoDialog: false,
       isAdminMode: 'admin' in this.$route.query,
     }
