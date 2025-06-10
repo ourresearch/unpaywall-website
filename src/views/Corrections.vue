@@ -292,7 +292,7 @@
                           class="text-none"
                           @click="openModal('add_link'); pendingCorrection.action = 'Add'; pendingCorrection.field = 'best_oa_location.url';"
                         >
-                          No, it's free to read
+                          No, it's open access
                         </v-btn>
                       </template>
                     </template>
