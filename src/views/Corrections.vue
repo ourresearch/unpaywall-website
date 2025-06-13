@@ -3,7 +3,7 @@
     <div class="corrections-container">
       <div class="row no-gutters" :class="{'px-4': $vuetify.breakpoint.smAndDown}">
         <!-- Navigation Tabs to the left of all content -->
-        <div class="col-12 col-sm-3">
+        <div class="col-12 col-sm-4 col-lg-3">
           <div class="corrections-nav-tabs vertical-tab-list d-flex flex-column justify-start">
             <div class="vertical-tab-header">
               <div>
@@ -45,7 +45,7 @@
         </div>
 
         <!-- Main Content Area -->
-        <div class="col-12 col-sm-7 corrections-content">
+        <div class="col-12 col-sm-7 col-lg-8 corrections-content">
           <!-- Back Button -->
            <v-btn class="back-button" v-if="documentData" text x-small color="primary" @click="goBack"><v-icon x-small class="mr-2">fa-arrow-left</v-icon> Back</v-btn>
           
@@ -1328,10 +1328,6 @@
       immediate: true
     }
   },
-  created() {
-    // No need to handle initial route setup here anymore
-    // The $route watcher will handle it with immediate: true
-  }
 }
 </script>
 
@@ -1373,6 +1369,7 @@
 }
 .vertical-tab-item {
   cursor: pointer;
+  flex-basis: 100%;
   padding: 10px 30px 10px 30px;
   margin-right: 70px;
   font-size: 14px;
@@ -1405,6 +1402,7 @@
   .vertical-tab-item {
     font-size: 12px;
     width: 200px;
+    flex-basis: 40%;
     margin: 0px;
     padding: 10px 20px;
     border-radius: 22px;
