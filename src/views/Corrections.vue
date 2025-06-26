@@ -3,7 +3,7 @@
     <div class="corrections-container">
       <div class="row no-gutters" :class="{'px-4': $vuetify.breakpoint.smAndDown}">
         <!-- Navigation Tabs to the left of all content -->
-        <div class="col-12 col-sm-4 col-lg-3">
+        <div class="col-12 col-sm-4 col-lg-3 mb-4">
           <div class="corrections-nav-tabs vertical-tab-list d-flex flex-column justify-start">
             <div class="vertical-tab-header">
               <div>
@@ -45,7 +45,7 @@
         </div>
 
         <!-- Main Content Area -->
-        <div class="col-12 col-sm-7 col-lg-8 corrections-content">
+        <div class="col-12 col-sm-7 col-lg-8 corrections-content" style="max-width: 800px;">
           <!-- Back Button -->
            <v-btn class="back-button" v-if="documentData" text x-small color="primary" @click="goBack"><v-icon x-small class="mr-2">fa-arrow-left</v-icon> Back</v-btn>
           
