@@ -103,7 +103,6 @@ export default new Router({
       path: '/fix',
       redirect: '/fix/article'
     },
-
     {
       path: '/fix/article',
       component: Corrections,

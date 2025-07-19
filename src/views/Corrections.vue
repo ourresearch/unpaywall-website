@@ -389,7 +389,7 @@
                   <!-- Add Link Modal -->
                   <v-dialog v-model="modals.add_link" max-width="600px">
                     <v-card>
-                      <v-card-title class="headline">Add Open Access Link</v-card-title>
+                      <v-card-title class="mb-2">Add Open Access Link</v-card-title>
                       <v-card-subtitle>To mark this work as open access, Unpaywall needs a URL where the work is freely available.</v-card-subtitle>
                       <v-card-text>
                         <v-form ref="locationForm" v-model="locationFormValid">
@@ -409,7 +409,11 @@
                         </div>
                       </v-card-text>
                       <v-card-text>
-                        Note: Full-text may be available to you through an institutional subscription. Please be sure this link is actually available to everyone without a subscription. 
+                        <v-alert type="warning" v-if="isAcademicNetwork">
+                          <b>You are visiting from an academic network.</b>
+                          <br/>
+                          Please be sure this URL is open for everyone by checking the page for signs of institutional subscription or by opening the URL from another network like your phone's.
+                        </v-alert>
                       </v-card-text>
                       <v-card-actions>
                         <v-spacer></v-spacer>
@@ -430,7 +434,7 @@
                   <!-- Fix Link Modal -->
                   <v-dialog v-model="modals.fix_link" max-width="600px">
                     <v-card>
-                      <v-card-title class="headline">Fix Open Access Link</v-card-title>
+                      <v-card-title class="mb-2">Fix Open Access Link</v-card-title>
                       <v-card-subtitle>Correct the link to the open access version of this work.</v-card-subtitle>
                       <v-card-text>
                         <v-form ref="locationForm" v-model="locationFormValid">
@@ -450,7 +454,11 @@
                         </div>
                       </v-card-text>
                       <v-card-text>
-                        Note: Full-text may be available to you through an institutional subscription. Please be sure this link is actually available to everyone without a subscription. 
+                        <v-alert type="warning" v-if="isAcademicNetwork">
+                          <b>You are visiting from an academic network.</b>
+                          <br/>
+                          Please be sure this URL is open for everyone by checking the page for signs of institutional subscription or by opening the URL from another network like your phone's.
+                        </v-alert>
                       </v-card-text>
                       <v-card-actions>
                         <v-spacer></v-spacer>
@@ -471,7 +479,7 @@
                   <!-- Add Date Modal -->
                   <v-dialog v-model="modals.add_date" max-width="600px">
                     <v-card>
-                      <v-card-title class="headline">Add Journal Open Access Date</v-card-title>
+                      <v-card-title>Add Journal Open Access Date</v-card-title>
                       <v-card-subtitle>To mark this journal as open access, let us know when it became open access.</v-card-subtitle>
                       <v-card-text>
                         <v-form ref="journalForm" v-model="journalFormValid">
@@ -528,7 +536,7 @@
     <!-- DOI Info Dialog -->
     <v-dialog v-model="showDoiInfoDialog" max-width="700">
       <v-card>
-        <v-card-title class="headline">What is a DOI?</v-card-title>
+        <v-card-title>What is a DOI?</v-card-title>
         <v-card-text>
           <p>A DOI (Digital Object Identifier) is a unique and persistent identifier used to identify academic, professional, and research content.</p>
           <p>DOIs typically look like this: <code>10.1016/j.cell.2007.11.019</code></p>
@@ -638,6 +646,7 @@
       journalFormValid: false,
       additionalInfoNeeded: false,
       showDoiInfoDialog: false,
+      isAcademicNetwork: false,
       isAdminMode: 'admin' in this.$route.query,
     }
   },
@@ -698,48 +707,32 @@
     // Single source of truth for all step information
     stepInfo() {
       return {
-        // Initial steps
         'fix': {
-
           title: 'Fix Unpaywall Errors',
           subtitle: 'Sometimes Unpaywall makes errors. You can fix them here. Corrections will show up in a few days.'
         },
         'article': {
-
           title: 'Fix an Article',
           subtitle: 'Sometimes Unpaywall makes errors. You can make fixes to articles here. Corrections will show up in a few days.'
         },
         'journal': {
-
           title: 'Fix a Journal',
           subtitle: 'Sometimes Unpaywall makes errors. You can make fixes to jounrals here. Corrections will show up in a few days.'
         },
         'contact': {
-
           title: 'Report Another Error',
           subtitle: 'Sometimes Unpaywall makes errors. To report other issues, please contact us.'
         },
-        
-        // Edit steps
         'edit_article': {
-
           title: 'Fix an Article',
           subtitle: 'Review what Unpaywall currently thinks about this article then fix if needed.'
         },
         'edit_journal': {
-
           title: 'Fix a Journal',
           subtitle: 'Review what Unpaywall currently thinks about this journal then fix if needed.'
         },
-        
-        // Additional steps
-        'add_link': {},
-        'fix_link': {},
-        'add_date': {},
-        
       };
     },
-
     pageTitles() {
       // Get the step info for the current step
       const info = this.stepInfo[this.currentStep] || {
@@ -752,7 +745,6 @@
         info.subtitle
       ];
     },
-    
     showOADateRow() {
       return this.documentType === 'journal' && 
              this.corrections.action === 'Open' && 
@@ -982,8 +974,6 @@
       this.pendingCorrection.field = null;
     },
     submitModal(modalName) {
-
-      
       // Close the modal
       this.modals[modalName] = false;
       
@@ -996,9 +986,6 @@
       // Clear the pending correction
       this.pendingCorrection.action = null;
       this.pendingCorrection.field = null;
-      
-      // No need to navigate to submit step anymore - the showReviewStep computed property
-      // will automatically show the review section based on corrections state
     },
     handleCorrection(action, field) {
       this.pendingCorrection.action = action;
@@ -1164,7 +1151,6 @@
       });
     },
     goBack() {
-      // Navigate back based on current step
       if (this.currentStep === 'edit_article') {
         this.$router.push('/fix/article').catch(err => {
           if (err.name !== 'NavigationDuplicated') {
@@ -1177,6 +1163,23 @@
             throw err;
           }
         });
+      }
+    },
+    async getIP() {
+      try {
+        const response = await axios.get('https://api.ipify.org?format=json');
+        const data = response.data;
+        return data.ip;
+      } catch (error) {
+        return null;
+      }
+    },
+    async checkAcademicNetwork() {
+      const ip = await this.getIP();
+      if (ip) {
+        const response = await axios.get(`https://api.ipregistry.co/${ip}?key=ira_eSftkFvhJ5DjGZ7GRIJHXqmo4Wm1122x74ob`);
+        const data = response.data;
+        this.isAcademicNetwork = data.company.type === "education";
       }
     },
   },
@@ -1217,6 +1220,7 @@
           if (testData) {
             // Use test data instead of making an API call
             this.documentData = testData;
+            this.docId = this.normalizeDOI(doi);
             this.documentType = 'doi';
             this.rawApiResponse = testData;
             this.successMessage = null;
@@ -1328,6 +1332,9 @@
       immediate: true
     }
   },
+  mounted() {
+    this.checkAcademicNetwork();
+  }
 }
 </script>
 
