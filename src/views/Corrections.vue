@@ -158,7 +158,13 @@
                   </div>
                 </template>
                 <template v-else-if="$route.path.startsWith('/fix/journal')">
-                  <div class="d-flex flex-column justify-center">
+                  <div v-if="true">
+                    <v-alert type="warning">
+                      The journal fix feature is currently unavailable. We are investigating a data quality issue and will have it back up and running shortly.
+                    </v-alert>
+                  </div>
+                  
+                  <div v-else class="d-flex flex-column justify-center">
                     <!-- Input and Submit button -->
                     <div class="d-flex flex-row align-center">
                       <v-text-field
