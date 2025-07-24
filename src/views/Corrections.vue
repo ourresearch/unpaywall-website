@@ -160,7 +160,7 @@
                 <template v-else-if="$route.path.startsWith('/fix/journal')">
                   <div v-if="true">
                     <v-alert type="warning">
-                      The journal fix feature is currently unavailable. We are investigating a data quality issue and will have it back up and running shortly.
+                      The journal fix feature is currently down for maintenance. We are investigating a data quality issue and will have it back up and running shortly.
                     </v-alert>
                   </div>
                   
