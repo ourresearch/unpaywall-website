@@ -398,7 +398,7 @@
                       <v-card-title class="mb-2">Add Open Access Link</v-card-title>
                       <v-card-subtitle>To mark this work as open access, Unpaywall needs a URL where the work is freely available.</v-card-subtitle>
                       <v-card-text>
-                        <v-alert type="warning" v-if="true || nrisAcademicNetwork">
+                        <v-alert type="warning" v-if="isAcademicNetwork">
                           <b>You are visiting from an academic network.</b>
                           <br/>
                           Please be sure this URL is open for everyone by checking the page for signs of institutional subscription or by opening the URL from another network like your phone's.
