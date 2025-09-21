@@ -42,12 +42,9 @@
                     The best <router-link to="#oa-location-object">OA Location Object</router-link> we could find for this DOI.
                 </td>
                 <td class="notes">
-                    <p>
-                        The "best" location is determined using an algorithm that prioritizes publisher-hosted content first (eg Hybrid or Gold), then prioritizes versions closer to the version of record (<code>PublishedVersion</code> over <code>AcceptedVersion</code>), then more authoritative repositories (PubMed Central over CiteSeerX).
-                    </p>
-                    <p>
-                        Returns <code>null</code> if we couldn't find any OA Locations.
-                    </p>
+                    The "best" location is determined using an algorithm that prioritizes publisher-hosted content first (eg Hybrid or Gold), then prioritizes versions closer to the version of record (<code>PublishedVersion</code> over <code>AcceptedVersion</code>), then more authoritative repositories (PubMed Central over CiteSeerX).
+                    <br><br>
+                    Returns <code>null</code> if we couldn't find any OA Locations.
                 </td>
             </tr>
 
@@ -61,7 +58,7 @@
                     Indicates the data collection approaches used for this resource.
                 </td>
                 <td class="notes">
-                    <p>Possible values</p>
+                    Possible values:
                     <ul>
                         <li>
                             <span class="value"><code>1</code></span>
@@ -269,9 +266,7 @@
                     The <router-link to="#oa-location-object">OA Location Object</router-link> with the earliest <router-link to="#oa-location-oa-date">oa_date</router-link>.
                 </td>
                 <td class="notes">
-                    <p>
-                        Returns <code>null</code> if we couldn't find any OA Locations.
-                    </p>
+                    Returns <code>null</code> if we couldn't find any OA Locations.
                 </td>
             </tr>
 
@@ -387,60 +382,27 @@
             <tr>
                 <td class="key">
                     <span class="name">z_authors</span>
-                    <span class="type">List of Crossref <code>Contributor</code> objects, or <code>null</code></span>
+                    <span class="type">List of <code>Author</code> objects, or <code>null</code></span>
                 </td>
                 <td class="contents">
                     The authors of this resource.
                 </td>
                 <td class="notes">
-                    These are formatted as a list of Crossref <code>Contributor</code> objects, which are <a href="https://github.com/CrossRef/rest-api-doc/blob/master/api_format.md#contributor"> described in the Crossref API docs here.</a>
-                    <br>
-                    <code>Contributor</code> objects may also contain <a href="https://www.crossref.org/documentation/content-registration/descriptive-metadata/contributors/#00009">sequence</a> elements,
-                    which at the time of writing are not included in the Crossref API docs.
+                    Each author object may have the following fields:
+                    <ul>
+                        <li><code>author_position</code>: string with possible values "first", "additional", "last".</li>
+                        <li><code>raw_author_name</code>: string</li>
+                        <li><code>is_corresponding</code>: boolean</li>
+                        <li><code>raw_affiliation_strings</code>: string</li>
+                    </ul>
                 </td>
             </tr>
-
         </table>
-
-
-
 
 
         <h2 class="anchor" id="oa-location-object">OA Location object</h2>
         <p>The OA Location object describes particular place where we found a given OA article. The same article is often available from multiple locations, and there may be differences in format, version, and license depending on the location; the OA Location object describes these key attributes. An OA Location Object is always a Child of a <router-link to="#doi-object">DOI Object.</router-link></p>
         <table class="api-responses">
-
-            <!--evidence-->
-            <tr id="oa-location-evidence">
-                <td class="key">
-                    <span class="name">evidence</span>
-                    <span class="type">String</span>
-                </td>
-                <td class="contents">
-                    How we found this OA location.
-                </td>
-                <td class="notes">
-                    <p>
-                        Used for debugging. Don’t depend on the exact contents of this for anything, because values are subject to change without warning. Example values:
-
-                    </p>
-                    <ul>
-                        <li>
-                            <span class="value"><code>oa journal (via journal title in doaj)</code></span>
-                            <span class="notes">
-                            We found the name of the journal that publishes this article in the DOAJ database.
-                        </span>
-                        </li>
-                        <li>
-                            <span class="value"><code>oa repository (via pmcid lookup)</code></span>
-                            <span class="notes">
-                            We found this article in an index of PubMed Central articles.
-                        </span>
-                        </li>
-                    </ul>
-                </td>
-            </tr>
-
 
             <!--host_type-->
             <tr id="oa-location-host-type">
@@ -452,9 +414,7 @@
                     The type of host that serves this OA location.
                 </td>
                 <td class="notes">
-                    <p>
-                        There are two possible values:
-                    </p>
+                    There are two possible values:
                     <ul>
                         <li>
                             <span class="value"><code>publisher</code></span>
@@ -499,7 +459,7 @@
                     The license under which this copy is published.
                 </td>
                 <td class="notes">
-                    <p>We return several types of licenses:</p>
+                    We return several types of licenses:
                     <ul>
                         <li>
                             Creative Commons licenses are uniformly abbreviated and lowercased. Example: <code>cc-by-nc</code>
@@ -527,10 +487,8 @@
                     When this document first became available at this location.
                 </td>
                 <td class="notes">
-                    <p>
-                        oa_date is calculated differently for different host types and is not available for all oa_locations.
-                        See <a href="https://support.unpaywall.org/a/solutions/articles/44002063719">https://support.unpaywall.org/a/solutions/articles/44002063719</a> for details.
-                    </p>
+                    <code>oa_date</code> is calculated differently for different host types and is not available for all oa_locations.
+                    See <a href="https://support.unpaywall.org/a/solutions/articles/44002063719">https://support.unpaywall.org/a/solutions/articles/44002063719</a> for details.
                 </td>
             </tr>
 
@@ -549,28 +507,6 @@
                 </td>
             </tr>
 
-
-            <!--updated-->
-            <tr id="oa-location-updated">
-                <td class="key">
-                    <span class="name">updated</span>
-                    <span class="type">String</span>
-                </td>
-                <td class="contents">
-                    Time when the data for this location was last updated.
-                </td>
-                <td class="notes">
-                    Returned as an <a href="https://xkcd.com/1179/">ISO8601-formatted</a> timestamp. Example: <code>2017-08-17T23:43:27.753663</code>
-                </td>
-            </tr>
-
-
-
-
-
-
-
-
             <!--url-->
             <tr id="oa-location-url">
                 <td class="key">
@@ -581,12 +517,9 @@
                     The <code>url_for_pdf</code> if there is one; otherwise landing page URL.
                 </td>
                 <td class="notes">
-                    <p>
-                        When we can't find a <code>url_for_pdf</code> (or there isn't one), this field uses the <code>url_for_landing_page</code>, which is a useful fallback for some use cases.
-                    </p>
+                    When we can't find a <code>url_for_pdf</code> (or there isn't one), this field uses the <code>url_for_landing_page</code>, which is a useful fallback for some use cases.
                 </td>
             </tr>
-
 
             <!--url_for_landing_page-->
             <tr id="oa-location-url-for-landing-page">
@@ -598,12 +531,9 @@
                     The URL for a landing page describing this OA copy.
                 </td>
                 <td class="notes">
-                    <p>
-                        When the <code>host_type</code> is <code>"publisher"</code> the landing page <em>usually</em> includes HTML fulltext.
-                    </p>
+                    When the <code>host_type</code> is <code>"publisher"</code> the landing page <em>usually</em> includes HTML fulltext.
                 </td>
             </tr>
-
 
             <!--url_for_pdf-->
             <tr id="oa_location-url-for-pdf">
@@ -615,17 +545,9 @@
                     The URL with a PDF version of this OA copy.
                 </td>
                 <td class="notes">
-                    <p>
-                        Pretty much what it says.
-                    </p>
+                    Pretty much what it says.
                 </td>
             </tr>
-
-
-
-
-
-
 
             <tr id="oa-location-version">
                 <td class="key">
@@ -636,9 +558,7 @@
                     The content version accessible at this location.
                 </td>
                 <td class="notes">
-                    <p>
-                        We use the <a href="https://wiki.surfnet.nl/display/DRIVERguidelines/DRIVER-VERSION+Mappings">DRIVER Guidelines v2.0 VERSION standard</a> to define  versions of a given article; see those docs for complete definitions of terms. Here's the basic idea, though, for the three version types we support:
-                    </p>
+                    We use the <a href="https://wiki.surfnet.nl/display/DRIVERguidelines/DRIVER-VERSION+Mappings">DRIVER Guidelines v2.0 VERSION standard</a> to define  versions of a given article; see those docs for complete definitions of terms. Here's the basic idea, though, for the three version types we support:
                     <ul>
                         <li><code>submittedVersion</code> is not yet peer-reviewed.</li>
                         <li><code>acceptedVersion</code> is peer-reviewed, but lacks publisher-specific formatting.</li>
@@ -647,52 +567,39 @@
                 </td>
             </tr>
 
-
+            <!--evidence-->
+            <tr id="oa-location-evidence">
+                <td class="key">
+                    <span class="name">evidence</span>
+                    <span class="type">String</span>
+                </td>
+                <td class="contents">
+                    <span class="deprecated">Deprecated</span>
+                </td>
+                <td class="notes">
+                    This field will always be set to the string <code>deprecated</code> and will be removed soon.
+                </td>
+            </tr>
+            
+            <!--updated-->
+            <tr id="oa-location-updated">
+                <td class="key">
+                    <span class="name">updated</span>
+                    <span class="type">String</span>
+                </td>
+                <td class="contents">
+                    <span class="deprecated">Deprecated</span>
+                </td>
+                <td class="notes">
+                    This field will always be set to the string <code>deprecated</code> and will be removed soon.
+                </td>
+            </tr>
 
         </table>
 
-
-
     </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 </template>
+
 
 <script>
     export default {
@@ -732,6 +639,14 @@
     
     div.page.data-format table td.key span.type {
         font-size: 12px;
+    }
+
+    ul {
+        margin-left: 0px;
+    }
+    .deprecated {
+        font-weight: bold;
+        color: red;
     }
 </style>
 

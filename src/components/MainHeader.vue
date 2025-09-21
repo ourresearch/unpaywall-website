@@ -92,6 +92,8 @@
                     </md-menu-content>
                 </md-menu>
 
+                <md-button to="/fix">Fix an Error</md-button>
+
 
             </div>
 
