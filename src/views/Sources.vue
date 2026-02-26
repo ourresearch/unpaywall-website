@@ -12,7 +12,7 @@
         </p>
 
         <p>
-            If you'd like to find a particular source, you can search using the <a href="https://openalex.org/sources?page=1&filter=type:repository">OpenAlex website</a>. Unpaywall's repository data comes from OpenAlex, so if it's in OpenAlex, it's in Unpaywall and vice versa. You can also <a href="https://api.oadoi.org/data/sources.csv">download the complete sources list as CSV.</a>
+            If you'd like to find a particular source, you can search the <a href="https://openalex.org/sources?page=1&filter=type:repository">list of all OpenAlex repositories</a>.
         </p>
         
         
