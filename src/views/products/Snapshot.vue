@@ -6,7 +6,7 @@
             Unpaywall (and much more) by downloading the latest snapshot from <a href="https://openalex.org">OpenAlex</a>.
         </p>
         <p>The OpenAlex snapshot is updated approximately once per month. Instructions on how and where to download the data
-        are <a href="https://docs.openalex.org/download-all-data/openalex-snapshot">here</a>.</p>
+        are <a href="https://developers.openalex.org/download/snapshot-format">here</a>.</p>
     </div>
 
 </template>
