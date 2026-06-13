@@ -92,7 +92,7 @@
                     </md-menu-content>
                 </md-menu>
 
-                <md-button to="/fix">Fix an Error</md-button>
+                <md-button href="mailto:support@openalex.org">Contact support</md-button>
 
 
             </div>

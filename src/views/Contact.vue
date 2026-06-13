@@ -3,7 +3,7 @@
         <h1>Contact</h1>
         <p>Thanks for your interest in getting in touch! We'd love to hear from you.</p>
         <ul>
-            <li>To fix an error in our data, visit our <router-link to="/fix">error reporting page</router-link>.</li>
+            <li>To report an error in our data, email <a href="mailto:support@openalex.org">support@openalex.org</a>.</li>
             <li>To report bugs, drop us a line at <a href="mailto:support@unpaywall.org">support@unpaywall.org</a></li>
             <li>For everything else, please contact <a href="mailto:team@ourresearch.org">team@ourresearch.org</a></li>
         </ul>

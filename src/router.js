@@ -17,7 +17,7 @@ import Outreach from './views/Outreach'
 import SearchArticles from "./views/SearchArticles";
 import IssnlFinder from "./views/IssnlFinder";
 import ArticleInfo from "./views/ArticleInfo";
-import Corrections from './views/Corrections';
+import SupportMoved from './views/SupportMoved';
 
 // Get Started
 import UserGuides from './views/UserGuides'
@@ -98,38 +98,15 @@ export default new Router({
       path: '/faq',
       component: Faq
     },
-    // Fix/Corrections routes
+    // Unpaywall support migrated to OpenAlex (support@openalex.org).
+    // /fix now shows a "support has moved" notice; old subpaths redirect to it.
     {
       path: '/fix',
-      redirect: '/fix/article'
+      component: SupportMoved
     },
     {
-      path: '/fix/article',
-      component: Corrections,
-      props: { showDoiOnly: true }
-    },
-    // Catch-all route for article corrections with DOI
-    {
-      path: '/fix/journal',
-      component: Corrections,
-      props: { showJournalOnly: true }
-    },
-    {
-      path: '/fix/article/*',
-      component: Corrections,
-      props: route => ({ initialDoi: route.params.pathMatch })
-    },
-    // Submit path removed as per new UX flow
-    {
-      path: '/fix/journal/:issn',
-      component: Corrections,
-      props: route => ({ initialIssn: route.params.issn })
-    },
-    // Submit path removed as per new UX flow
-    {
-      path: '/fix/contact',
-      component: Corrections,
-      props: { showContactOnly: true }
+      path: '/fix/*',
+      redirect: '/fix'
     },
     {
       path: '/contact',

@@ -28,7 +28,7 @@
             <router-link to="/legal/terms-of-service">Terms of Service</router-link>
             <router-link to="/legal/privacy">Privacy policy</router-link>
             <router-link to="/contact">Contact</router-link>
-            <router-link to="/fix">Fix an Error</router-link>
+            <a href="mailto:support@openalex.org">Contact support</a>
         </div>
         <div class="col md-layout-item md-xsmall-size-100 spacer"></div>
         <div class="col md-layout-item md-xsmall-size-100 made-by">

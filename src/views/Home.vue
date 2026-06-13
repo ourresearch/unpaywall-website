@@ -16,8 +16,8 @@
             Get the extension
           </md-button>
 
-          <md-button class="md-raised md-accent main" to="/fix">
-            Fix an Error
+          <md-button class="md-raised md-accent main" href="mailto:support@openalex.org">
+            Contact support
           </md-button>
         </div>
       </div>
