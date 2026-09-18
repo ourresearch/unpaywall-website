@@ -106,7 +106,7 @@
           <a href="https://api.openalex.org/works?search=cell%20thermometry">https://api.openalex.org/works?search=cell%20thermometry</a>.
           OpenAlex is the successor to Unpaywall, from the same team and the same data; every result
           includes <code>open_access</code> and <code>best_oa_location</code>.
-          <a href="https://help.openalex.org/access/unpaywall/#retired-unpaywall-features">More about Unpaywall and OpenAlex.</a>
+          <a href="https://help.openalex.org/access/unpaywall/#unpaywall-and-openalex">More about Unpaywall and OpenAlex.</a>
         </p>
       </div>
 
