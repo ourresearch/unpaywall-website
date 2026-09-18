@@ -14,10 +14,9 @@ import Contact from './views/Contact'
 import Team from './views/Team'
 import Welcome from './views/Welcome'
 import Outreach from './views/Outreach'
-import SearchArticles from "./views/SearchArticles";
-import IssnlFinder from "./views/IssnlFinder";
 import ArticleInfo from "./views/ArticleInfo";
 import SupportMoved from './views/SupportMoved';
+import Retired from './views/Retired';
 
 // Get Started
 import UserGuides from './views/UserGuides'
@@ -39,8 +38,6 @@ import Privacy from './views/legal/Privacy'
 import TermsOfService from './views/legal/TermsOfService'
 
 // other
-import Repository from './views/Repository'
-import AddRepository from './views/AddRepository'
 
 
 Vue.use(Router)
@@ -90,9 +87,17 @@ export default new Router({
       path: '/sources',
       component: Sources
     },
+    // Retired 2026-09-18: the article (title) search API behind this page
+    // has been shut down. OpenAlex search replaces it.
     {
       path: '/articles',
-      component: SearchArticles,
+      component: Retired,
+      meta: {
+        title: 'Article search has been retired',
+        lead: 'Unpaywall title search was retired in September 2026. Search OpenAlex instead: every result includes open-access status and the best free-to-read location.',
+        link: 'https://openalex.org/works',
+        linkText: 'Search OpenAlex'
+      }
     },
     {
       path: '/faq',
@@ -126,7 +131,13 @@ export default new Router({
     },
     {
       path: '/issnl-finder',
-      component: IssnlFinder
+      component: Retired,
+      meta: {
+        title: 'The ISSN-L finder has been retired',
+        lead: 'Unpaywall ISSN-L lookup was retired in September 2026. Look up a journal by ISSN in OpenAlex; each source record includes its ISSN-L.',
+        link: 'https://openalex.org/sources',
+        linkText: 'Find a journal in OpenAlex'
+      }
     },
     {
       path: '/article/:doi?',
@@ -228,11 +239,23 @@ export default new Router({
 
     {
       path: '/sources/repository/:repoId?',
-      component: Repository
+      component: Retired,
+      meta: {
+        title: 'Repository dashboards have been retired',
+        lead: 'Unpaywall repository dashboards were retired in September 2026. Repositories are now tracked in OpenAlex.',
+        link: 'https://openalex.org/sources?filter=type:repository',
+        linkText: 'Browse repositories in OpenAlex'
+      }
     },
     {
       path: '/sources/repositories/add',
-      component: AddRepository
+      component: Retired,
+      meta: {
+        title: 'Adding a repository has moved to OpenAlex',
+        lead: 'The Unpaywall add-repository form was retired in September 2026. Register your repository with OpenAlex instead; Unpaywall reads from the same index.',
+        link: 'https://openalex.org/repositories/add',
+        linkText: 'Add a repository to OpenAlex'
+      }
     }
 
 
