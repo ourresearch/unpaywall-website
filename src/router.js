@@ -94,7 +94,7 @@ export default new Router({
       component: Retired,
       meta: {
         title: 'Article search has been retired',
-        lead: 'Unpaywall title search was retired in September 2026. Search OpenAlex instead: every result includes open-access status and the best free-to-read location.',
+        lead: 'To search for papers, use',
         link: 'https://openalex.org/works',
         linkText: 'Search OpenAlex'
       }
@@ -134,7 +134,7 @@ export default new Router({
       component: Retired,
       meta: {
         title: 'The ISSN-L finder has been retired',
-        lead: 'Unpaywall ISSN-L lookup was retired in September 2026. Look up a journal by ISSN in OpenAlex; each source record includes its ISSN-L.',
+        lead: 'To look up a journal, use',
         link: 'https://openalex.org/sources',
         linkText: 'Find a journal in OpenAlex'
       }
@@ -242,7 +242,7 @@ export default new Router({
       component: Retired,
       meta: {
         title: 'Repository dashboards have been retired',
-        lead: 'Unpaywall repository dashboards were retired in September 2026. Repositories are now tracked in OpenAlex.',
+        lead: 'To look up a repository, use',
         link: 'https://openalex.org/sources?filter=type:repository',
         linkText: 'Browse repositories in OpenAlex'
       }
@@ -252,7 +252,7 @@ export default new Router({
       component: Retired,
       meta: {
         title: 'Adding a repository has moved to OpenAlex',
-        lead: 'The Unpaywall add-repository form was retired in September 2026. Register your repository with OpenAlex instead; Unpaywall reads from the same index.',
+        lead: 'To add a repository, use',
         link: 'https://openalex.org/repositories/add',
         linkText: 'Add a repository to OpenAlex'
       }

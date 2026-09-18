@@ -3,31 +3,41 @@
     <div class="retired-container">
       <v-icon class="mb-4" style="font-size: 48px; color: #999;">fa-circle-info</v-icon>
       <h1>{{ meta.title }}</h1>
+
       <p class="lead">
-        {{ meta.lead }}
+        {{ meta.lead }} <a :href="meta.link">OpenAlex</a> instead.
       </p>
-      <p class="relationship">
-        Unpaywall is made by the OpenAlex team, and the two share one database. Everything Unpaywall
-        knows about an article's open access comes from the same OpenAlex index, gathered from the same
-        journals and repositories; Unpaywall simply shows it in the classic Unpaywall format. Unpaywall's
-        DOI lookup, browser extension and Simple Query Tool are staying. For searching and browsing,
-        OpenAlex does much more, and the open-access data you see there is exactly what Unpaywall would
-        have shown you.
+
+      <p>
+        OpenAlex is the successor to Unpaywall, built by the same team. It has everything Unpaywall
+        has: whether a paper is free to read, and where. And it adds much more: search, citation
+        counts, authors, journals, and topics.
       </p>
-      <p class="muted">
-        <a href="https://help.openalex.org/access/unpaywall-and-openalex/">Read how Unpaywall and OpenAlex fit together</a>,
-        including what was retired and the OpenAlex equivalent of each.
+
+      <p>
+        In fact, Unpaywall now runs on the OpenAlex database. Same data, different format.
       </p>
+
+      <p>
+        Unpaywall isn't going away, and there are no plans to retire it. But if you want to search
+        or browse, use OpenAlex. It's far more powerful, and it's the same data.
+      </p>
+
       <md-button class="md-raised md-accent" :href="meta.link">
         {{ meta.linkText }}
       </md-button>
+
+      <p class="muted">
+        <a href="https://help.openalex.org/access/unpaywall/#unpaywall-and-openalex">More about Unpaywall and OpenAlex</a>
+      </p>
     </div>
   </div>
 </template>
 
 <script>
 // Generic "this tool has been retired" notice. Which tool, and where to go
-// instead, comes from the route's meta (see router.js).
+// instead, comes from the route's meta (see router.js). Order of the copy is
+// deliberate: what's gone, what to use, why it's safe, and that Unpaywall stays.
 export default {
   name: 'Retired',
   computed: {
@@ -47,7 +57,7 @@ export default {
   text-align: center;
 }
 .retired-container h1 { font-size: 2rem; margin-bottom: 1.25rem; }
-.retired-container .lead { font-size: 1.15rem; line-height: 1.6; }
-.retired-container .relationship { text-align: left; line-height: 1.6; margin: 1.5rem 0; }
-.retired-container .muted { color: #666; font-size: 0.95rem; margin-bottom: 2rem; }
+.retired-container .lead { font-size: 1.25rem; line-height: 1.6; font-weight: 600; }
+.retired-container p { line-height: 1.6; margin: 1rem 0; }
+.retired-container .muted { color: #666; font-size: 0.95rem; margin-top: 1.5rem; }
 </style>

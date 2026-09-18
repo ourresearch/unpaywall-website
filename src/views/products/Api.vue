@@ -3,13 +3,7 @@
         <h1>REST API</h1>
 
         <div class="intro">
-          <p class="notice">
-            <strong>September 2026:</strong> the title-search endpoint (<code>/v2/search</code>) has been
-            retired. DOI lookup (<code>/v2/:doi</code>) is unchanged. Unpaywall and OpenAlex share one
-            database, and <a href="https://api.openalex.org/works?search=cell%20thermometry">OpenAlex search</a>
-            returns the same open-access data plus much more.
-            <a href="https://help.openalex.org/access/unpaywall-and-openalex/">How Unpaywall and OpenAlex fit together, and how to migrate.</a>
-          </p>
+
         </div>
 
         <h2>
@@ -108,10 +102,11 @@
         <code class="endpoint">GET /v2/search?query=:your_query</code>
         <p class="retired">
           <strong>Retired 18 September 2026.</strong> This endpoint now returns <code>410 Gone</code>.
-          The same search, over the same data, is
+          Use OpenAlex search instead:
           <a href="https://api.openalex.org/works?search=cell%20thermometry">https://api.openalex.org/works?search=cell%20thermometry</a>.
-          Field-by-field migration notes:
-          <a href="https://help.openalex.org/access/unpaywall-and-openalex/#migrating-a-title-search">Migrating a title search</a>.
+          OpenAlex is the successor to Unpaywall, from the same team and the same data; every result
+          includes <code>open_access</code> and <code>best_oa_location</code>.
+          <a href="https://help.openalex.org/access/unpaywall/#retired-unpaywall-features">More about Unpaywall and OpenAlex.</a>
         </p>
       </div>
 
