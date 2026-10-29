@@ -267,6 +267,7 @@
                 </td>
                 <td class="notes">
                     Returns <code>null</code> if we couldn't find any OA Locations.
+                    Because <code>oa_date</code> is currently the publication date for every location, this is currently always the same as <code>best_oa_location</code>.
                 </td>
             </tr>
 
@@ -385,15 +386,18 @@
                     <span class="type">List of <code>Author</code> objects, or <code>null</code></span>
                 </td>
                 <td class="contents">
+                    <span class="deprecated">Deprecated</span>
                     The authors of this resource.
                 </td>
                 <td class="notes">
+                    Not kept up to date: a record's authors are rewritten only when some other part of the record changes, so they can differ from the work's current authors and affiliations.
+                    For authors, use the OpenAlex work's <a href="https://help.openalex.org/data/works/attributes/#authorships">authorships</a> instead (look it up by DOI: <code>https://api.openalex.org/works/doi:10.xxxx/...</code>).
                     Each author object may have the following fields:
                     <ul>
-                        <li><code>author_position</code>: string with possible values "first", "additional", "last".</li>
+                        <li><code>author_position</code>: string: "first", "last", or for anyone in between "additional" (older records) or "middle" (newer records).</li>
                         <li><code>raw_author_name</code>: string</li>
                         <li><code>is_corresponding</code>: boolean</li>
-                        <li><code>raw_affiliation_strings</code>: string</li>
+                        <li><code>raw_affiliation_strings</code>: list of strings</li>
                     </ul>
                 </td>
             </tr>
@@ -484,11 +488,12 @@
                     <span class="type">String|null</span>
                 </td>
                 <td class="contents">
-                    When this document first became available at this location.
+                    Meant to say when this document first became available at this location. Currently it is the work's publication date for every location.
                 </td>
                 <td class="notes">
-                    <code>oa_date</code> is calculated differently for different host types and is not available for all oa_locations.
-                    See <a href="https://support.unpaywall.org/a/solutions/articles/44002063719">https://support.unpaywall.org/a/solutions/articles/44002063719</a> for details.
+                    Because of that, <code>oa_date</code> can't tell you when a copy was deposited in a repository or when a delayed copy opened.
+                    Don't use it to check embargoes or deposit compliance; check the repository's own record instead.
+                    See <a href="https://help.openalex.org/data/works/open-access/#oa-dates">OA dates</a>.
                 </td>
             </tr>
 
